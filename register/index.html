@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GOAT FC Player Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family: Arial;
+  background:#0f0f0f;
+  color:white;
+}
+
+.container{
+  max-width:500px;
+  margin:30px auto;
+  padding:20px;
+  background:#1c1c1c;
+  border-radius:12px;
+  box-shadow:0 0 15px #00ffcc33;
+}
+
+h2{
+  text-align:center;
+  color:#00ffcc;
+}
+
+input, select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:6px;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#00ffcc;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+button:hover{
+  background:#00ddb3;
+}
+
+.preview{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  margin:10px auto;
+  border:2px solid #00ffcc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Player Registration</h2>
+
+  <input type="text" id="name" placeholder="Full Name">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <input type="text" id="position" placeholder="Game Position (e.g. ST, CM)">
+  <input type="text" id="phone" placeholder="Phone Number">
+
+  <select id="district">
+    <option value="">Select District</option>
+    <option>Dhaka</option>
+    <option>Chattogram</option>
+    <option>Sylhet</option>
+    <option>Khulna</option>
+    <option>Rajshahi</option>
+    <option>Barishal</option>
+    <option>Rangpur</option>
+    <option>Mymensingh</option>
+  </select>
+
+  <input type="file" id="image" accept="image/*">
+
+  <img id="preview" class="preview" src="" style="display:none;">
+
+  <button onclick="registerPlayer()">Register</button>
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
