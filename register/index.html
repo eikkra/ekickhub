@@ -1,25 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>GOAT FC Player Registration</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOAT FC Registration</title>
 
 <style>
 body{
   margin:0;
-  font-family: Arial;
-  background:#0f0f0f;
+  font-family:Arial;
+  background:linear-gradient(135deg,#000,#0f2a2a);
   color:white;
 }
 
-.container{
-  max-width:500px;
-  margin:30px auto;
+.box{
+  width:400px;
+  margin:40px auto;
+  background:#111;
   padding:20px;
-  background:#1c1c1c;
   border-radius:12px;
-  box-shadow:0 0 15px #00ffcc33;
+  box-shadow:0 0 20px #00ffcc55;
 }
 
 h2{
@@ -27,13 +25,12 @@ h2{
   color:#00ffcc;
 }
 
-input, select{
+input,select{
   width:100%;
   padding:10px;
   margin:8px 0;
   border:none;
   border-radius:6px;
-  outline:none;
 }
 
 button{
@@ -43,54 +40,49 @@ button{
   border:none;
   font-weight:bold;
   cursor:pointer;
-  border-radius:6px;
 }
 
 button:hover{
-  background:#00ddb3;
-}
-
-.preview{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  object-fit:cover;
-  display:block;
-  margin:10px auto;
-  border:2px solid #00ffcc;
+  background:#00c9a3;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h2>Player Registration</h2>
+<div class="box">
 
-  <input type="text" id="name" placeholder="Full Name">
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+<h2>Player Registration</h2>
 
-  <input type="text" id="position" placeholder="Game Position (e.g. ST, CM)">
-  <input type="text" id="phone" placeholder="Phone Number">
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
 
-  <select id="district">
-    <option value="">Select District</option>
-    <option>Dhaka</option>
-    <option>Chattogram</option>
-    <option>Sylhet</option>
-    <option>Khulna</option>
-    <option>Rajshahi</option>
-    <option>Barishal</option>
-    <option>Rangpur</option>
-    <option>Mymensingh</option>
-  </select>
+<!-- POSITION DROPDOWN -->
+<select id="position">
+  <option>Choose Position</option>
+  <option>CF</option>
+  <option>SS</option>
+  <option>LWF</option>
+  <option>RWF</option>
+  <option>AMF</option>
+  <option>LMF</option>
+  <option>RMF</option>
+  <option>CMF</option>
+  <option>DMF</option>
+  <option>CB</option>
+  <option>LB</option>
+  <option>RB</option>
+  <option>GK</option>
+</select>
 
-  <input type="file" id="image" accept="image/*">
+<input id="phone" placeholder="Phone Number">
+<input id="district" placeholder="District">
 
-  <img id="preview" class="preview" src="" style="display:none;">
+<input type="file" id="image">
 
-  <button onclick="registerPlayer()">Register</button>
+<button onclick="register()">REGISTER</button>
+
 </div>
 
 <script type="module" src="app.js"></script>
