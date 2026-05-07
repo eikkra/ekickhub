@@ -3,35 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>eFootHub</title>
 
   <style>
-    body{
+
+    *{
       margin:0;
-      background:#0a0a0a;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#050505;
       color:white;
-      font-family:Arial;
+      font-family:Arial, sans-serif;
       display:flex;
       justify-content:center;
       align-items:center;
       height:100vh;
       flex-direction:column;
+      overflow:hidden;
     }
 
     h1{
+      font-size:70px;
       color:#00ffcc;
-      font-size:50px;
+      text-shadow:0 0 20px #00ffcc;
+      margin-bottom:15px;
     }
 
     p{
       color:#aaa;
+      font-size:18px;
     }
+
+    .status{
+      margin-top:20px;
+      color:#00ffcc;
+      font-size:14px;
+    }
+
   </style>
 </head>
 <body>
 
-<h1>eFootHub</h1>
-<p>Community Platform Loading...</p>
+  <h1>eFootHub</h1>
+
+  <p>Community Platform Loading...</p>
+
+  <div class="status" id="status">
+    Connecting Firebase...
+  </div>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCDQw62DQSFFUUSk8l6dOqu2PDo9gYxq6U",
+  authDomain: "eikkra.firebaseapp.com",
+  projectId: "eikkra",
+  storageBucket: "eikkra.firebasestorage.app",
+  messagingSenderId: "969860834089",
+  appId: "1:969860834089:web:9b622da21ebced673e0d38",
+  measurementId: "G-LSG3R7V6YK"
+};
+
+const app = initializeApp(firebaseConfig);
+
+document.getElementById("status").innerHTML =
+"🔥 Firebase Connected Successfully!";
+
+console.log("Firebase Connected Successfully!");
+
+</script>
 
 </body>
 </html>
