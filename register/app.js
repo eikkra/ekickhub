@@ -23,7 +23,7 @@ const PREFIX = "EFH"
 // IMAGE PREVIEW
 document
 .getElementById("image")
-.addEventListener("change",function(e){
+.addEventListener("change", function(e){
 
 const file = e.target.files[0]
 
@@ -60,7 +60,7 @@ document.getElementById("msg")
 msg.innerHTML = "Please wait..."
 
 
-// GET VALUES
+// VALUES
 const full_name =
 document.getElementById("full_name").value.trim()
 
@@ -93,7 +93,8 @@ document.getElementById("image").files[0]
 
 
 
-// VALIDATION
+
+// CHECK EMPTY
 if(
 !full_name ||
 !email ||
@@ -116,12 +117,12 @@ return
 
 
 
-// KONAMI FORMAT
-const konamiPattern =
+// KONAMI CHECK
+const pattern =
 /^[A-Z0-9]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
 
 
-if(!konamiPattern.test(konami_id)){
+if(!pattern.test(konami_id)){
 
 msg.innerHTML =
 "Invalid Konami ID format"
@@ -132,19 +133,28 @@ return
 
 
 
+try{
+
 // DUPLICATE CHECK
-const { data: existing } =
+const { data: duplicateData } =
 await supabase
 .from("players")
-.select("*")
-.or(
-`email.eq.${email},
-konami_id.eq.${konami_id},
-fb_id_url.eq.${fb_id_url}`
+.select("email, konami_id, fb_id_url")
+
+
+const duplicate =
+duplicateData.find(player =>
+
+player.email === email ||
+
+player.konami_id === konami_id ||
+
+player.fb_id_url === fb_id_url
+
 )
 
 
-if(existing.length > 0){
+if(duplicate){
 
 msg.innerHTML =
 "Email, Konami ID or Facebook already used"
@@ -156,7 +166,7 @@ return
 
 
 // CREATE AUTH
-const { data, error } =
+const { error: authError } =
 await supabase.auth.signUp({
 
 email,
@@ -165,10 +175,10 @@ password
 })
 
 
-if(error){
+if(authError){
 
 msg.innerHTML =
-error.message
+authError.message
 
 return
 
@@ -186,22 +196,25 @@ head:true
 })
 
 
-// PLAYER ID
+
 const player_id =
 `${PREFIX}-${String(count + 1).padStart(6,'0')}`
 
 
 
-// IMAGE UPLOAD
+// IMAGE NAME
 const fileName =
-Date.now()+"-"+image.name
+`${Date.now()}-${image.name}`
 
 
+
+// UPLOAD IMAGE
 const { error: uploadError } =
 await supabase
 .storage
 .from("player-images")
 .upload(fileName,image)
+
 
 
 if(uploadError){
@@ -215,7 +228,7 @@ return
 
 
 
-// IMAGE URL
+// GET IMAGE URL
 const { data:imageData } =
 supabase
 .storage
@@ -223,12 +236,13 @@ supabase
 .getPublicUrl(fileName)
 
 
+
 const imageUrl =
 imageData.publicUrl
 
 
 
-// SAVE DATABASE
+// INSERT DATABASE
 const { error: insertError } =
 await supabase
 .from("players")
@@ -266,7 +280,7 @@ plan:"free"
 if(insertError){
 
 msg.innerHTML =
-"Registration failed"
+"Database save failed"
 
 return
 
@@ -275,7 +289,7 @@ return
 
 
 msg.innerHTML =
-"Registration successful. Wait for admin approval."
+"Registration successful. Waiting for approval."
 
 
 setTimeout(()=>{
@@ -283,5 +297,16 @@ setTimeout(()=>{
 window.location.href="../login/"
 
 },2500)
+
+
+
+}catch(err){
+
+msg.innerHTML =
+"Something went wrong"
+
+console.log(err)
+
+}
 
 }
