@@ -1,178 +1,222 @@
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { createClient }
+from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-import {
+const supabaseUrl =
+'https://jwrgmkodoktzrmbyjyon.supabase.co'
 
-getAuth,
+const supabaseKey =
+'sb_publishable_LmDSx8FcuURLN2KV6E5lzg_PUXpeu7j'
 
-createUserWithEmailAndPassword
+const supabase =
+createClient(supabaseUrl,supabaseKey)
+
+const PREFIX = "EFH"
+
+
+// IMAGE PREVIEW
+document
+.getElementById("image")
+.addEventListener("change",function(e){
+
+const file = e.target.files[0]
+
+if(file){
+
+const reader = new FileReader()
+
+reader.onload = function(){
+
+const preview =
+document.getElementById("preview")
+
+preview.src = reader.result
+
+preview.style.display = "block"
 
 }
 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-
-getFirestore,
-
-doc,
-
-setDoc
+reader.readAsDataURL(file)
 
 }
 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+})
 
 
 
-// 🔥 FIREBASE CONFIG
-const firebaseConfig = {
-
-apiKey: "AIzaSyCDQw62DQSFFUUSk8l6dOqu2PDo9gYxq6U",
-
-authDomain: "eikkra.firebaseapp.com",
-
-projectId: "eikkra",
-
-storageBucket: "eikkra.firebasestorage.app",
-
-messagingSenderId: "969860834089",
-
-appId: "1:969860834089:web:9b622da21ebced673e0d38",
-
-measurementId: "G-LSG3R7V6YK"
-
-};
-
-
-// INIT
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-
-
-// REGISTER
 window.register = async function(){
 
 const msg =
-document.getElementById("msg");
+document.getElementById("msg")
 
-msg.innerHTML = "Please wait...";
+msg.innerHTML = "Please wait..."
 
 
-const name =
-document.getElementById("name").value;
+const full_name =
+document.getElementById("full_name").value
 
 const email =
-document.getElementById("email").value;
+document.getElementById("email").value
 
 const password =
-document.getElementById("password").value;
-
-const position =
-document.getElementById("position").value;
+document.getElementById("password").value
 
 const phone =
-document.getElementById("phone").value;
+document.getElementById("phone").value
 
 const district =
-document.getElementById("district").value;
+document.getElementById("district").value
+
+const position =
+document.getElementById("position").value
+
+const konami_id =
+document.getElementById("konami_id").value
+
+const device_name =
+document.getElementById("device_name").value
+
+const fb_id_url =
+document.getElementById("fb_id_url").value
+
+const image =
+document.getElementById("image").files[0]
 
 
 
-if(
-!name ||
-!email ||
-!password ||
-!position ||
-!phone ||
-!district
-){
+// KONAMI FORMAT CHECK
+const konamiPattern =
+/^[A-Z0-9]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
+
+if(!konamiPattern.test(konami_id)){
 
 msg.innerHTML =
-"Please fill all fields";
+"Invalid Konami ID format"
 
-return;
+return
 
 }
 
 
 
-try{
+// DUPLICATE CHECK
+const { data: existing } =
+await supabase
+.from("players")
+.select("*")
+.or(`email.eq.${email},konami_id.eq.${konami_id},fb_id_url.eq.${fb_id_url}`)
 
-// CREATE USER
-const userCredential =
-await createUserWithEmailAndPassword(
-auth,
+
+if(existing.length > 0){
+
+msg.innerHTML =
+"Email, Konami ID or Facebook already used"
+
+return
+
+}
+
+
+
+// AUTH CREATE
+const { data, error } =
+await supabase.auth.signUp({
+
 email,
 password
-);
 
-const user = userCredential.user;
+})
+
+if(error){
+
+msg.innerHTML =
+error.message
+
+return
+
+}
 
 
 
-// SAVE FIRESTORE
-await setDoc(
-doc(db,"users",user.uid),
-{
+// PLAYER COUNT
+const { count } =
+await supabase
+.from("players")
+.select("*",{ count:'exact', head:true })
 
-name:name,
 
-email:email,
+const player_id =
+`${PREFIX}-${String(count + 1).padStart(6,'0')}`
 
-position:position,
 
-phone:phone,
 
-district:district,
+// IMAGE UPLOAD
+let imageUrl = ""
 
-role:"player",
+if(image){
 
-plan:"free",
+const fileName =
+Date.now()+"-"+image.name
+
+await supabase
+.storage
+.from("player-images")
+.upload(fileName,image)
+
+const { data:urlData } =
+supabase
+.storage
+.from("player-images")
+.getPublicUrl(fileName)
+
+imageUrl =
+urlData.publicUrl
+
+}
+
+
+
+// SAVE DATABASE
+await supabase
+.from("players")
+.insert([{
+
+player_id,
+
+full_name,
+
+email,
+
+phone,
+
+district,
+
+position,
+
+konami_id,
+
+device_name,
+
+fb_id_url,
+
+image:imageUrl,
 
 approved:false,
 
-createdAt:new Date()
+role:"player",
 
-}
-);
+plan:"free"
+
+}])
 
 
 msg.innerHTML =
-"Registration Successful! Waiting For Approval";
+"Registration successful. Wait for admin approval."
 
 
 setTimeout(()=>{
 
-window.location.href="../login/";
+window.location.href="../login/"
 
-},2000);
-
-
-}catch(error){
-
-// CUSTOM ERROR
-if(
-error.code ===
-"auth/email-already-in-use"
-){
-
-msg.innerHTML =
-"This email is already registered";
-
-}
-
-else{
-
-msg.innerHTML =
-"Registration failed. Try again.";
-
-}
-
-}
+},2500)
 
 }

@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>GOAT FC Registration</title>
+<title>Player Registration</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
@@ -23,27 +20,19 @@ font-family:'Orbitron',sans-serif;
 
 body{
 
-background:
-radial-gradient(circle at top,#0f172a,#020617);
-
+background:#020617;
 min-height:100vh;
-
-padding:30px 15px;
-
-overflow-y:auto;
-
-color:white;
+padding:20px;
 
 display:flex;
-
 justify-content:center;
-
 align-items:center;
+
+overflow-y:auto;
+color:white;
 
 }
 
-
-/* RGB BACKGROUND */
 body::before{
 content:'';
 position:fixed;
@@ -70,62 +59,47 @@ right:-100px;
 z-index:-1;
 }
 
-
-.container{
+.box{
 
 width:100%;
 max-width:520px;
 
 background:rgba(255,255,255,.05);
 
-backdrop-filter:blur(14px);
+backdrop-filter:blur(15px);
 
 border:1px solid rgba(255,255,255,.08);
 
-border-radius:24px;
+padding:28px;
 
-padding:30px 25px;
+border-radius:24px;
 
 box-shadow:
 0 0 30px rgba(0,255,225,.15);
 
 }
 
-
 .logo{
 
-font-size:38px;
-
-font-weight:900;
-
 text-align:center;
-
-margin-bottom:5px;
+font-size:38px;
+font-weight:900;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
 
 -webkit-background-clip:text;
-
 -webkit-text-fill-color:transparent;
+
+margin-bottom:10px;
 
 }
 
 .sub{
-
 text-align:center;
-
 font-size:12px;
-
 color:#aaa;
-
-margin-bottom:25px;
-
-}
-
-
-.inputBox{
-margin-bottom:16px;
+margin-bottom:24px;
 }
 
 input,
@@ -135,21 +109,17 @@ width:100%;
 
 padding:15px;
 
-border:none;
-
-outline:none;
-
-border-radius:14px;
+margin-bottom:15px;
 
 background:#0f172a;
 
-color:white;
-
-font-size:14px;
-
 border:1px solid #1e293b;
 
-transition:.3s;
+border-radius:14px;
+
+color:white;
+
+outline:none;
 
 }
 
@@ -163,62 +133,11 @@ box-shadow:
 
 }
 
-
-.fileLabel{
-
-display:block;
-
-padding:15px;
-
-border-radius:14px;
-
-background:#0f172a;
-
-border:1px dashed #334155;
-
-cursor:pointer;
-
-text-align:center;
-
-font-size:13px;
-
-color:#aaa;
-
-}
-
-
-#image{
-display:none;
-}
-
-
-.preview{
-
-width:110px;
-
-height:110px;
-
-border-radius:50%;
-
-object-fit:cover;
-
-margin:20px auto;
-
-display:none;
-
-border:3px solid #00ffe1;
-
-box-shadow:
-0 0 20px rgba(0,255,225,.5);
-
-}
-
-
 button{
 
 width:100%;
 
-padding:16px;
+padding:15px;
 
 border:none;
 
@@ -235,43 +154,45 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 
 color:white;
 
-transition:.3s;
-
 }
 
-button:hover{
+.preview{
 
-transform:translateY(-2px);
+width:110px;
+height:110px;
 
-box-shadow:
-0 0 20px rgba(0,255,225,.4);
+border-radius:50%;
+
+object-fit:cover;
+
+display:none;
+
+margin:10px auto;
+
+border:3px solid #00ffe1;
 
 }
-
 
 .msg{
 
-margin-top:18px;
-
 text-align:center;
-
+margin-top:15px;
 font-size:13px;
-
 font-weight:700;
 
 }
 
+.bottom{
 
-@media(max-width:600px){
+text-align:center;
+margin-top:20px;
+font-size:13px;
 
-.container{
-padding:25px 18px;
 }
 
-.logo{
-font-size:32px;
-}
-
+.bottom a{
+color:#00ffe1;
+text-decoration:none;
 }
 
 </style>
@@ -280,39 +201,40 @@ font-size:32px;
 
 <body>
 
-<div class="container">
+<div class="box">
 
 <div class="logo">
-GOAT FC
+eFootHub
 </div>
 
 <div class="sub">
 Scorer Football Gaming Community
 </div>
 
+<input type="text" id="full_name" placeholder="Full Name">
 
-<div class="inputBox">
-<input type="text"
-id="name"
-placeholder="Full Name">
-</div>
+<input type="email" id="email" placeholder="Email Address">
 
+<input type="password" id="password" placeholder="Password">
 
-<div class="inputBox">
-<input type="email"
-id="email"
-placeholder="Email Address">
-</div>
+<input type="text" id="phone" placeholder="Phone Number">
 
+<select id="district">
 
-<div class="inputBox">
-<input type="password"
-id="password"
-placeholder="Password">
-</div>
+<option value="">
+Select District
+</option>
 
+<option>Dhaka</option>
+<option>Chattogram</option>
+<option>Sylhet</option>
+<option>Khulna</option>
+<option>Rajshahi</option>
+<option>Barishal</option>
+<option>Rangpur</option>
+<option>Mymensingh</option>
 
-<div class="inputBox">
+</select>
 
 <select id="position">
 
@@ -336,43 +258,36 @@ Select Position
 
 </select>
 
-</div>
-
-
-<div class="inputBox">
 <input type="text"
-id="phone"
-placeholder="Phone Number">
-</div>
+id="konami_id"
+placeholder="Konami ID (ASDS-005-998-145)">
 
+<input type="text"
+id="device_name"
+placeholder="Device Name">
 
-<div class="inputBox">
+<input type="text"
+id="fb_id_url"
+placeholder="Facebook Profile URL">
 
-<select id="district">
+<input type="file"
+id="image"
+accept="image/*">
 
-<option value="">
-Select District
-</option>
-
-<option>Dhaka</option>
-<option>Chattogram</option>
-<option>Sylhet</option>
-<option>Khulna</option>
-<option>Rajshahi</option>
-<option>Barishal</option>
-<option>Rangpur</option>
-<option>Mymensingh</option>
-
-</select>
-
-</div>
+<img id="preview"
+class="preview">
 
 <button onclick="register()">
 REGISTER NOW
 </button>
 
+<div class="msg" id="msg"></div>
 
-<div class="msg" id="msg">
+<div class="bottom">
+Already have account?
+<a href="../login/">
+Login Here
+</a>
 </div>
 
 </div>
