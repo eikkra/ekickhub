@@ -1,22 +1,42 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+
 getAuth,
+
 createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
 getFirestore,
+
 doc,
+
 setDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
+
 getStorage,
+
 ref,
+
 uploadBytes,
+
 getDownloadURL
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
 
 
 // 🔥 FIREBASE CONFIG
@@ -39,7 +59,7 @@ measurementId: "G-LSG3R7V6YK"
 };
 
 
-// 🔥 INITIALIZE FIREBASE
+// INIT
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -49,9 +69,10 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 
-// 🔥 IMAGE PREVIEW
-document.getElementById("image")
-.addEventListener("change", function(e){
+// IMAGE PREVIEW
+document
+.getElementById("image")
+.addEventListener("change",function(e){
 
 const file = e.target.files[0];
 
@@ -77,8 +98,15 @@ reader.readAsDataURL(file);
 });
 
 
-// 🔥 REGISTER FUNCTION
+
+// REGISTER
 window.register = async function(){
+
+const msg =
+document.getElementById("msg");
+
+msg.innerHTML = "Please wait...";
+
 
 const name =
 document.getElementById("name").value;
@@ -102,7 +130,7 @@ const image =
 document.getElementById("image").files[0];
 
 
-// VALIDATION
+
 if(
 !name ||
 !email ||
@@ -112,16 +140,18 @@ if(
 !district
 ){
 
-alert("Please fill all fields");
+msg.innerHTML =
+"Please fill all fields";
 
 return;
 
 }
 
 
+
 try{
 
-// 🔐 CREATE USER
+// CREATE USER
 const userCredential =
 await createUserWithEmailAndPassword(
 auth,
@@ -132,15 +162,13 @@ password
 const user = userCredential.user;
 
 
-// 🖼 UPLOAD IMAGE
+// IMAGE UPLOAD
 let imageURL = "";
 
 if(image){
 
-const storageRef = ref(
-storage,
-"players/" + user.uid
-);
+const storageRef =
+ref(storage,"players/"+user.uid);
 
 await uploadBytes(
 storageRef,
@@ -153,7 +181,8 @@ await getDownloadURL(storageRef);
 }
 
 
-// 💾 SAVE USER DATA
+
+// SAVE FIRESTORE
 await setDoc(
 doc(db,"users",user.uid),
 {
@@ -182,18 +211,36 @@ createdAt:new Date()
 );
 
 
-alert(
-"Registration Successful! Waiting For Admin Approval"
-);
+msg.innerHTML =
+"Registration Successful! Waiting For Approval";
 
 
-// REDIRECT
+setTimeout(()=>{
+
 window.location.href="../login/";
+
+},2000);
 
 
 }catch(error){
 
-alert(error.message);
+// CUSTOM ERRORS
+if(
+error.code ===
+"auth/email-already-in-use"
+){
+
+msg.innerHTML =
+"This email is already registered";
+
+}
+
+else{
+
+msg.innerHTML =
+"Registration failed. Try again.";
+
+}
 
 }
 

@@ -5,11 +5,12 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>GOAT FC Registration</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -21,88 +22,134 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-background:#050816;
+
+background:
+radial-gradient(circle at top,#0f172a,#020617);
+
 min-height:100vh;
+
+padding:30px 15px;
+
+overflow-y:auto;
+
+color:white;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
-padding:20px;
-overflow:hidden;
+
 }
 
+
+/* RGB BACKGROUND */
 body::before{
 content:'';
-position:absolute;
+position:fixed;
 width:500px;
 height:500px;
 background:#00ffe1;
-filter:blur(200px);
-opacity:.2;
+filter:blur(180px);
+opacity:.15;
 top:-100px;
 left:-100px;
+z-index:-1;
 }
 
 body::after{
 content:'';
-position:absolute;
+position:fixed;
 width:500px;
 height:500px;
 background:#ff00c8;
-filter:blur(200px);
-opacity:.2;
+filter:blur(180px);
+opacity:.15;
 bottom:-100px;
 right:-100px;
+z-index:-1;
 }
 
-.box{
-position:relative;
+
+.container{
+
 width:100%;
-max-width:500px;
+max-width:520px;
+
 background:rgba(255,255,255,.05);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,.1);
-padding:30px;
-border-radius:20px;
-box-shadow:0 0 40px rgba(0,255,255,.2);
-z-index:2;
+
+backdrop-filter:blur(14px);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:24px;
+
+padding:30px 25px;
+
+box-shadow:
+0 0 30px rgba(0,255,225,.15);
+
 }
+
 
 .logo{
-text-align:center;
-font-size:32px;
+
+font-size:38px;
+
 font-weight:900;
-margin-bottom:10px;
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
+
+text-align:center;
+
+margin-bottom:5px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
 -webkit-background-clip:text;
+
 -webkit-text-fill-color:transparent;
+
 }
 
 .sub{
+
 text-align:center;
-color:#aaa;
+
 font-size:12px;
+
+color:#aaa;
+
 margin-bottom:25px;
+
 }
 
-input,select{
+
+.inputBox{
+margin-bottom:16px;
+}
+
+input,
+select{
 
 width:100%;
 
-padding:14px;
+padding:15px;
 
-margin-bottom:15px;
+border:none;
 
-background:#0b1225;
+outline:none;
 
-border:1px solid #1e2a4a;
+border-radius:14px;
 
-border-radius:12px;
+background:#0f172a;
 
 color:white;
 
 font-size:14px;
 
-outline:none;
+border:1px solid #1e293b;
+
+transition:.3s;
 
 }
 
@@ -111,29 +158,82 @@ select:focus{
 
 border-color:#00ffe1;
 
-box-shadow:0 0 15px #00ffe188;
+box-shadow:
+0 0 15px rgba(0,255,225,.4);
 
 }
+
+
+.fileLabel{
+
+display:block;
+
+padding:15px;
+
+border-radius:14px;
+
+background:#0f172a;
+
+border:1px dashed #334155;
+
+cursor:pointer;
+
+text-align:center;
+
+font-size:13px;
+
+color:#aaa;
+
+}
+
+
+#image{
+display:none;
+}
+
+
+.preview{
+
+width:110px;
+
+height:110px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+margin:20px auto;
+
+display:none;
+
+border:3px solid #00ffe1;
+
+box-shadow:
+0 0 20px rgba(0,255,225,.5);
+
+}
+
 
 button{
 
 width:100%;
 
-padding:15px;
+padding:16px;
 
 border:none;
 
-border-radius:12px;
+border-radius:14px;
 
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
+font-size:15px;
 
-color:white;
-
-font-size:16px;
-
-font-weight:bold;
+font-weight:700;
 
 cursor:pointer;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+color:white;
 
 transition:.3s;
 
@@ -141,34 +241,36 @@ transition:.3s;
 
 button:hover{
 
-transform:scale(1.03);
+transform:translateY(-2px);
 
-box-shadow:0 0 20px #00ffe1aa;
+box-shadow:
+0 0 20px rgba(0,255,225,.4);
 
 }
 
-.note{
+
+.msg{
+
+margin-top:18px;
+
 text-align:center;
-margin-top:15px;
-font-size:12px;
-color:#888;
+
+font-size:13px;
+
+font-weight:700;
+
 }
 
-.preview{
 
-width:100px;
+@media(max-width:600px){
 
-height:100px;
+.container{
+padding:25px 18px;
+}
 
-border-radius:50%;
-
-object-fit:cover;
-
-display:none;
-
-margin:10px auto;
-
-border:3px solid #00ffe1;
+.logo{
+font-size:32px;
+}
 
 }
 
@@ -178,7 +280,7 @@ border:3px solid #00ffe1;
 
 <body>
 
-<div class="box">
+<div class="container">
 
 <div class="logo">
 GOAT FC
@@ -188,11 +290,29 @@ GOAT FC
 Scorer Football Gaming Community
 </div>
 
-<input type="text" id="name" placeholder="Full Name">
 
-<input type="email" id="email" placeholder="Email Address">
+<div class="inputBox">
+<input type="text"
+id="name"
+placeholder="Full Name">
+</div>
 
-<input type="password" id="password" placeholder="Password">
+
+<div class="inputBox">
+<input type="email"
+id="email"
+placeholder="Email Address">
+</div>
+
+
+<div class="inputBox">
+<input type="password"
+id="password"
+placeholder="Password">
+</div>
+
+
+<div class="inputBox">
 
 <select id="position">
 
@@ -216,7 +336,17 @@ Select Position
 
 </select>
 
-<input type="text" id="phone" placeholder="Phone Number">
+</div>
+
+
+<div class="inputBox">
+<input type="text"
+id="phone"
+placeholder="Phone Number">
+</div>
+
+
+<div class="inputBox">
 
 <select id="district">
 
@@ -235,16 +365,30 @@ Select District
 
 </select>
 
-<input type="file" id="image">
+</div>
 
-<img id="preview" class="preview">
+
+<label class="fileLabel">
+
+Upload Profile Image
+
+<input type="file"
+id="image"
+accept="image/*">
+
+</label>
+
+
+<img id="preview"
+class="preview">
+
 
 <button onclick="register()">
 REGISTER NOW
 </button>
 
-<div class="note">
-Waiting for Admin Approval after registration
+
+<div class="msg" id="msg">
 </div>
 
 </div>
@@ -252,5 +396,4 @@ Waiting for Admin Approval after registration
 <script type="module" src="app.js"></script>
 
 </body>
-
 </html>
