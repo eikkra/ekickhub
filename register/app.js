@@ -23,20 +23,6 @@ setDoc
 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-
-getStorage,
-
-ref,
-
-uploadBytes,
-
-getDownloadURL
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
 
 
 // 🔥 FIREBASE CONFIG
@@ -66,37 +52,6 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-const storage = getStorage(app);
-
-
-// IMAGE PREVIEW
-document
-.getElementById("image")
-.addEventListener("change",function(e){
-
-const file = e.target.files[0];
-
-if(file){
-
-const reader = new FileReader();
-
-reader.onload = function(){
-
-const preview =
-document.getElementById("preview");
-
-preview.src = reader.result;
-
-preview.style.display = "block";
-
-}
-
-reader.readAsDataURL(file);
-
-}
-
-});
-
 
 
 // REGISTER
@@ -125,9 +80,6 @@ document.getElementById("phone").value;
 
 const district =
 document.getElementById("district").value;
-
-const image =
-document.getElementById("image").files[0];
 
 
 
@@ -162,25 +114,6 @@ password
 const user = userCredential.user;
 
 
-// IMAGE UPLOAD
-let imageURL = "";
-
-if(image){
-
-const storageRef =
-ref(storage,"players/"+user.uid);
-
-await uploadBytes(
-storageRef,
-image
-);
-
-imageURL =
-await getDownloadURL(storageRef);
-
-}
-
-
 
 // SAVE FIRESTORE
 await setDoc(
@@ -196,8 +129,6 @@ position:position,
 phone:phone,
 
 district:district,
-
-image:imageURL,
 
 role:"player",
 
@@ -224,7 +155,7 @@ window.location.href="../login/";
 
 }catch(error){
 
-// CUSTOM ERRORS
+// CUSTOM ERROR
 if(
 error.code ===
 "auth/email-already-in-use"
