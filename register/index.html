@@ -1,91 +1,256 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GOAT FC Registration</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#000,#0f2a2a);
-  color:white;
+background:#050816;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+overflow:hidden;
+}
+
+body::before{
+content:'';
+position:absolute;
+width:500px;
+height:500px;
+background:#00ffe1;
+filter:blur(200px);
+opacity:.2;
+top:-100px;
+left:-100px;
+}
+
+body::after{
+content:'';
+position:absolute;
+width:500px;
+height:500px;
+background:#ff00c8;
+filter:blur(200px);
+opacity:.2;
+bottom:-100px;
+right:-100px;
 }
 
 .box{
-  width:400px;
-  margin:40px auto;
-  background:#111;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 0 20px #00ffcc55;
+position:relative;
+width:100%;
+max-width:500px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.1);
+padding:30px;
+border-radius:20px;
+box-shadow:0 0 40px rgba(0,255,255,.2);
+z-index:2;
 }
 
-h2{
-  text-align:center;
-  color:#00ffcc;
+.logo{
+text-align:center;
+font-size:32px;
+font-weight:900;
+margin-bottom:10px;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.sub{
+text-align:center;
+color:#aaa;
+font-size:12px;
+margin-bottom:25px;
 }
 
 input,select{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border:none;
-  border-radius:6px;
+
+width:100%;
+
+padding:14px;
+
+margin-bottom:15px;
+
+background:#0b1225;
+
+border:1px solid #1e2a4a;
+
+border-radius:12px;
+
+color:white;
+
+font-size:14px;
+
+outline:none;
+
+}
+
+input:focus,
+select:focus{
+
+border-color:#00ffe1;
+
+box-shadow:0 0 15px #00ffe188;
+
 }
 
 button{
-  width:100%;
-  padding:12px;
-  background:#00ffcc;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:12px;
+
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+
+color:white;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
 }
 
 button:hover{
-  background:#00c9a3;
+
+transform:scale(1.03);
+
+box-shadow:0 0 20px #00ffe1aa;
+
 }
+
+.note{
+text-align:center;
+margin-top:15px;
+font-size:12px;
+color:#888;
+}
+
+.preview{
+
+width:100px;
+
+height:100px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+display:none;
+
+margin:10px auto;
+
+border:3px solid #00ffe1;
+
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-<h2>Player Registration</h2>
+<div class="logo">
+GOAT FC
+</div>
 
-<input id="name" placeholder="Full Name">
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<div class="sub">
+Scorer Football Gaming Community
+</div>
 
-<!-- POSITION DROPDOWN -->
+<input type="text" id="name" placeholder="Full Name">
+
+<input type="email" id="email" placeholder="Email Address">
+
+<input type="password" id="password" placeholder="Password">
+
 <select id="position">
-  <option>Choose Position</option>
-  <option>CF</option>
-  <option>SS</option>
-  <option>LWF</option>
-  <option>RWF</option>
-  <option>AMF</option>
-  <option>LMF</option>
-  <option>RMF</option>
-  <option>CMF</option>
-  <option>DMF</option>
-  <option>CB</option>
-  <option>LB</option>
-  <option>RB</option>
-  <option>GK</option>
+
+<option value="">
+Select Position
+</option>
+
+<option>CF</option>
+<option>SS</option>
+<option>LWF</option>
+<option>RWF</option>
+<option>AMF</option>
+<option>LMF</option>
+<option>RMF</option>
+<option>CMF</option>
+<option>DMF</option>
+<option>LB</option>
+<option>RB</option>
+<option>CB</option>
+<option>GK</option>
+
 </select>
 
-<input id="phone" placeholder="Phone Number">
-<input id="district" placeholder="District">
+<input type="text" id="phone" placeholder="Phone Number">
+
+<select id="district">
+
+<option value="">
+Select District
+</option>
+
+<option>Dhaka</option>
+<option>Chattogram</option>
+<option>Sylhet</option>
+<option>Khulna</option>
+<option>Rajshahi</option>
+<option>Barishal</option>
+<option>Rangpur</option>
+<option>Mymensingh</option>
+
+</select>
 
 <input type="file" id="image">
 
-<button onclick="register()">REGISTER</button>
+<img id="preview" class="preview">
+
+<button onclick="register()">
+REGISTER NOW
+</button>
+
+<div class="note">
+Waiting for Admin Approval after registration
+</div>
 
 </div>
 
 <script type="module" src="app.js"></script>
 
 </body>
+
 </html>

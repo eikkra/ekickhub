@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { 
+import {
 getAuth,
 createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -19,73 +19,182 @@ getDownloadURL
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
-// 🔥 FIREBASE CONFIG (IMPORTANT)
+// 🔥 FIREBASE CONFIG
 const firebaseConfig = {
-  apiKey: "PASTE_HERE",
-  authDomain: "PASTE_HERE",
-  projectId: "PASTE_HERE",
-  storageBucket: "PASTE_HERE",
-  messagingSenderId: "PASTE_HERE",
-  appId: "PASTE_HERE"
+
+apiKey: "AIzaSyCDQw62DQSFFUUSk8l6dOqu2PDo9gYxq6U",
+
+authDomain: "eikkra.firebaseapp.com",
+
+projectId: "eikkra",
+
+storageBucket: "eikkra.firebasestorage.app",
+
+messagingSenderId: "969860834089",
+
+appId: "1:969860834089:web:9b622da21ebced673e0d38",
+
+measurementId: "G-LSG3R7V6YK"
+
 };
 
-// INIT
+
+// 🔥 INITIALIZE FIREBASE
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
+
 const storage = getStorage(app);
 
 
-// 🚀 REGISTER FUNCTION
+// 🔥 IMAGE PREVIEW
+document.getElementById("image")
+.addEventListener("change", function(e){
+
+const file = e.target.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(){
+
+const preview =
+document.getElementById("preview");
+
+preview.src = reader.result;
+
+preview.style.display = "block";
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+
+// 🔥 REGISTER FUNCTION
 window.register = async function(){
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const position = document.getElementById("position").value;
-  const phone = document.getElementById("phone").value;
-  const district = document.getElementById("district").value;
-  const image = document.getElementById("image").files[0];
+const name =
+document.getElementById("name").value;
 
-  if(!name || !email || !password){
-    alert("Fill all required fields");
-    return;
-  }
+const email =
+document.getElementById("email").value;
 
-  try{
+const password =
+document.getElementById("password").value;
 
-    // 1️⃣ AUTH CREATE
-    const userCred = await createUserWithEmailAndPassword(auth,email,password);
-    const user = userCred.user;
+const position =
+document.getElementById("position").value;
 
-    // 2️⃣ IMAGE UPLOAD
-    let imageURL = "";
+const phone =
+document.getElementById("phone").value;
 
-    if(image){
-      const imgRef = ref(storage,"players/"+user.uid);
-      await uploadBytes(imgRef,image);
-      imageURL = await getDownloadURL(imgRef);
-    }
+const district =
+document.getElementById("district").value;
 
-    // 3️⃣ SAVE DATA (Firestore)
-    await setDoc(doc(db,"users",user.uid),{
-      name:name,
-      email:email,
-      position:position,
-      phone:phone,
-      district:district,
-      image:imageURL,
-      role:"player",
-      approved:false,
-      plan:"free"
-    });
+const image =
+document.getElementById("image").files[0];
 
-    alert("Registered Successfully! Waiting for Admin Approval");
 
-    window.location.href="login.html";
+// VALIDATION
+if(
+!name ||
+!email ||
+!password ||
+!position ||
+!phone ||
+!district
+){
 
-  }catch(error){
-    alert(error.message);
-  }
+alert("Please fill all fields");
+
+return;
+
+}
+
+
+try{
+
+// 🔐 CREATE USER
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+const user = userCredential.user;
+
+
+// 🖼 UPLOAD IMAGE
+let imageURL = "";
+
+if(image){
+
+const storageRef = ref(
+storage,
+"players/" + user.uid
+);
+
+await uploadBytes(
+storageRef,
+image
+);
+
+imageURL =
+await getDownloadURL(storageRef);
+
+}
+
+
+// 💾 SAVE USER DATA
+await setDoc(
+doc(db,"users",user.uid),
+{
+
+name:name,
+
+email:email,
+
+position:position,
+
+phone:phone,
+
+district:district,
+
+image:imageURL,
+
+role:"player",
+
+plan:"free",
+
+approved:false,
+
+createdAt:new Date()
+
+}
+);
+
+
+alert(
+"Registration Successful! Waiting For Admin Approval"
+);
+
+
+// REDIRECT
+window.location.href="../login/";
+
+
+}catch(error){
+
+alert(error.message);
+
+}
 
 }
