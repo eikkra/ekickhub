@@ -144,9 +144,7 @@ font-size:13px;
 }
 
 .inputBox input[type="file"]{
-
 padding:10px;
-
 }
 
 .eye{
@@ -305,38 +303,67 @@ CONTINUE WITH GOOGLE
 <input type="text" id="phone" placeholder="Phone Number">
 </div>
 
+<!-- COUNTRY -->
+
 <div class="inputBox">
 
-<select id="district">
+<select id="country">
 
-<option value="">Select District</option>
+<option value="">
+Select Country
+</option>
 
-<option>Dhaka</option>
-<option>Chattogram</option>
-<option>Khulna</option>
-<option>Rajshahi</option>
-<option>Sylhet</option>
+<option>Bangladesh</option>
+<option>India</option>
+<option>Pakistan</option>
+<option>Nepal</option>
+<option>Saudi Arabia</option>
+<option>United Arab Emirates</option>
+<option>Malaysia</option>
+<option>Indonesia</option>
+<option>United Kingdom</option>
+<option>United States</option>
+<option>Canada</option>
+<option>Australia</option>
 
 </select>
 
 </div>
 
+<!-- DISTRICT -->
+
+<div class="inputBox">
+<input type="text"
+id="district"
+placeholder="State / District / City">
+</div>
+
+<!-- POSITION -->
+
 <div class="inputBox">
 
 <select id="position">
 
-<option value="">Game Position</option>
+<option value="">
+Game Position
+</option>
 
 <option>CF</option>
 <option>SS</option>
 <option>LWF</option>
 <option>RWF</option>
+
 <option>AMF</option>
+<option>LMF</option>
+<option>RMF</option>
+
 <option>CMF</option>
 <option>DMF</option>
+
 <option>LB</option>
 <option>RB</option>
 <option>CB</option>
+
 <option>GK</option>
 
 </select>
@@ -344,24 +371,35 @@ CONTINUE WITH GOOGLE
 </div>
 
 <div class="inputBox">
-<input type="text" id="konami_id" placeholder="ASDF-000-000-000">
+<input type="text"
+id="konami_id"
+placeholder="ASDF-000-000-000">
 </div>
 
 <div class="inputBox">
-<input type="text" id="device_name" placeholder="Device Name">
+<input type="text"
+id="device_name"
+placeholder="Device Name">
 </div>
 
 <div class="inputBox">
-<input type="text" id="fb_id_url" placeholder="Facebook Profile URL">
+<input type="text"
+id="fb_id_url"
+placeholder="Facebook Profile URL">
 </div>
 
 <div class="inputBox">
 
-<input type="file" id="image" accept="image/*">
+<input type="file"
+id="image"
+accept="image/*">
 
 <div class="smallText">
+
 Recommended Size: 400×500px<br>
-Image auto compressed to save storage.
+
+Image auto compressed for fast loading & storage saving.
+
 </div>
 
 </div>
@@ -384,7 +422,8 @@ Login
 
 </div>
 
-<script type="module" src="app.js"></script>
+<script type="module"
+src="app.js"></script>
 
 </body>
 </html>

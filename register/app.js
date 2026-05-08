@@ -107,7 +107,7 @@ passwordInput.type === "password"
 
 
 
-/* GOOGLE LOGIN */
+/* GOOGLE CONNECT */
 
 let currentUser = null
 
@@ -249,8 +249,11 @@ passwordInput.value.trim()
 const phone =
 document.getElementById("phone").value.trim()
 
+const country =
+document.getElementById("country").value
+
 const district =
-document.getElementById("district").value
+document.getElementById("district").value.trim()
 
 const position =
 document.getElementById("position").value
@@ -276,6 +279,7 @@ if(
 !email ||
 !password ||
 !phone ||
+!country ||
 !district ||
 !position ||
 !konami_id ||
@@ -458,6 +462,8 @@ full_name,
 email,
 
 phone,
+
+country,
 
 district,
 
