@@ -3,7 +3,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>eKickHub Login</title>
 
@@ -39,26 +41,26 @@ color:white;
 body::before{
 content:'';
 position:fixed;
-width:400px;
-height:400px;
+width:450px;
+height:450px;
 background:#00ffe1;
-filter:blur(170px);
+filter:blur(180px);
 opacity:.18;
-top:-100px;
-left:-100px;
+top:-120px;
+left:-120px;
 z-index:-1;
 }
 
 body::after{
 content:'';
 position:fixed;
-width:400px;
-height:400px;
+width:450px;
+height:450px;
 background:#ff00c8;
-filter:blur(170px);
+filter:blur(180px);
 opacity:.18;
-bottom:-100px;
-right:-100px;
+bottom:-120px;
+right:-120px;
 z-index:-1;
 }
 
@@ -67,18 +69,20 @@ z-index:-1;
 width:100%;
 max-width:430px;
 
-background:rgba(255,255,255,.05);
+background:
+rgba(255,255,255,.05);
 
-border:1px solid rgba(255,255,255,.08);
+border:
+1px solid rgba(255,255,255,.08);
 
 backdrop-filter:blur(16px);
 
 padding:30px;
 
-border-radius:28px;
+border-radius:30px;
 
 box-shadow:
-0 0 30px rgba(0,255,225,.15);
+0 0 35px rgba(0,255,225,.18);
 
 }
 
@@ -100,14 +104,20 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 }
 
 .sub{
+
 text-align:center;
+
 font-size:11px;
+
 color:#aaa;
+
 margin-bottom:25px;
+
 }
 
 .inputBox{
 margin-bottom:14px;
+position:relative;
 }
 
 .inputBox input{
@@ -118,15 +128,34 @@ padding:14px;
 
 background:#0f172a;
 
-border:1px solid #1e293b;
+border:
+1px solid #1e293b;
 
-border-radius:14px;
+border-radius:15px;
 
 outline:none;
 
 color:white;
 
 font-size:13px;
+
+}
+
+.eye{
+
+position:absolute;
+
+right:15px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+cursor:pointer;
+
+font-size:13px;
+
+color:#aaa;
 
 }
 
@@ -138,7 +167,7 @@ padding:14px;
 
 border:none;
 
-border-radius:14px;
+border-radius:15px;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
@@ -163,7 +192,7 @@ padding:14px;
 
 border:none;
 
-border-radius:14px;
+border-radius:15px;
 
 background:white;
 
@@ -174,6 +203,18 @@ font-weight:700;
 cursor:pointer;
 
 margin-top:15px;
+
+}
+
+.msg{
+
+margin-top:15px;
+
+text-align:center;
+
+font-size:12px;
+
+font-weight:700;
 
 }
 
@@ -197,18 +238,6 @@ text-decoration:none;
 
 }
 
-.msg{
-
-margin-top:15px;
-
-text-align:center;
-
-font-size:12px;
-
-font-weight:700;
-
-}
-
 </style>
 
 </head>
@@ -225,33 +254,54 @@ Elite Scorer Football Gaming Platform
 </div>
 
 <div class="inputBox">
-<input type="email" id="email" placeholder="Email Address">
+<input type="email"
+id="email"
+placeholder="Email Address">
 </div>
 
 <div class="inputBox">
-<input type="password" id="password" placeholder="Password">
+
+<input type="password"
+id="password"
+placeholder="Password">
+
+<span class="eye"
+onclick="togglePass()">
+👁
+</span>
+
 </div>
 
-<button class="btn" onclick="login()">
+<button class="btn"
+onclick="login()">
+
 LOGIN
+
 </button>
 
-<button class="googleBtn" onclick="googleLogin()">
+<button class="googleBtn"
+onclick="googleLogin()">
+
 CONTINUE WITH GOOGLE
+
 </button>
 
 <div class="msg" id="msg"></div>
 
 <div class="bottom">
+
 No account?
+
 <a href="../register/">
 Register Now
 </a>
-</div>
 
 </div>
 
-<script type="module" src="app.js"></script>
+</div>
+
+<script type="module"
+src="app.js"></script>
 
 </body>
 </html>

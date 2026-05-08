@@ -53,19 +53,38 @@ const db = getFirestore(app)
 
 
 
+/* PASSWORD SHOW */
+
+window.togglePass = function(){
+
+const pass =
+document.getElementById("password")
+
+pass.type =
+pass.type === "password"
+? "text"
+: "password"
+
+}
+
+
+
+/* EMAIL LOGIN */
+
 window.login = async function(){
 
 const msg =
 document.getElementById("msg")
 
-msg.innerHTML = "Please wait..."
+msg.innerHTML =
+"Please wait..."
 
 
 const email =
-document.getElementById("email").value
+document.getElementById("email").value.trim()
 
 const password =
-document.getElementById("password").value
+document.getElementById("password").value.trim()
 
 
 try{
@@ -90,7 +109,7 @@ await getDoc(docRef)
 if(!docSnap.exists()){
 
 msg.innerHTML =
-"Account data not found"
+"Profile not found"
 
 return
 
@@ -101,21 +120,39 @@ const userData =
 docSnap.data()
 
 
+
+/* APPROVAL CHECK */
+
 if(userData.approved !== true){
 
 msg.innerHTML =
-"Waiting for admin approval"
+"Your profile is waiting for admin approval"
 
 return
 
 }
 
 
-msg.innerHTML =
-"Login successful"
+
+/* ADMIN CHECK */
+
+if(userData.roles.includes("admin")){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
 
 
 }catch(error){
+
+console.log(error)
 
 msg.innerHTML =
 "Invalid email or password"
@@ -125,6 +162,8 @@ msg.innerHTML =
 }
 
 
+
+/* GOOGLE LOGIN */
 
 window.googleLogin = async function(){
 
@@ -140,16 +179,72 @@ try{
 const provider =
 new GoogleAuthProvider()
 
+const result =
 await signInWithPopup(
 auth,
 provider
 )
 
+const user = result.user
+
+
+const docRef =
+doc(db,"users",user.uid)
+
+const docSnap =
+await getDoc(docRef)
+
+
+
+/* IF USER NOT REGISTERED */
+
+if(!docSnap.exists()){
+
 window.location.href =
 "../register/"
 
+return
+
+}
+
+
+const userData =
+docSnap.data()
+
+
+
+/* APPROVAL CHECK */
+
+if(userData.approved !== true){
+
+msg.innerHTML =
+"Your profile is waiting for admin approval"
+
+return
+
+}
+
+
+
+/* ROLE CHECK */
+
+if(userData.roles.includes("admin")){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
+
 
 }catch(error){
+
+console.log(error)
 
 msg.innerHTML =
 error.message
