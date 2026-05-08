@@ -2,37 +2,29 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-
 getAuth,
 createUserWithEmailAndPassword
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
 getFirestore,
 doc,
 setDoc,
 getDocs,
 collection
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
-
 getStorage,
 ref,
 uploadBytes,
 getDownloadURL
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
-
-/* FIREBASE CONFIG */
 
 const firebaseConfig = {
 
@@ -52,8 +44,6 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 
 
-/* FIREBASE START */
-
 const app = initializeApp(firebaseConfig)
 
 const auth = getAuth(app)
@@ -64,22 +54,17 @@ const storage = getStorage(app)
 
 
 
-/* PASSWORD SHOW HIDE */
+/* PASSWORD SHOW */
 
 window.togglePass = function(){
 
 const pass =
 document.getElementById("password")
 
-if(pass.type === "password"){
-
-pass.type = "text"
-
-}else{
-
-pass.type = "password"
-
-}
+pass.type =
+pass.type === "password"
+? "text"
+: "password"
 
 }
 
@@ -88,7 +73,7 @@ pass.type = "password"
 /* IMAGE PREVIEW */
 
 document.getElementById("image")
-.addEventListener("change",function(e){
+.addEventListener("change",(e)=>{
 
 const file = e.target.files[0]
 
@@ -97,7 +82,7 @@ if(file){
 const reader =
 new FileReader()
 
-reader.onload = function(){
+reader.onload = ()=>{
 
 const preview =
 document.getElementById("preview")
@@ -140,13 +125,10 @@ document.createElement("canvas")
 const ctx =
 canvas.getContext("2d")
 
-const width = 400
-const height = 500
+canvas.width = 400
+canvas.height = 500
 
-canvas.width = width
-canvas.height = height
-
-ctx.drawImage(img,0,0,width,height)
+ctx.drawImage(img,0,0,400,500)
 
 canvas.toBlob(
 
@@ -172,7 +154,7 @@ resolve(blob)
 
 
 
-/* REGISTER USER */
+/* REGISTER */
 
 window.registerUser = async function(){
 
@@ -217,7 +199,7 @@ document.getElementById("image").files[0]
 
 
 
-/* CHECK EMPTY */
+/* EMPTY CHECK */
 
 if(
 
@@ -243,16 +225,29 @@ return
 
 
 
-/* KONAMI ID FORMAT */
+/* PASSWORD LENGTH */
 
-const pattern =
-/^[A-Z0-9]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
-
-
-if(!pattern.test(konami_id)){
+if(password.length < 6){
 
 msg.innerHTML =
-"Invalid Konami ID Format"
+"Password minimum 6 characters"
+
+return
+
+}
+
+
+
+/* KONAMI FORMAT */
+
+const konamiPattern =
+/^[A-Z]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
+
+
+if(!konamiPattern.test(konami_id)){
+
+msg.innerHTML =
+"Use Konami ID format: ASAD-005-000-111"
 
 return
 
@@ -269,7 +264,7 @@ await compressImage(originalImage)
 
 /* CHECK DUPLICATE */
 
-const usersSnapshot =
+const snapshot =
 await getDocs(collection(db,"users"))
 
 let totalUsers = 0
@@ -277,7 +272,7 @@ let totalUsers = 0
 let duplicate = false
 
 
-usersSnapshot.forEach(docItem=>{
+snapshot.forEach((docItem)=>{
 
 const data = docItem.data()
 
@@ -286,11 +281,11 @@ totalUsers++
 
 if(
 
+data.email === email ||
+
 data.konami_id === konami_id ||
 
-data.fb_id_url === fb_id_url ||
-
-data.email === email
+data.fb_id_url === fb_id_url
 
 ){
 
@@ -304,7 +299,7 @@ duplicate = true
 if(duplicate){
 
 msg.innerHTML =
-"Email / Konami ID already used"
+"Email / Konami ID / FB URL already used"
 
 return
 
@@ -312,7 +307,7 @@ return
 
 
 
-/* CREATE AUTH ACCOUNT */
+/* CREATE AUTH */
 
 const result =
 await createUserWithEmailAndPassword(
@@ -350,7 +345,7 @@ await getDownloadURL(imageRef)
 
 
 
-/* SAVE DATABASE */
+/* SAVE USER */
 
 await setDoc(
 doc(db,"users",user.uid),
@@ -392,6 +387,7 @@ created_at:new Date().toISOString()
 
 msg.innerHTML =
 "Registration Successful. Waiting for admin approval."
+
 
 
 setTimeout(()=>{
