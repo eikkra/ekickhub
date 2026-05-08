@@ -1,6 +1,218 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>eKickHub Register</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+
+background:#020617;
+
+min-height:100vh;
+
+padding:20px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow-x:hidden;
+
+color:white;
+
+}
+
+body::before{
+content:'';
+position:fixed;
+width:400px;
+height:400px;
+background:#00ffe1;
+filter:blur(170px);
+opacity:.18;
+top:-100px;
+left:-100px;
+z-index:-1;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:400px;
+height:400px;
+background:#ff00c8;
+filter:blur(170px);
+opacity:.18;
+bottom:-100px;
+right:-100px;
+z-index:-1;
+}
+
+.box{
+
+width:100%;
+max-width:480px;
+
+background:
+rgba(255,255,255,.05);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(16px);
+
+padding:26px;
+
+border-radius:28px;
+
+box-shadow:
+0 0 30px rgba(0,255,225,.15);
+
+}
+
+.logo{
+
+font-size:40px;
+font-weight:900;
+
+text-align:center;
+
+margin-bottom:8px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.sub{
+
+text-align:center;
+
+font-size:11px;
+
+color:#aaa;
+
+margin-bottom:24px;
+
+}
+
+.inputBox{
+margin-bottom:13px;
+}
+
+.inputBox input,
+.inputBox select{
+
+width:100%;
+
+padding:14px;
+
+background:#0f172a;
+
+border:
+1px solid #1e293b;
+
+border-radius:14px;
+
+outline:none;
+
+color:white;
+
 font-size:12px;
+
+}
+
+.preview{
+
+width:90px;
+height:90px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+display:none;
+
+margin:15px auto;
+
+border:3px solid #00ffe1;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+font-size:14px;
+
 font-weight:700;
+
+cursor:pointer;
+
+color:white;
+
+margin-top:5px;
+
+}
+
+.msg{
+
+margin-top:15px;
+
+text-align:center;
+
+font-size:12px;
+
+font-weight:700;
+
+}
+
+.bottom{
+
+margin-top:20px;
+
+text-align:center;
+
+font-size:12px;
+
+color:#aaa;
+
+}
+
+.bottom a{
+
+color:#00ffe1;
+
+text-decoration:none;
+
 }
 
 </style>
@@ -15,15 +227,40 @@ eKickHub
 </div>
 
 <div class="sub">
-Complete Your Gaming Profile
+Create Your Elite Gaming Identity
 </div>
 
-<input type="text" id="full_name" placeholder="Full Name">
+<div class="inputBox">
+<input type="text"
+id="full_name"
+placeholder="Full Name">
+</div>
 
-<input type="text" id="phone" placeholder="Phone Number">
+<div class="inputBox">
+<input type="email"
+id="email"
+placeholder="Email Address">
+</div>
 
+<div class="inputBox">
+<input type="password"
+id="password"
+placeholder="Create Password">
+</div>
+
+<div class="inputBox">
+<input type="text"
+id="phone"
+placeholder="Phone Number">
+</div>
+
+<div class="inputBox">
 <select id="district">
-<option value="">Select District</option>
+
+<option value="">
+Select District
+</option>
+
 <option>Dhaka</option>
 <option>Chattogram</option>
 <option>Sylhet</option>
@@ -32,10 +269,17 @@ Complete Your Gaming Profile
 <option>Barishal</option>
 <option>Rangpur</option>
 <option>Mymensingh</option>
-</select>
 
+</select>
+</div>
+
+<div class="inputBox">
 <select id="position">
-<option value="">Select Position</option>
+
+<option value="">
+Select Position
+</option>
+
 <option>CF</option>
 <option>SS</option>
 <option>LWF</option>
@@ -49,27 +293,59 @@ Complete Your Gaming Profile
 <option>RB</option>
 <option>CB</option>
 <option>GK</option>
+
 </select>
+</div>
 
-<input type="text" id="konami_id" placeholder="ASDS-005-998-145">
+<div class="inputBox">
+<input type="text"
+id="konami_id"
+placeholder="ASDS-005-998-145">
+</div>
 
-<input type="text" id="device_name" placeholder="Device Name">
+<div class="inputBox">
+<input type="text"
+id="device_name"
+placeholder="Device Name">
+</div>
 
-<input type="text" id="fb_id_url" placeholder="Facebook Profile URL">
+<div class="inputBox">
+<input type="text"
+id="fb_id_url"
+placeholder="Facebook Profile URL">
+</div>
 
-<input type="file" id="image" accept="image/*">
+<div class="inputBox">
+<input type="file"
+id="image"
+accept="image/*">
+</div>
 
 <img id="preview" class="preview">
 
-<button onclick="registerUser()">
+<button class="btn"
+onclick="registerUser()">
+
 COMPLETE REGISTRATION
+
 </button>
 
 <div class="msg" id="msg"></div>
 
+<div class="bottom">
+
+Already have account?
+
+<a href="../login/">
+Login
+</a>
+
 </div>
 
-<script type="module" src="app.js"></script>
+</div>
+
+<script type="module"
+src="app.js"></script>
 
 </body>
 </html>
