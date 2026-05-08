@@ -2,29 +2,51 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+
 getAuth,
-createUserWithEmailAndPassword
+
+GoogleAuthProvider,
+
+signInWithPopup,
+
+EmailAuthProvider,
+
+linkWithCredential
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
 getFirestore,
+
 doc,
+
 setDoc,
+
 getDocs,
+
 collection
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
+
 getStorage,
+
 ref,
+
 uploadBytes,
+
 getDownloadURL
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
+
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -44,60 +66,93 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 
 
-const app = initializeApp(firebaseConfig)
+const app =
+initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const auth =
+getAuth(app)
 
-const db = getFirestore(app)
+const db =
+getFirestore(app)
 
-const storage = getStorage(app)
+const storage =
+getStorage(app)
+
+
+
+/* ELEMENTS */
+
+const msg =
+document.getElementById("msg")
+
+const emailInput =
+document.getElementById("email")
+
+const passwordInput =
+document.getElementById("password")
 
 
 
 /* PASSWORD SHOW */
 
-window.togglePass = function(){
+document.getElementById("eyeBtn")
+.onclick = ()=>{
 
-const pass =
-document.getElementById("password")
+if(passwordInput.type === "password"){
 
-pass.type =
-pass.type === "password"
-? "text"
-: "password"
+passwordInput.type = "text"
+
+}else{
+
+passwordInput.type = "password"
+
+}
 
 }
 
 
 
-/* IMAGE PREVIEW */
+/* GOOGLE LOGIN */
 
-document.getElementById("image")
-.addEventListener("change",(e)=>{
+let currentUser = null
 
-const file = e.target.files[0]
+document.getElementById("googleBtn")
+.onclick = async ()=>{
 
-if(file){
+msg.innerHTML =
+"Please wait..."
 
-const reader =
-new FileReader()
 
-reader.onload = ()=>{
+try{
 
-const preview =
-document.getElementById("preview")
+const provider =
+new GoogleAuthProvider()
 
-preview.src = reader.result
+const result =
+await signInWithPopup(
+auth,
+provider
+)
 
-preview.style.display = "block"
+currentUser =
+result.user
+
+emailInput.value =
+currentUser.email
+
+msg.innerHTML =
+"Google connected successfully"
+
+}catch(error){
+
+console.log(error)
+
+msg.innerHTML =
+error.message
 
 }
 
-reader.readAsDataURL(file)
-
 }
-
-})
 
 
 
@@ -107,17 +162,20 @@ async function compressImage(file){
 
 return new Promise((resolve)=>{
 
-const reader = new FileReader()
+const reader =
+new FileReader()
 
 reader.readAsDataURL(file)
 
-reader.onload = function(event){
+reader.onload = (event)=>{
 
-const img = new Image()
+const img =
+new Image()
 
-img.src = event.target.result
+img.src =
+event.target.result
 
-img.onload = function(){
+img.onload = ()=>{
 
 const canvas =
 document.createElement("canvas")
@@ -128,7 +186,13 @@ canvas.getContext("2d")
 canvas.width = 400
 canvas.height = 500
 
-ctx.drawImage(img,0,0,400,500)
+ctx.drawImage(
+img,
+0,
+0,
+400,
+500
+)
 
 canvas.toBlob(
 
@@ -138,7 +202,7 @@ resolve(blob)
 
 },
 
-'image/jpeg',
+"image/jpeg",
 
 0.85
 
@@ -156,10 +220,8 @@ resolve(blob)
 
 /* REGISTER */
 
-window.registerUser = async function(){
-
-const msg =
-document.getElementById("msg")
+document.getElementById("registerBtn")
+.onclick = async ()=>{
 
 msg.innerHTML =
 "Please wait..."
@@ -167,14 +229,25 @@ msg.innerHTML =
 
 try{
 
+if(!currentUser){
+
+msg.innerHTML =
+"Connect Google first"
+
+return
+
+}
+
+
+
 const full_name =
 document.getElementById("full_name").value.trim()
 
 const email =
-document.getElementById("email").value.trim()
+emailInput.value.trim()
 
 const password =
-document.getElementById("password").value.trim()
+passwordInput.value.trim()
 
 const phone =
 document.getElementById("phone").value.trim()
@@ -194,7 +267,7 @@ document.getElementById("device_name").value.trim()
 const fb_id_url =
 document.getElementById("fb_id_url").value.trim()
 
-const originalImage =
+const imageFile =
 document.getElementById("image").files[0]
 
 
@@ -212,7 +285,7 @@ if(
 !konami_id ||
 !device_name ||
 !fb_id_url ||
-!originalImage
+!imageFile
 
 ){
 
@@ -225,7 +298,7 @@ return
 
 
 
-/* PASSWORD LENGTH */
+/* PASSWORD */
 
 if(password.length < 6){
 
@@ -247,7 +320,7 @@ const konamiPattern =
 if(!konamiPattern.test(konami_id)){
 
 msg.innerHTML =
-"Use Konami ID format: ASAD-005-000-111"
+"Use format: ASDF-000-000-000"
 
 return
 
@@ -255,17 +328,12 @@ return
 
 
 
-/* COMPRESS IMAGE */
-
-const image =
-await compressImage(originalImage)
-
-
-
-/* CHECK DUPLICATE */
+/* DUPLICATE CHECK */
 
 const snapshot =
-await getDocs(collection(db,"users"))
+await getDocs(
+collection(db,"users")
+)
 
 let totalUsers = 0
 
@@ -274,7 +342,8 @@ let duplicate = false
 
 snapshot.forEach((docItem)=>{
 
-const data = docItem.data()
+const data =
+docItem.data()
 
 totalUsers++
 
@@ -307,16 +376,41 @@ return
 
 
 
-/* CREATE AUTH */
+/* LINK EMAIL PASSWORD */
 
-const result =
-await createUserWithEmailAndPassword(
-auth,
+const credential =
+EmailAuthProvider.credential(
 email,
 password
 )
 
-const user = result.user
+await linkWithCredential(
+currentUser,
+credential
+)
+
+
+
+/* IMAGE */
+
+const compressed =
+await compressImage(imageFile)
+
+
+
+const imageRef =
+ref(
+storage,
+`players/${Date.now()}.jpg`
+)
+
+await uploadBytes(
+imageRef,
+compressed
+)
+
+const imageUrl =
+await getDownloadURL(imageRef)
 
 
 
@@ -327,28 +421,12 @@ const player_id =
 
 
 
-/* IMAGE UPLOAD */
-
-const imageRef =
-ref(
-storage,
-`players/${Date.now()}.jpg`
-)
-
-await uploadBytes(
-imageRef,
-image
-)
-
-const imageUrl =
-await getDownloadURL(imageRef)
-
-
-
 /* SAVE USER */
 
 await setDoc(
-doc(db,"users",user.uid),
+
+doc(db,"users",currentUser.uid),
+
 {
 
 player_id,
@@ -386,7 +464,7 @@ created_at:new Date().toISOString()
 
 
 msg.innerHTML =
-"Registration Successful. Waiting for admin approval."
+"Registration successful. Waiting for admin approval."
 
 
 
