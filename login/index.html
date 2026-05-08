@@ -1,35 +1,212 @@
 <!DOCTYPE html>
-border-radius:14px;
+<html lang="en">
+<head>
 
-font-size:14px;
-font-weight:700;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-cursor:pointer;
+<title>eKickHub Login</title>
 
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+
+background:#020617;
+
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:20px;
+
+overflow:hidden;
 
 color:white;
 
 }
 
-.bottom{
-margin-top:18px;
+body::before{
+content:'';
+position:fixed;
+width:400px;
+height:400px;
+background:#00ffe1;
+filter:blur(170px);
+opacity:.18;
+top:-100px;
+left:-100px;
+z-index:-1;
+}
+
+body::after{
+content:'';
+position:fixed;
+width:400px;
+height:400px;
+background:#ff00c8;
+filter:blur(170px);
+opacity:.18;
+bottom:-100px;
+right:-100px;
+z-index:-1;
+}
+
+.box{
+
+width:100%;
+max-width:430px;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(16px);
+
+padding:30px;
+
+border-radius:28px;
+
+box-shadow:
+0 0 30px rgba(0,255,225,.15);
+
+}
+
+.logo{
+
+font-size:42px;
+font-weight:900;
+
 text-align:center;
-font-size:12px;
+
+margin-bottom:8px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.sub{
+text-align:center;
+font-size:11px;
 color:#aaa;
+margin-bottom:25px;
+}
+
+.inputBox{
+margin-bottom:14px;
+}
+
+.inputBox input{
+
+width:100%;
+
+padding:14px;
+
+background:#0f172a;
+
+border:1px solid #1e293b;
+
+border-radius:14px;
+
+outline:none;
+
+color:white;
+
+font-size:13px;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+font-size:14px;
+
+font-weight:700;
+
+cursor:pointer;
+
+color:white;
+
+margin-top:5px;
+
+}
+
+.googleBtn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:white;
+
+font-size:13px;
+
+font-weight:700;
+
+cursor:pointer;
+
+margin-top:15px;
+
+}
+
+.bottom{
+
+margin-top:20px;
+
+text-align:center;
+
+font-size:12px;
+
+color:#aaa;
+
 }
 
 .bottom a{
+
 color:#00ffe1;
+
 text-decoration:none;
+
 }
 
 .msg{
+
 margin-top:15px;
+
 text-align:center;
+
 font-size:12px;
+
 font-weight:700;
+
 }
 
 </style>
@@ -44,8 +221,20 @@ eKickHub
 </div>
 
 <div class="sub">
-Scorer Football Gaming Community
+Elite Scorer Football Gaming Platform
 </div>
+
+<div class="inputBox">
+<input type="email" id="email" placeholder="Email Address">
+</div>
+
+<div class="inputBox">
+<input type="password" id="password" placeholder="Password">
+</div>
+
+<button class="btn" onclick="login()">
+LOGIN
+</button>
 
 <button class="googleBtn" onclick="googleLogin()">
 CONTINUE WITH GOOGLE
@@ -56,7 +245,7 @@ CONTINUE WITH GOOGLE
 <div class="bottom">
 No account?
 <a href="../register/">
-Complete Registration
+Register Now
 </a>
 </div>
 
