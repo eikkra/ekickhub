@@ -41,33 +41,33 @@ color:white;
 body::before{
 content:'';
 position:fixed;
-width:400px;
-height:400px;
+width:450px;
+height:450px;
 background:#00ffe1;
-filter:blur(170px);
+filter:blur(180px);
 opacity:.18;
-top:-100px;
-left:-100px;
+top:-120px;
+left:-120px;
 z-index:-1;
 }
 
 body::after{
 content:'';
 position:fixed;
-width:400px;
-height:400px;
+width:450px;
+height:450px;
 background:#ff00c8;
-filter:blur(170px);
+filter:blur(180px);
 opacity:.18;
-bottom:-100px;
-right:-100px;
+bottom:-120px;
+right:-120px;
 z-index:-1;
 }
 
 .box{
 
 width:100%;
-max-width:480px;
+max-width:500px;
 
 background:
 rgba(255,255,255,.05);
@@ -77,18 +77,18 @@ border:
 
 backdrop-filter:blur(16px);
 
-padding:26px;
+padding:28px;
 
-border-radius:28px;
+border-radius:30px;
 
 box-shadow:
-0 0 30px rgba(0,255,225,.15);
+0 0 40px rgba(0,255,225,.18);
 
 }
 
 .logo{
 
-font-size:40px;
+font-size:42px;
 font-weight:900;
 
 text-align:center;
@@ -117,6 +117,7 @@ margin-bottom:24px;
 
 .inputBox{
 margin-bottom:13px;
+position:relative;
 }
 
 .inputBox input,
@@ -131,7 +132,7 @@ background:#0f172a;
 border:
 1px solid #1e293b;
 
-border-radius:14px;
+border-radius:15px;
 
 outline:none;
 
@@ -139,14 +140,44 @@ color:white;
 
 font-size:12px;
 
+transition:.3s;
+
+}
+
+.inputBox input:focus,
+.inputBox select:focus{
+
+border-color:#00ffe1;
+
+box-shadow:
+0 0 15px rgba(0,255,225,.25);
+
+}
+
+.eye{
+
+position:absolute;
+
+right:15px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+cursor:pointer;
+
+font-size:13px;
+
+color:#aaa;
+
 }
 
 .preview{
 
-width:90px;
-height:90px;
+width:100px;
+height:125px;
 
-border-radius:50%;
+border-radius:16px;
 
 object-fit:cover;
 
@@ -158,15 +189,27 @@ border:3px solid #00ffe1;
 
 }
 
+.note{
+
+font-size:10px;
+
+color:#888;
+
+margin-top:-5px;
+
+margin-bottom:12px;
+
+}
+
 .btn{
 
 width:100%;
 
-padding:14px;
+padding:15px;
 
 border:none;
 
-border-radius:14px;
+border-radius:15px;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
@@ -180,6 +223,9 @@ cursor:pointer;
 color:white;
 
 margin-top:5px;
+
+box-shadow:
+0 0 20px rgba(255,0,200,.25);
 
 }
 
@@ -243,9 +289,16 @@ placeholder="Email Address">
 </div>
 
 <div class="inputBox">
+
 <input type="password"
 id="password"
 placeholder="Create Password">
+
+<span class="eye"
+onclick="togglePass()">
+👁
+</span>
+
 </div>
 
 <div class="inputBox">
@@ -319,6 +372,10 @@ placeholder="Facebook Profile URL">
 <input type="file"
 id="image"
 accept="image/*">
+</div>
+
+<div class="note">
+Recommended image: 400×500 • Auto optimized before upload
 </div>
 
 <img id="preview" class="preview">
