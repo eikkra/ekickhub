@@ -98,15 +98,10 @@ document.getElementById("password")
 document.getElementById("eyeBtn")
 .onclick = ()=>{
 
-if(passwordInput.type === "password"){
-
-passwordInput.type = "text"
-
-}else{
-
-passwordInput.type = "password"
-
-}
+passwordInput.type =
+passwordInput.type === "password"
+? "text"
+: "password"
 
 }
 
@@ -204,7 +199,7 @@ resolve(blob)
 
 "image/jpeg",
 
-0.85
+0.82
 
 )
 
@@ -240,6 +235,8 @@ return
 
 
 
+/* GET VALUES */
+
 const full_name =
 document.getElementById("full_name").value.trim()
 
@@ -272,10 +269,9 @@ document.getElementById("image").files[0]
 
 
 
-/* EMPTY CHECK */
+/* VALIDATION */
 
 if(
-
 !full_name ||
 !email ||
 !password ||
@@ -286,7 +282,6 @@ if(
 !device_name ||
 !fb_id_url ||
 !imageFile
-
 ){
 
 msg.innerHTML =
@@ -320,7 +315,7 @@ const konamiPattern =
 if(!konamiPattern.test(konami_id)){
 
 msg.innerHTML =
-"Use format: ASDF-000-000-000"
+"Format: ASDF-000-000-000"
 
 return
 
@@ -328,7 +323,20 @@ return
 
 
 
-/* DUPLICATE CHECK */
+/* IMAGE SIZE */
+
+if(imageFile.size > 5 * 1024 * 1024){
+
+msg.innerHTML =
+"Image must be below 5MB"
+
+return
+
+}
+
+
+
+/* CHECK DUPLICATE */
 
 const snapshot =
 await getDocs(
@@ -376,7 +384,7 @@ return
 
 
 
-/* LINK EMAIL PASSWORD */
+/* LINK PASSWORD */
 
 const credential =
 EmailAuthProvider.credential(
@@ -391,11 +399,21 @@ credential
 
 
 
-/* IMAGE */
+/* COMPRESS IMAGE */
+
+msg.innerHTML =
+"Compressing image..."
+
 
 const compressed =
 await compressImage(imageFile)
 
+
+
+/* UPLOAD IMAGE */
+
+msg.innerHTML =
+"Uploading image..."
 
 
 const imageRef =
@@ -421,7 +439,11 @@ const player_id =
 
 
 
-/* SAVE USER */
+/* SAVE DATA */
+
+msg.innerHTML =
+"Saving profile..."
+
 
 await setDoc(
 
