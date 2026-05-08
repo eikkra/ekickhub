@@ -10,7 +10,7 @@ content="width=device-width, initial-scale=1.0">
 
 <title>eKickHub Login</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -39,30 +39,32 @@ color:white;
 
 }
 
-body::before{
-content:'';
+.bg1{
+
 position:fixed;
 width:400px;
 height:400px;
 background:#00ffe1;
-filter:blur(160px);
-opacity:.18;
+filter:blur(180px);
+opacity:.15;
 top:-100px;
 left:-100px;
 z-index:-1;
+
 }
 
-body::after{
-content:'';
+.bg2{
+
 position:fixed;
 width:400px;
 height:400px;
 background:#ff00c8;
-filter:blur(160px);
-opacity:.18;
+filter:blur(180px);
+opacity:.15;
 bottom:-100px;
 right:-100px;
 z-index:-1;
+
 }
 
 .box{
@@ -84,6 +86,10 @@ border-radius:30px;
 
 box-shadow:
 0 0 35px rgba(0,255,225,.18);
+
+position:relative;
+
+z-index:10;
 
 }
 
@@ -117,8 +123,11 @@ margin-bottom:25px;
 }
 
 .inputBox{
-margin-bottom:14px;
+
+margin-bottom:15px;
+
 position:relative;
+
 }
 
 .inputBox input{
@@ -154,11 +163,9 @@ transform:translateY(-50%);
 
 cursor:pointer;
 
-font-size:14px;
+font-size:16px;
 
-color:#aaa;
-
-user-select:none;
+z-index:999;
 
 }
 
@@ -221,6 +228,8 @@ font-weight:700;
 
 color:#00ffe1;
 
+min-height:20px;
+
 }
 
 .bottom{
@@ -241,6 +250,8 @@ color:#00ffe1;
 
 text-decoration:none;
 
+cursor:pointer;
+
 }
 
 </style>
@@ -248,6 +259,9 @@ text-decoration:none;
 </head>
 
 <body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
 
 <div class="box">
 
@@ -261,7 +275,8 @@ Elite Football Gaming Platform
 
 <div class="inputBox">
 
-<input type="email"
+<input
+type="email"
 id="email"
 placeholder="Email Address">
 
@@ -269,39 +284,45 @@ placeholder="Email Address">
 
 <div class="inputBox">
 
-<input type="password"
+<input
+type="password"
 id="password"
 placeholder="Password">
 
-<div class="eye"
-id="eye">
+<span
+class="eye"
+id="eyeBtn">
+
 👁
-</div>
+
+</span>
 
 </div>
 
-<button class="btn"
+<button
+class="btn"
 id="loginBtn">
 
 LOGIN
 
 </button>
 
-<button class="googleBtn"
+<button
+class="googleBtn"
 id="googleBtn">
 
 CONTINUE WITH GOOGLE
 
 </button>
 
-<div class="msg"
+<div
+class="msg"
 id="msg">
 </div>
 
 <div class="bottom">
 
-<a href="#"
-id="forgotBtn">
+<a id="forgotBtn">
 
 Forgot Password?
 

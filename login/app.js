@@ -58,16 +58,23 @@ getFirestore(app)
 
 
 
-/* PASSWORD SHOW */
+/* ELEMENTS */
 
-const eye =
-document.getElementById("eye")
+const email =
+document.getElementById("email")
 
 const password =
 document.getElementById("password")
 
+const msg =
+document.getElementById("msg")
 
-eye.addEventListener("click",()=>{
+
+
+/* PASSWORD SHOW */
+
+document.getElementById("eyeBtn")
+.onclick = ()=>{
 
 if(password.type === "password"){
 
@@ -79,59 +86,43 @@ password.type = "password"
 
 }
 
-})
+}
 
 
 
 /* LOGIN */
 
 document.getElementById("loginBtn")
-.addEventListener("click",async()=>{
-
-const msg =
-document.getElementById("msg")
+.onclick = async ()=>{
 
 msg.innerHTML =
 "Please wait..."
-
-
-const email =
-document.getElementById("email").value.trim()
-
-const pass =
-document.getElementById("password").value.trim()
-
-
-if(!email || !pass){
-
-msg.innerHTML =
-"Enter email & password"
-
-return
-
-}
 
 
 try{
 
 const result =
 await signInWithEmailAndPassword(
+
 auth,
-email,
-pass
+
+email.value.trim(),
+
+password.value.trim()
+
 )
 
-const user = result.user
+const user =
+result.user
 
 
-
-/* FIRESTORE USER */
 
 const docRef =
 doc(db,"users",user.uid)
 
 const docSnap =
 await getDoc(docRef)
+
 
 
 if(!docSnap.exists()){
@@ -144,12 +135,11 @@ return
 }
 
 
+
 const data =
 docSnap.data()
 
 
-
-/* APPROVAL */
 
 if(data.approved !== true){
 
@@ -162,7 +152,7 @@ return
 
 
 
-/* ROLE CHECK */
+/* ADMIN */
 
 if(
 
@@ -189,21 +179,18 @@ window.location.href =
 console.log(error)
 
 msg.innerHTML =
-"Invalid email or password"
+error.message
 
 }
 
-})
+}
 
 
 
 /* GOOGLE LOGIN */
 
 document.getElementById("googleBtn")
-.addEventListener("click",async()=>{
-
-const msg =
-document.getElementById("msg")
+.onclick = async ()=>{
 
 msg.innerHTML =
 "Please wait..."
@@ -220,7 +207,9 @@ auth,
 provider
 )
 
-const user = result.user
+const user =
+result.user
+
 
 
 const docRef =
@@ -239,6 +228,7 @@ window.location.href =
 return
 
 }
+
 
 
 const data =
@@ -286,23 +276,16 @@ error.message
 
 }
 
-})
+}
 
 
 
 /* FORGOT PASSWORD */
 
 document.getElementById("forgotBtn")
-.addEventListener("click",async()=>{
+.onclick = async ()=>{
 
-const email =
-document.getElementById("email").value.trim()
-
-const msg =
-document.getElementById("msg")
-
-
-if(!email){
+if(!email.value){
 
 msg.innerHTML =
 "Enter your email first"
@@ -315,20 +298,23 @@ return
 try{
 
 await sendPasswordResetEmail(
+
 auth,
-email
+
+email.value.trim()
+
 )
 
 msg.innerHTML =
-"Password reset link sent"
+"Password reset email sent"
 
 }catch(error){
 
 console.log(error)
 
 msg.innerHTML =
-"Email not found"
+error.message
 
 }
 
-})
+}
