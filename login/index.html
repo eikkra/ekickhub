@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -41,33 +42,33 @@ color:white;
 body::before{
 content:'';
 position:fixed;
-width:450px;
-height:450px;
+width:400px;
+height:400px;
 background:#00ffe1;
-filter:blur(180px);
+filter:blur(160px);
 opacity:.18;
-top:-120px;
-left:-120px;
+top:-100px;
+left:-100px;
 z-index:-1;
 }
 
 body::after{
 content:'';
 position:fixed;
-width:450px;
-height:450px;
+width:400px;
+height:400px;
 background:#ff00c8;
-filter:blur(180px);
+filter:blur(160px);
 opacity:.18;
-bottom:-120px;
-right:-120px;
+bottom:-100px;
+right:-100px;
 z-index:-1;
 }
 
 .box{
 
 width:100%;
-max-width:430px;
+max-width:420px;
 
 background:
 rgba(255,255,255,.05);
@@ -153,9 +154,11 @@ transform:translateY(-50%);
 
 cursor:pointer;
 
-font-size:13px;
+font-size:14px;
 
 color:#aaa;
+
+user-select:none;
 
 }
 
@@ -216,6 +219,8 @@ font-size:12px;
 
 font-weight:700;
 
+color:#00ffe1;
+
 }
 
 .bottom{
@@ -241,6 +246,7 @@ text-decoration:none;
 </style>
 
 </head>
+
 <body>
 
 <div class="box">
@@ -250,13 +256,15 @@ eKickHub
 </div>
 
 <div class="sub">
-Elite Scorer Football Gaming Platform
+Elite Football Gaming Platform
 </div>
 
 <div class="inputBox">
+
 <input type="email"
 id="email"
 placeholder="Email Address">
+
 </div>
 
 <div class="inputBox">
@@ -265,35 +273,48 @@ placeholder="Email Address">
 id="password"
 placeholder="Password">
 
-<span class="eye"
-onclick="togglePass()">
+<div class="eye"
+id="eye">
 👁
-</span>
+</div>
 
 </div>
 
 <button class="btn"
-onclick="login()">
+id="loginBtn">
 
 LOGIN
 
 </button>
 
 <button class="googleBtn"
-onclick="googleLogin()">
+id="googleBtn">
 
 CONTINUE WITH GOOGLE
 
 </button>
 
-<div class="msg" id="msg"></div>
+<div class="msg"
+id="msg">
+</div>
 
 <div class="bottom">
+
+<a href="#"
+id="forgotBtn">
+
+Forgot Password?
+
+</a>
+
+<br><br>
 
 No account?
 
 <a href="../register/">
+
 Register Now
+
 </a>
 
 </div>

@@ -9,7 +9,9 @@ GoogleAuthProvider,
 
 signInWithPopup,
 
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+
+sendPasswordResetEmail
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -45,33 +47,46 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 
 
-const app = initializeApp(firebaseConfig)
+const app =
+initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const auth =
+getAuth(app)
 
-const db = getFirestore(app)
+const db =
+getFirestore(app)
 
 
 
 /* PASSWORD SHOW */
 
-window.togglePass = function(){
+const eye =
+document.getElementById("eye")
 
-const pass =
+const password =
 document.getElementById("password")
 
-pass.type =
-pass.type === "password"
-? "text"
-: "password"
+
+eye.addEventListener("click",()=>{
+
+if(password.type === "password"){
+
+password.type = "text"
+
+}else{
+
+password.type = "password"
 
 }
 
+})
 
 
-/* EMAIL LOGIN */
 
-window.login = async function(){
+/* LOGIN */
+
+document.getElementById("loginBtn")
+.addEventListener("click",async()=>{
 
 const msg =
 document.getElementById("msg")
@@ -83,8 +98,18 @@ msg.innerHTML =
 const email =
 document.getElementById("email").value.trim()
 
-const password =
+const pass =
 document.getElementById("password").value.trim()
+
+
+if(!email || !pass){
+
+msg.innerHTML =
+"Enter email & password"
+
+return
+
+}
 
 
 try{
@@ -93,11 +118,14 @@ const result =
 await signInWithEmailAndPassword(
 auth,
 email,
-password
+pass
 )
 
 const user = result.user
 
+
+
+/* FIRESTORE USER */
 
 const docRef =
 doc(db,"users",user.uid)
@@ -116,17 +144,17 @@ return
 }
 
 
-const userData =
+const data =
 docSnap.data()
 
 
 
-/* APPROVAL CHECK */
+/* APPROVAL */
 
-if(userData.approved !== true){
+if(data.approved !== true){
 
 msg.innerHTML =
-"Your profile is waiting for admin approval"
+"Waiting for admin approval"
 
 return
 
@@ -134,9 +162,15 @@ return
 
 
 
-/* ADMIN CHECK */
+/* ROLE CHECK */
 
-if(userData.roles.includes("admin")){
+if(
+
+Array.isArray(data.roles) &&
+
+data.roles.includes("admin")
+
+){
 
 window.location.href =
 "../admin/"
@@ -159,13 +193,14 @@ msg.innerHTML =
 
 }
 
-}
+})
 
 
 
 /* GOOGLE LOGIN */
 
-window.googleLogin = async function(){
+document.getElementById("googleBtn")
+.addEventListener("click",async()=>{
 
 const msg =
 document.getElementById("msg")
@@ -196,8 +231,6 @@ await getDoc(docRef)
 
 
 
-/* IF USER NOT REGISTERED */
-
 if(!docSnap.exists()){
 
 window.location.href =
@@ -208,17 +241,15 @@ return
 }
 
 
-const userData =
+const data =
 docSnap.data()
 
 
 
-/* APPROVAL CHECK */
-
-if(userData.approved !== true){
+if(data.approved !== true){
 
 msg.innerHTML =
-"Your profile is waiting for admin approval"
+"Waiting for admin approval"
 
 return
 
@@ -226,9 +257,13 @@ return
 
 
 
-/* ROLE CHECK */
+if(
 
-if(userData.roles.includes("admin")){
+Array.isArray(data.roles) &&
+
+data.roles.includes("admin")
+
+){
 
 window.location.href =
 "../admin/"
@@ -251,4 +286,49 @@ error.message
 
 }
 
+})
+
+
+
+/* FORGOT PASSWORD */
+
+document.getElementById("forgotBtn")
+.addEventListener("click",async()=>{
+
+const email =
+document.getElementById("email").value.trim()
+
+const msg =
+document.getElementById("msg")
+
+
+if(!email){
+
+msg.innerHTML =
+"Enter your email first"
+
+return
+
 }
+
+
+try{
+
+await sendPasswordResetEmail(
+auth,
+email
+)
+
+msg.innerHTML =
+"Password reset link sent"
+
+}catch(error){
+
+console.log(error)
+
+msg.innerHTML =
+"Email not found"
+
+}
+
+})
