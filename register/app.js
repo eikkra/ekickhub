@@ -4,9 +4,13 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
 
 getAuth,
+
 GoogleAuthProvider,
+
 signInWithPopup,
+
 EmailAuthProvider,
+
 linkWithCredential
 
 }
@@ -15,9 +19,13 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
 
 getFirestore,
+
 doc,
+
 setDoc,
+
 getDocs,
+
 collection
 
 }
@@ -26,12 +34,18 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
 
 getStorage,
+
 ref,
+
 uploadBytes,
+
 getDownloadURL
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -49,27 +63,39 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app = initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const app =
+initializeApp(firebaseConfig)
 
-const db = getFirestore(app)
+const auth =
+getAuth(app)
 
-const storage = getStorage(app)
+const db =
+getFirestore(app)
 
-const msg = document.getElementById("msg")
+const storage =
+getStorage(app)
 
-const emailInput = document.getElementById("email")
 
-const passwordInput = document.getElementById("password")
+/* ELEMENTS */
 
-let currentUser = null
+const msg =
+document.getElementById("msg")
 
-let cropper
+const emailInput =
+document.getElementById("email")
 
-let croppedBlob = null
+const passwordInput =
+document.getElementById("password")
 
-document.getElementById("eyeBtn").onclick = ()=>{
+const registerBtn =
+document.getElementById("registerBtn")
+
+
+/* PASSWORD SHOW */
+
+document.getElementById("eyeBtn")
+.onclick = ()=>{
 
 passwordInput.type =
 passwordInput.type === "password"
@@ -78,252 +104,88 @@ passwordInput.type === "password"
 
 }
 
+
+/* GOOGLE CONNECT */
+
+let currentUser = null
+
 document.getElementById("googleBtn")
 .onclick = async ()=>{
 
-msg.innerHTML = "Please wait..."
+msg.innerHTML =
+"Connecting Google..."
 
 try{
 
-const provider = new GoogleAuthProvider()
+const provider =
+new GoogleAuthProvider()
 
 const result =
-await signInWithPopup(auth,provider)
+await signInWithPopup(
+auth,
+provider
+)
 
-currentUser = result.user
+currentUser =
+result.user
 
-emailInput.value = currentUser.email
+emailInput.value =
+currentUser.email
 
 msg.innerHTML =
 "Google connected successfully"
 
 }catch(error){
 
-msg.innerHTML = error.message
+console.log(error)
+
+msg.innerHTML =
+error.message
 
 }
 
 }
 
-/* IMAGE CROP */
 
-document.getElementById("image")
-.onchange = (e)=>{
+/* IMAGE COMPRESS */
 
-const file = e.target.files[0]
+async function compressImage(file){
 
-if(!file) return
+return new Promise((resolve)=>{
 
-const reader = new FileReader()
-
-reader.onload = ()=>{
-
-document.getElementById("cropContainer")
-.style.display = "block"
-
-const image =
-document.getElementById("preview")
-
-image.src = reader.result
-
-if(cropper){
-
-cropper.destroy()
-
-}
-
-cropper = new Cropper(image,{
-
-aspectRatio:1,
-
-viewMode:1,
-
-dragMode:"move",
-
-autoCropArea:1,
-
-responsive:true
-
-})
-
-}
+const reader =
+new FileReader()
 
 reader.readAsDataURL(file)
 
-}
+reader.onload = (event)=>{
 
-/* REGISTER */
+const img =
+new Image()
 
-const registerBtn =
-document.getElementById("registerBtn")
+img.src =
+event.target.result
 
-let isRegistering = false
+img.onload = ()=>{
 
-registerBtn.onclick = async ()=>{
+const canvas =
+document.createElement("canvas")
 
-if(isRegistering) return
+const ctx =
+canvas.getContext("2d")
 
-isRegistering = true
+canvas.width = 500
+canvas.height = 500
 
-registerBtn.disabled = true
-
-registerBtn.innerHTML = "PLEASE WAIT..."
-
-msg.innerHTML = "Please wait..."
-
-try{
-
-if(!currentUser){
-
-msg.innerHTML =
-"Connect Google first"
-
-return
-
-}
-
-const full_name =
-document.getElementById("full_name").value.trim()
-
-const email =
-emailInput.value.trim()
-
-const password =
-passwordInput.value.trim()
-
-const phone =
-document.getElementById("phone").value.trim()
-
-const dob =
-document.getElementById("dob").value
-
-const gender =
-document.getElementById("gender").value
-
-const country =
-document.getElementById("country").value
-
-const district =
-document.getElementById("district").value.trim()
-
-const position =
-document.getElementById("position").value
-
-const konami_id =
-document.getElementById("konami_id").value.trim()
-
-const device_name =
-document.getElementById("device_name").value.trim()
-
-const fb_id_url =
-document.getElementById("fb_id_url").value.trim()
-
-const imageFile =
-document.getElementById("image").files[0]
-
-if(
-!full_name ||
-!email ||
-!password ||
-!phone ||
-!dob ||
-!gender ||
-!country ||
-!district ||
-!position ||
-!konami_id ||
-!device_name ||
-!fb_id_url ||
-!imageFile
-){
-
-msg.innerHTML =
-"Please fill all fields"
-
-return
-
-}
-
-if(!cropper){
-
-msg.innerHTML =
-"Please crop image"
-
-return
-
-}
-
-const konamiPattern =
-/^[A-Z]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
-
-if(!konamiPattern.test(konami_id)){
-
-msg.innerHTML =
-"Format: ASDF-000-000-000"
-
-return
-
-}
-
-const snapshot =
-await getDocs(collection(db,"users"))
-
-let totalUsers = 0
-
-let duplicate = false
-
-snapshot.forEach((docItem)=>{
-
-const data = docItem.data()
-
-totalUsers++
-
-if(
-
-data.email === email ||
-data.konami_id === konami_id ||
-data.fb_id_url === fb_id_url
-
-){
-
-duplicate = true
-
-}
-
-})
-
-if(duplicate){
-
-msg.innerHTML =
-"Email / Konami ID / FB URL already used"
-
-return
-
-}
-
-const credential =
-EmailAuthProvider.credential(
-email,
-password
+ctx.drawImage(
+img,
+0,
+0,
+500,
+500
 )
 
-await linkWithCredential(
-currentUser,
-credential
-)
-
-msg.innerHTML =
-"Processing image..."
-
-croppedBlob =
-await new Promise((resolve)=>{
-
-cropper.getCroppedCanvas({
-
-width:500,
-height:500
-
-}).toBlob(
+canvas.toBlob(
 
 (blob)=>{
 
@@ -337,27 +199,268 @@ resolve(blob)
 
 )
 
+}
+
+}
+
 })
+
+}
+
+
+/* REGISTER LOCK */
+
+let isRegistering = false
+
+
+/* REGISTER */
+
+registerBtn.onclick = async ()=>{
+
+if(isRegistering) return
+
+isRegistering = true
+
+registerBtn.disabled = true
+
+registerBtn.innerHTML = "PLEASE WAIT..."
+
+msg.innerHTML =
+"Please wait..."
+
+
+try{
+
+if(!currentUser){
+
+msg.innerHTML =
+"Connect Google first"
+
+throw new Error()
+
+}
+
+
+/* GET VALUES */
+
+const full_name =
+document.getElementById("full_name").value.trim()
+
+const email =
+emailInput.value.trim()
+
+const password =
+passwordInput.value.trim()
+
+const phone =
+document.getElementById("phone").value.trim()
+
+const country =
+document.getElementById("country").value
+
+const district =
+document.getElementById("district").value.trim()
+
+const dob =
+document.getElementById("dob").value
+
+const gender =
+document.getElementById("gender").value
+
+const position =
+document.getElementById("position").value
+
+const konami_id =
+document.getElementById("konami_id")
+.value
+.trim()
+.toUpperCase()
+
+const device_name =
+document.getElementById("device_name").value.trim()
+
+const fb_id_url =
+document.getElementById("fb_id_url").value.trim()
+
+const imageFile =
+document.getElementById("image").files[0]
+
+
+/* VALIDATION */
+
+if(
+
+!full_name ||
+!email ||
+!password ||
+!phone ||
+!country ||
+!district ||
+!dob ||
+!gender ||
+!position ||
+!konami_id ||
+!device_name ||
+!fb_id_url ||
+!imageFile
+
+){
+
+msg.innerHTML =
+"Please fill all fields"
+
+throw new Error()
+
+}
+
+
+/* PASSWORD */
+
+if(password.length < 6){
+
+msg.innerHTML =
+"Password minimum 6 characters"
+
+throw new Error()
+
+}
+
+
+/* KONAMI FORMAT */
+
+const konamiPattern =
+/^[A-Z]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
+
+
+if(!konamiPattern.test(konami_id)){
+
+msg.innerHTML =
+"Konami ID format: ASDF-000-000-000"
+
+throw new Error()
+
+}
+
+
+/* IMAGE SIZE */
+
+if(imageFile.size > 5 * 1024 * 1024){
+
+msg.innerHTML =
+"Image must be below 5MB"
+
+throw new Error()
+
+}
+
+
+/* CHECK DUPLICATE */
+
+msg.innerHTML =
+"Checking data..."
+
+
+const snapshot =
+await getDocs(
+collection(db,"users")
+)
+
+let totalUsers = 0
+
+let duplicate = false
+
+
+snapshot.forEach((docItem)=>{
+
+const data =
+docItem.data()
+
+totalUsers++
+
+
+if(
+
+data.email === email ||
+
+data.konami_id === konami_id ||
+
+data.fb_id_url === fb_id_url
+
+){
+
+duplicate = true
+
+}
+
+})
+
+
+if(duplicate){
+
+msg.innerHTML =
+"Email / Konami ID / FB already used"
+
+throw new Error()
+
+}
+
+
+/* LINK PASSWORD */
+
+const credential =
+EmailAuthProvider.credential(
+email,
+password
+)
+
+await linkWithCredential(
+currentUser,
+credential
+)
+
+
+/* COMPRESS IMAGE */
+
+msg.innerHTML =
+"Compressing image..."
+
+
+const compressed =
+await compressImage(imageFile)
+
+
+/* UPLOAD IMAGE */
 
 msg.innerHTML =
 "Uploading image..."
 
+
 const imageRef =
-ref(storage,`players/${Date.now()}.jpg`)
+ref(
+storage,
+`players/${currentUser.uid}.jpg`
+)
 
 await uploadBytes(
 imageRef,
-croppedBlob
+compressed
 )
 
 const imageUrl =
 await getDownloadURL(imageRef)
 
+
+/* PLAYER ID */
+
 const player_id =
 `EKH-${String(totalUsers+1).padStart(6,'0')}`
 
+
+/* SAVE DATA */
+
 msg.innerHTML =
 "Saving profile..."
+
 
 await setDoc(
 
@@ -373,13 +476,13 @@ email,
 
 phone,
 
-dob,
-
-gender,
-
 country,
 
 district,
+
+dob,
+
+gender,
 
 position,
 
@@ -403,14 +506,14 @@ created_at:new Date().toISOString()
 
 )
 
+
 msg.innerHTML =
 "Registration successful. Waiting for admin approval."
 
-isRegistering = false
 
-registerBtn.disabled = false
+registerBtn.innerHTML =
+"SUCCESS"
 
-registerBtn.innerHTML = "REGISTER NOW"
 
 setTimeout(()=>{
 
@@ -419,18 +522,22 @@ window.location.href =
 
 },2500)
 
-isRegistering = false
-
-registerBtn.disabled = false
-
-registerBtn.innerHTML = "REGISTER NOW"
 
 }catch(error){
 
 console.log(error)
 
-msg.innerHTML = error.message
+if(error.message){
+
+msg.innerHTML =
+msg.innerHTML
 
 }
+
+isRegistering = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML = "REGISTER NOW"
 
 }
