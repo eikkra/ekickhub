@@ -4,13 +4,9 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
 
 getAuth,
-
 GoogleAuthProvider,
-
 signInWithPopup,
-
 EmailAuthProvider,
-
 linkWithCredential
 
 }
@@ -19,13 +15,9 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
 
 getFirestore,
-
 doc,
-
 setDoc,
-
 getDocs,
-
 collection
 
 }
@@ -34,19 +26,12 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
 
 getStorage,
-
 ref,
-
 uploadBytes,
-
 getDownloadURL
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-
-
-/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -64,39 +49,27 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
+const app = initializeApp(firebaseConfig)
 
+const auth = getAuth(app)
 
-const app =
-initializeApp(firebaseConfig)
+const db = getFirestore(app)
 
-const auth =
-getAuth(app)
+const storage = getStorage(app)
 
-const db =
-getFirestore(app)
+const msg = document.getElementById("msg")
 
-const storage =
-getStorage(app)
+const emailInput = document.getElementById("email")
 
+const passwordInput = document.getElementById("password")
 
+let currentUser = null
 
-/* ELEMENTS */
+let cropper
 
-const msg =
-document.getElementById("msg")
+let croppedBlob = null
 
-const emailInput =
-document.getElementById("email")
-
-const passwordInput =
-document.getElementById("password")
-
-
-
-/* PASSWORD SHOW */
-
-document.getElementById("eyeBtn")
-.onclick = ()=>{
+document.getElementById("eyeBtn").onclick = ()=>{
 
 passwordInput.type =
 passwordInput.type === "password"
@@ -105,122 +78,86 @@ passwordInput.type === "password"
 
 }
 
-
-
-/* GOOGLE CONNECT */
-
-let currentUser = null
-
 document.getElementById("googleBtn")
 .onclick = async ()=>{
 
-msg.innerHTML =
-"Please wait..."
-
+msg.innerHTML = "Please wait..."
 
 try{
 
-const provider =
-new GoogleAuthProvider()
+const provider = new GoogleAuthProvider()
 
 const result =
-await signInWithPopup(
-auth,
-provider
-)
+await signInWithPopup(auth,provider)
 
-currentUser =
-result.user
+currentUser = result.user
 
-emailInput.value =
-currentUser.email
+emailInput.value = currentUser.email
 
 msg.innerHTML =
 "Google connected successfully"
 
 }catch(error){
 
-console.log(error)
-
-msg.innerHTML =
-error.message
+msg.innerHTML = error.message
 
 }
 
 }
 
+/* IMAGE CROP */
 
+document.getElementById("image")
+.onchange = (e)=>{
 
-/* IMAGE COMPRESS */
+const file = e.target.files[0]
 
-async function compressImage(file){
+if(!file) return
 
-return new Promise((resolve)=>{
+const reader = new FileReader()
 
-const reader =
-new FileReader()
+reader.onload = ()=>{
 
-reader.readAsDataURL(file)
+document.getElementById("cropContainer")
+.style.display = "block"
 
-reader.onload = (event)=>{
+const image =
+document.getElementById("preview")
 
-const img =
-new Image()
+image.src = reader.result
 
-img.src =
-event.target.result
+if(cropper){
 
-img.onload = ()=>{
-
-const canvas =
-document.createElement("canvas")
-
-const ctx =
-canvas.getContext("2d")
-
-canvas.width = 400
-canvas.height = 500
-
-ctx.drawImage(
-img,
-0,
-0,
-400,
-500
-)
-
-canvas.toBlob(
-
-(blob)=>{
-
-resolve(blob)
-
-},
-
-"image/jpeg",
-
-0.82
-
-)
+cropper.destroy()
 
 }
 
-}
+cropper = new Cropper(image,{
+
+aspectRatio:1,
+
+viewMode:1,
+
+dragMode:"move",
+
+autoCropArea:1,
+
+responsive:true
 
 })
 
 }
 
+reader.readAsDataURL(file)
 
+}
 
 /* REGISTER */
 
 document.getElementById("registerBtn")
 .onclick = async ()=>{
 
-msg.innerHTML =
-"Please wait..."
-
+msg.innerHTML = "Please wait..."
 
 try{
 
@@ -233,10 +170,6 @@ return
 
 }
 
-
-
-/* GET VALUES */
-
 const full_name =
 document.getElementById("full_name").value.trim()
 
@@ -248,6 +181,12 @@ passwordInput.value.trim()
 
 const phone =
 document.getElementById("phone").value.trim()
+
+const dob =
+document.getElementById("dob").value
+
+const gender =
+document.getElementById("gender").value
 
 const country =
 document.getElementById("country").value
@@ -270,15 +209,13 @@ document.getElementById("fb_id_url").value.trim()
 const imageFile =
 document.getElementById("image").files[0]
 
-
-
-/* VALIDATION */
-
 if(
 !full_name ||
 !email ||
 !password ||
 !phone ||
+!dob ||
+!gender ||
 !country ||
 !district ||
 !position ||
@@ -295,26 +232,17 @@ return
 
 }
 
-
-
-/* PASSWORD */
-
-if(password.length < 6){
+if(!cropper){
 
 msg.innerHTML =
-"Password minimum 6 characters"
+"Please crop image"
 
 return
 
 }
 
-
-
-/* KONAMI FORMAT */
-
 const konamiPattern =
 /^[A-Z]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
-
 
 if(!konamiPattern.test(konami_id)){
 
@@ -325,47 +253,23 @@ return
 
 }
 
-
-
-/* IMAGE SIZE */
-
-if(imageFile.size > 5 * 1024 * 1024){
-
-msg.innerHTML =
-"Image must be below 5MB"
-
-return
-
-}
-
-
-
-/* CHECK DUPLICATE */
-
 const snapshot =
-await getDocs(
-collection(db,"users")
-)
+await getDocs(collection(db,"users"))
 
 let totalUsers = 0
 
 let duplicate = false
 
-
 snapshot.forEach((docItem)=>{
 
-const data =
-docItem.data()
+const data = docItem.data()
 
 totalUsers++
-
 
 if(
 
 data.email === email ||
-
 data.konami_id === konami_id ||
-
 data.fb_id_url === fb_id_url
 
 ){
@@ -376,7 +280,6 @@ duplicate = true
 
 })
 
-
 if(duplicate){
 
 msg.innerHTML =
@@ -385,10 +288,6 @@ msg.innerHTML =
 return
 
 }
-
-
-
-/* LINK PASSWORD */
 
 const credential =
 EmailAuthProvider.credential(
@@ -401,53 +300,52 @@ currentUser,
 credential
 )
 
-
-
-/* COMPRESS IMAGE */
-
 msg.innerHTML =
-"Compressing image..."
+"Processing image..."
 
+croppedBlob =
+await new Promise((resolve)=>{
 
-const compressed =
-await compressImage(imageFile)
+cropper.getCroppedCanvas({
 
+width:500,
+height:500
 
+}).toBlob(
 
-/* UPLOAD IMAGE */
+(blob)=>{
+
+resolve(blob)
+
+},
+
+"image/jpeg",
+
+0.82
+
+)
+
+})
 
 msg.innerHTML =
 "Uploading image..."
 
-
 const imageRef =
-ref(
-storage,
-`players/${Date.now()}.jpg`
-)
+ref(storage,`players/${Date.now()}.jpg`)
 
 await uploadBytes(
 imageRef,
-compressed
+croppedBlob
 )
 
 const imageUrl =
 await getDownloadURL(imageRef)
 
-
-
-/* PLAYER ID */
-
 const player_id =
 `EKH-${String(totalUsers+1).padStart(6,'0')}`
 
-
-
-/* SAVE DATA */
-
 msg.innerHTML =
 "Saving profile..."
-
 
 await setDoc(
 
@@ -462,6 +360,10 @@ full_name,
 email,
 
 phone,
+
+dob,
+
+gender,
 
 country,
 
@@ -489,12 +391,8 @@ created_at:new Date().toISOString()
 
 )
 
-
-
 msg.innerHTML =
 "Registration successful. Waiting for admin approval."
-
-
 
 setTimeout(()=>{
 
@@ -503,14 +401,11 @@ window.location.href =
 
 },2500)
 
-
-
 }catch(error){
 
 console.log(error)
 
-msg.innerHTML =
-error.message
+msg.innerHTML = error.message
 
 }
 

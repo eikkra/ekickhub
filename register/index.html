@@ -12,6 +12,9 @@ content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"/>
+
 <style>
 
 *{
@@ -258,6 +261,22 @@ text-decoration:none;
 
 }
 
+#cropContainer{
+
+display:none;
+
+margin-bottom:15px;
+
+}
+
+#preview{
+
+max-width:100%;
+
+border-radius:20px;
+
+}
+
 </style>
 
 </head>
@@ -303,7 +322,24 @@ CONTINUE WITH GOOGLE
 <input type="text" id="phone" placeholder="Phone Number">
 </div>
 
-<!-- COUNTRY -->
+<div class="inputBox">
+<input type="date" id="dob">
+</div>
+
+<div class="inputBox">
+
+<select id="gender">
+
+<option value="">
+Select Gender
+</option>
+
+<option>Male</option>
+<option>Female</option>
+
+</select>
+
+</div>
 
 <div class="inputBox">
 
@@ -325,20 +361,25 @@ Select Country
 <option>United States</option>
 <option>Canada</option>
 <option>Australia</option>
+<option>Brazil</option>
+<option>Argentina</option>
+<option>France</option>
+<option>Germany</option>
+<option>Spain</option>
+<option>Italy</option>
+<option>Portugal</option>
+<option>Japan</option>
+<option>South Korea</option>
 
 </select>
 
 </div>
-
-<!-- DISTRICT -->
 
 <div class="inputBox">
 <input type="text"
 id="district"
 placeholder="State / District / City">
 </div>
-
-<!-- POSITION -->
 
 <div class="inputBox">
 
@@ -352,18 +393,14 @@ Game Position
 <option>SS</option>
 <option>LWF</option>
 <option>RWF</option>
-
 <option>AMF</option>
 <option>LMF</option>
 <option>RMF</option>
-
 <option>CMF</option>
 <option>DMF</option>
-
 <option>LB</option>
 <option>RB</option>
 <option>CB</option>
-
 <option>GK</option>
 
 </select>
@@ -396,11 +433,19 @@ accept="image/*">
 
 <div class="smallText">
 
-Recommended Size: 400×500px<br>
+Recommended Size: 500×500px<br>
 
-Image auto compressed for fast loading & storage saving.
+Crop your image before upload.<br>
+
+Image auto compressed for fast loading.
 
 </div>
+
+</div>
+
+<div id="cropContainer">
+
+<img id="preview">
 
 </div>
 
@@ -421,6 +466,8 @@ Login
 </div>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <script type="module"
 src="app.js"></script>
