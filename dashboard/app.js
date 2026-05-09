@@ -2,21 +2,19 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-
 getAuth,
 onAuthStateChanged
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
 getFirestore,
 doc,
 getDoc
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -34,37 +32,29 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app =
-initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
-const auth =
-getAuth(app)
+const auth = getAuth(app)
 
-const db =
-getFirestore(app)
+const db = getFirestore(app)
 
 /* SIDEBAR */
+
+const menuBtn =
+document.getElementById("menuBtn")
 
 const sidebar =
 document.getElementById("sidebar")
 
-document.getElementById("menuBtn")
-.onclick = ()=>{
+menuBtn.onclick = ()=>{
 
-sidebar.classList.add("active")
-
-}
-
-document.getElementById("closeBtn")
-.onclick = ()=>{
-
-sidebar.classList.remove("active")
+sidebar.classList.toggle("active")
 
 }
 
-/* USER */
+/* LOAD PLAYER */
 
-onAuthStateChanged(auth,async(user)=>{
+onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
 
@@ -74,6 +64,8 @@ window.location.href =
 return
 
 }
+
+try{
 
 const docRef =
 doc(db,"users",user.uid)
@@ -92,34 +84,72 @@ return
 const data =
 docSnap.data()
 
-/* PROFILE */
+/* BASIC */
 
-document.getElementById("profileImage")
-.src = data.image
+document.getElementById("playerImage")
+.src =
+data.image
 
 document.getElementById("playerName")
-.innerHTML = data.full_name
+.innerHTML =
+data.full_name || "Player"
 
-document.getElementById("playerId")
-.innerHTML = data.player_id
+document.getElementById("playerID")
+.innerHTML =
+data.player_id || "-"
 
-document.getElementById("konamiId")
-.innerHTML = data.konami_id
+document.getElementById("konami")
+.innerHTML =
+data.konami_id || "-"
 
-document.getElementById("deviceName")
-.innerHTML = data.device_name
+document.getElementById("device")
+.innerHTML =
+data.device_name || "-"
+
+document.getElementById("role")
+.innerHTML =
+data.roles?.join(", ") || "player"
+
+/* META */
+
+document.getElementById("playerCountry")
+.innerHTML =
+`🌍 ${data.country || "Unknown"}`
+
+document.getElementById("playerPosition")
+.innerHTML =
+`⚽ ${data.position || "-"}`
+
+/* AGE */
+
+if(data.dob){
+
+const birthYear =
+new Date(data.dob).getFullYear()
+
+const currentYear =
+new Date().getFullYear()
+
+const age =
+currentYear - birthYear
+
+document.getElementById("playerAge")
+.innerHTML =
+`🎂 ${age}Y`
+
+}
+
+/* PLAN */
+
+document.getElementById("playerPlan")
+.innerHTML =
+`💎 ${(data.plan || "FREE").toUpperCase()}`
 
 /* FB */
 
-document.getElementById("fbBtn")
-.onclick = ()=>{
-
-window.open(
-data.fb_id_url,
-"_blank"
-)
-
-}
+document.getElementById("fbLink")
+.href =
+data.fb_id_url || "#"
 
 /* RATING */
 
@@ -127,96 +157,11 @@ document.getElementById("rating")
 .innerHTML =
 data.rating || 56
 
-/* STATS */
+}catch(error){
 
-document.getElementById("matchPlayed")
-.innerHTML =
-data.match_played || 0
+console.log(error)
 
-document.getElementById("wins")
-.innerHTML =
-data.wins || 0
-
-document.getElementById("draws")
-.innerHTML =
-data.draws || 0
-
-document.getElementById("losses")
-.innerHTML =
-data.losses || 0
-
-document.getElementById("motm")
-.innerHTML =
-data.motm || 0
-
-document.getElementById("hattrick")
-.innerHTML =
-data.hattrick || 0
-
-document.getElementById("goals7")
-.innerHTML =
-data.goals7 || 0
-
-/* WIN RATE */
-
-const played =
-data.match_played || 0
-
-const wins =
-data.wins || 0
-
-let rate = 0
-
-if(played > 0){
-
-rate =
-Math.round((wins / played) * 100)
-
-}
-
-document.getElementById("winrate")
-.innerHTML =
-rate + "%"
-
-/* ROLE SWITCH */
-
-const roleList =
-document.getElementById("roleList")
-
-if(Array.isArray(data.roles)){
-
-data.roles.forEach((role)=>{
-
-const div =
-document.createElement("div")
-
-div.className =
-"sideItem"
-
-div.innerHTML = `
-<i class="fa-solid fa-shield"></i>
-Switch to ${role}
-`
-
-div.onclick = ()=>{
-
-if(role === "admin"){
-
-window.location.href =
-"../admin/"
-
-}else{
-
-window.location.href =
-"../dashboard/"
-
-}
-
-}
-
-roleList.appendChild(div)
-
-})
+alert(error.message)
 
 }
 

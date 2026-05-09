@@ -4,16 +4,11 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<title>eKickHub Player</title>
 
-<title>eKickHub Player Profile</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -25,24 +20,20 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-
 background:#020617;
 color:white;
 overflow-x:hidden;
-
 }
 
-body::-webkit-scrollbar{
-width:0;
-}
+/* BG */
 
 .bg1{
 position:fixed;
 width:350px;
 height:350px;
 background:#00ffe1;
-filter:blur(180px);
-opacity:.12;
+filter:blur(160px);
+opacity:.10;
 top:-120px;
 left:-120px;
 z-index:-1;
@@ -53,71 +44,57 @@ position:fixed;
 width:350px;
 height:350px;
 background:#ff00c8;
-filter:blur(180px);
-opacity:.12;
+filter:blur(160px);
+opacity:.10;
 bottom:-120px;
 right:-120px;
 z-index:-1;
 }
 
-/* TOPBAR */
+/* TOP BAR */
 
 .topbar{
 
-width:100%;
-height:62px;
+position:sticky;
+top:0;
 
-padding:0 16px;
+width:100%;
+height:58px;
+
+padding:0 14px;
 
 display:flex;
 align-items:center;
 justify-content:space-between;
 
-position:sticky;
-top:0;
+background:rgba(10,15,25,.75);
 
-z-index:999;
-
-background:
-rgba(2,6,23,.75);
-
-backdrop-filter:blur(14px);
+backdrop-filter:blur(16px);
 
 border-bottom:
-1px solid rgba(255,255,255,.05);
+1px solid rgba(255,255,255,.06);
 
+z-index:999;
 }
 
 .leftTop{
 display:flex;
 align-items:center;
-gap:12px;
+gap:10px;
 }
 
 .menuBtn{
 
-width:40px;
-height:40px;
-
-border-radius:12px;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-background:
-rgba(255,255,255,.05);
-
-font-size:17px;
-
+font-size:20px;
 cursor:pointer;
+color:#00ffe1;
 
 }
 
 .logo{
 
-font-size:21px;
-font-weight:900;
+font-size:16px;
+font-weight:800;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
@@ -129,27 +106,34 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 
 .rightTop{
 display:flex;
-gap:10px;
 align-items:center;
+gap:14px;
 }
 
-.topIcon{
+.iconBtn{
+font-size:18px;
+cursor:pointer;
+position:relative;
+}
 
-width:38px;
-height:38px;
+.badge{
 
-border-radius:12px;
+position:absolute;
+top:-4px;
+right:-6px;
+
+background:#ff004c;
+
+width:15px;
+height:15px;
+
+border-radius:50%;
+
+font-size:8px;
 
 display:flex;
-justify-content:center;
 align-items:center;
-
-background:
-rgba(255,255,255,.05);
-
-font-size:15px;
-
-cursor:pointer;
+justify-content:center;
 
 }
 
@@ -159,23 +143,21 @@ cursor:pointer;
 
 position:fixed;
 top:0;
-left:-280px;
+left:-260px;
 
-width:260px;
+width:250px;
 height:100vh;
 
-background:#08111f;
-
-z-index:9999;
+background:#07111f;
 
 padding:25px 18px;
 
 transition:.35s;
 
-border-right:
-1px solid rgba(255,255,255,.05);
+z-index:9999;
 
-overflow-y:auto;
+border-right:
+1px solid rgba(255,255,255,.06);
 
 }
 
@@ -183,338 +165,273 @@ overflow-y:auto;
 left:0;
 }
 
-.closeBtn{
+.sideTitle{
 
-font-size:22px;
-cursor:pointer;
+font-size:18px;
+font-weight:700;
+
 margin-bottom:25px;
+
+color:#00ffe1;
 
 }
 
-.sideItem{
+.sideBtn{
 
 width:100%;
 
-padding:14px 16px;
-
-border-radius:14px;
+padding:13px;
 
 margin-bottom:12px;
 
-background:
-rgba(255,255,255,.04);
+border:none;
 
-display:flex;
-align-items:center;
-gap:12px;
+border-radius:12px;
+
+background:#111827;
+
+color:white;
+
+font-size:12px;
 
 cursor:pointer;
 
-font-size:13px;
+text-align:left;
 
 }
 
-.sideTitle{
-
-font-size:12px;
-color:#00ffe1;
-margin:20px 0 10px;
-
-}
-
-/* MAIN */
+/* CONTAINER */
 
 .container{
 
 width:100%;
-max-width:1100px;
+max-width:1150px;
 
 margin:auto;
 
-padding:20px 14px 90px;
+padding:18px 14px 80px;
 
 }
 
-/* PROFILE */
+/* PLAYER CARD */
 
-.profileCard{
+.playerCard{
 
 background:
-rgba(255,255,255,.04);
+rgba(255,255,255,.05);
 
 border:
 1px solid rgba(255,255,255,.06);
 
-border-radius:30px;
+border-radius:28px;
 
-padding:28px 18px;
+padding:22px 18px;
 
 backdrop-filter:blur(14px);
 
 box-shadow:
-0 0 30px rgba(0,255,225,.08);
+0 0 35px rgba(0,255,225,.10);
 
-text-align:center;
+}
+
+/* TOP */
+
+.playerTop{
+
+display:flex;
+align-items:center;
+gap:16px;
+
+flex-wrap:wrap;
 
 }
 
 .playerImg{
 
-width:135px;
-height:135px;
+width:95px;
+height:95px;
 
-border-radius:28px;
+border-radius:24px;
 
 object-fit:cover;
 
 border:
-3px solid #00ffe1;
+2px solid #00ffe1;
 
-margin:auto;
+}
 
-display:block;
-
-box-shadow:
-0 0 25px rgba(0,255,225,.35);
-
+.playerInfo{
+flex:1;
+min-width:200px;
 }
 
 .playerName{
 
-font-size:28px;
-font-weight:900;
-
-margin-top:18px;
+font-size:20px;
+font-weight:700;
 
 display:flex;
-justify-content:center;
 align-items:center;
-gap:12px;
-
-flex-wrap:wrap;
+gap:8px;
 
 }
 
-.fbBtn{
-
-width:38px;
-height:38px;
-
-border-radius:12px;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
+.fbIcon{
+font-size:15px;
 cursor:pointer;
-
-font-size:16px;
-
+text-decoration:none;
 }
 
 .playerMeta{
 
-margin-top:18px;
-
 display:flex;
-justify-content:center;
-gap:12px;
 flex-wrap:wrap;
+gap:8px;
+
+margin-top:10px;
 
 }
 
-.metaBox{
+.metaTag{
 
-padding:10px 14px;
+padding:7px 11px;
 
-border-radius:14px;
-
-background:
-rgba(255,255,255,.05);
-
-font-size:11px;
+background:#0f172a;
 
 border:
 1px solid rgba(255,255,255,.05);
+
+border-radius:12px;
+
+font-size:10px;
+
+color:#cbd5e1;
 
 }
 
 /* RATING */
 
-.ratingWrap{
+.ratingBox{
 
-margin-top:25px;
+padding:14px 16px;
 
-display:flex;
-justify-content:center;
-align-items:center;
-gap:18px;
-
-flex-wrap:wrap;
-
-}
-
-.ratingCircle{
-
-width:90px;
-height:90px;
-
-border-radius:50%;
-
-display:flex;
-justify-content:center;
-align-items:center;
+border-radius:18px;
 
 background:
-conic-gradient(#00ffe1 0deg,#ff00c8 240deg,#111827 240deg);
+linear-gradient(135deg,#00ffe115,#ff00c815);
 
-box-shadow:
-0 0 25px rgba(255,0,200,.25);
+border:
+1px solid rgba(255,255,255,.08);
 
-}
+text-align:center;
 
-.ratingInner{
-
-width:68px;
-height:68px;
-
-border-radius:50%;
-
-background:#020617;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-font-size:24px;
-font-weight:900;
-
-color:#00ffe1;
+min-width:120px;
 
 }
 
-.ratingInfo{
-text-align:left;
+.ratingText{
+font-size:9px;
+color:#94a3b8;
 }
 
-.ratingInfo h3{
-font-size:18px;
-margin-bottom:6px;
+.ratingNum{
+
+font-size:32px;
+font-weight:800;
+
+margin-top:3px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
 }
 
-.ratingInfo p{
+/* INFO BOX */
+
+.infoGrid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+
+gap:10px;
+
+margin-top:18px;
+
+}
+
+.infoItem{
+
+background:#0f172a;
+
+padding:12px;
+
+border-radius:15px;
+
+border:
+1px solid rgba(255,255,255,.04);
+
+}
+
+.infoLabel{
+font-size:9px;
+color:#94a3b8;
+margin-bottom:4px;
+}
+
+.infoValue{
 font-size:11px;
-color:#aaa;
-line-height:1.7;
+font-weight:600;
+word-break:break-word;
 }
 
 /* STATS */
 
 .statsGrid{
 
-margin-top:28px;
-
 display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(130px,1fr));
+grid-template-columns:repeat(4,1fr);
 
-gap:12px;
+gap:10px;
+
+margin-top:18px;
 
 }
 
 .statCard{
 
-background:
-rgba(255,255,255,.05);
+background:#0f172a;
+
+padding:12px 8px;
+
+border-radius:16px;
+
+text-align:center;
 
 border:
 1px solid rgba(255,255,255,.05);
 
-padding:18px 10px;
-
-border-radius:20px;
-
 }
 
-.statCard h2{
+.statNum{
 
-font-size:24px;
-margin-bottom:8px;
+font-size:16px;
+font-weight:700;
 
 color:#00ffe1;
 
 }
 
-.statCard p{
+.statText{
 
-font-size:10px;
-color:#9ca3af;
+font-size:9px;
+color:#94a3b8;
 
-}
+margin-top:4px;
 
-/* TAB */
-
-.tabs{
-
-margin-top:28px;
-
-display:flex;
-gap:10px;
-
-overflow:auto;
-
-padding-bottom:5px;
-
-}
-
-.tabs::-webkit-scrollbar{
-height:0;
-}
-
-.tab{
-
-padding:12px 16px;
-
-border-radius:14px;
-
-background:
-rgba(255,255,255,.05);
-
-font-size:11px;
-
-white-space:nowrap;
-
-cursor:pointer;
-
-}
-
-.tab.active{
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
-}
-
-/* CONTENT */
-
-.contentBox{
-
-margin-top:18px;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.05);
-
-border-radius:24px;
-
-padding:20px;
-
-min-height:180px;
+line-height:1.4;
 
 }
 
@@ -522,25 +439,92 @@ min-height:180px;
 
 .adsBox{
 
-margin-top:25px;
+margin-top:18px;
 
-height:120px;
+height:90px;
 
-border-radius:24px;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-background:
-rgba(255,255,255,.03);
+border-radius:18px;
 
 border:
-2px dashed rgba(255,255,255,.08);
+1px dashed rgba(255,255,255,.15);
 
-color:#7c8597;
+display:flex;
+align-items:center;
+justify-content:center;
 
 font-size:13px;
+
+color:#64748b;
+
+background:#0f172a;
+
+}
+
+/* TABS */
+
+.tabs{
+
+display:flex;
+gap:10px;
+
+overflow:auto;
+
+margin-top:18px;
+
+padding-bottom:3px;
+
+}
+
+.tabs button{
+
+padding:11px 16px;
+
+border:none;
+
+border-radius:12px;
+
+background:#0f172a;
+
+color:white;
+
+font-size:11px;
+
+cursor:pointer;
+
+white-space:nowrap;
+
+}
+
+.tabs .active{
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+}
+
+/* SECTION */
+
+.section{
+
+margin-top:16px;
+
+background:#0f172a;
+
+padding:18px;
+
+border-radius:20px;
+
+border:
+1px solid rgba(255,255,255,.05);
+
+min-height:180px;
+
+}
+
+.sectionTitle{
+
+font-size:14px;
+font-weight:700;
+
+margin-bottom:10px;
 
 }
 
@@ -548,16 +532,30 @@ font-size:13px;
 
 @media(max-width:768px){
 
-.playerName{
-font-size:23px;
-}
-
-.ratingInfo{
+.playerTop{
+flex-direction:column;
+align-items:center;
 text-align:center;
 }
 
-.ratingWrap{
-flex-direction:column;
+.playerInfo{
+width:100%;
+}
+
+.playerMeta{
+justify-content:center;
+}
+
+.ratingBox{
+width:100%;
+}
+
+.statsGrid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.infoGrid{
+grid-template-columns:1fr;
 }
 
 }
@@ -571,53 +569,14 @@ flex-direction:column;
 <div class="bg1"></div>
 <div class="bg2"></div>
 
-<!-- SIDEBAR -->
-
-<div class="sidebar" id="sidebar">
-
-<div class="closeBtn"
-id="closeBtn">
-✕
-</div>
-
-<div class="sideTitle">
-ACCOUNT
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-user"></i>
-Edit Profile
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-lock"></i>
-Security
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-bell"></i>
-Notifications
-</div>
-
-<div class="sideTitle">
-ROLE SWITCH
-</div>
-
-<div id="roleList"></div>
-
-</div>
-
 <!-- TOPBAR -->
 
 <div class="topbar">
 
 <div class="leftTop">
 
-<div class="menuBtn"
-id="menuBtn">
-
+<div class="menuBtn" id="menuBtn">
 ☰
-
 </div>
 
 <div class="logo">
@@ -628,175 +587,276 @@ eKickHub
 
 <div class="rightTop">
 
-<div class="topIcon">
+<div class="iconBtn">
 🔔
+<div class="badge">2</div>
 </div>
 
-<div class="topIcon">
+<div class="iconBtn">
 💬
 </div>
 
+<div class="iconBtn">
+👤
 </div>
 
 </div>
 
-<!-- MAIN -->
+</div>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="sideTitle">
+Settings
+</div>
+
+<button class="sideBtn">
+Edit Profile
+</button>
+
+<button class="sideBtn">
+Switch Role
+</button>
+
+<button class="sideBtn">
+Notifications
+</button>
+
+<button class="sideBtn">
+My Club
+</button>
+
+<button class="sideBtn">
+Logout
+</button>
+
+</div>
+
+<!-- CONTAINER -->
 
 <div class="container">
 
-<div class="profileCard">
+<div class="playerCard">
+
+<!-- TOP -->
+
+<div class="playerTop">
 
 <img
-id="profileImage"
-class="playerImg">
+id="playerImage"
+class="playerImg"
+src="">
+
+<div class="playerInfo">
 
 <div class="playerName">
 
 <span id="playerName">
-Loading...
+Player Name
 </span>
 
-<div class="fbBtn"
-id="fbBtn">
+<a
+id="fbLink"
+target="_blank"
+class="fbIcon">
 
-<i class="fa-brands fa-facebook-f"></i>
+📘
 
-</div>
+</a>
 
 </div>
 
 <div class="playerMeta">
 
-<div class="metaBox"
-id="playerId">
-Player ID
+<div class="metaTag" id="playerCountry">
+🌍 Bangladesh
 </div>
 
-<div class="metaBox"
-id="konamiId">
-Konami ID
+<div class="metaTag" id="playerPosition">
+⚽ CF
 </div>
 
-<div class="metaBox"
-id="deviceName">
-Device
+<div class="metaTag" id="playerAge">
+🎂 20Y
+</div>
+
+<div class="metaTag" id="playerPlan">
+💎 FREE
 </div>
 
 </div>
 
-<div class="ratingWrap">
+</div>
 
-<div class="ratingCircle">
+<div class="ratingBox">
 
-<div class="ratingInner"
-id="rating">
+<div class="ratingText">
+ELITE RATING
+</div>
 
+<div class="ratingNum" id="rating">
 56
-
 </div>
 
 </div>
 
-<div class="ratingInfo">
+</div>
 
-<h3>
-Elite Player Rating
-</h3>
+<!-- INFO -->
 
-<p>
-Performance based dynamic esports rating system.
-</p>
+<div class="infoGrid">
 
+<div class="infoItem">
+<div class="infoLabel">PLAYER ID</div>
+<div class="infoValue" id="playerID">
+EKH-000001
+</div>
+</div>
+
+<div class="infoItem">
+<div class="infoLabel">KONAMI ID</div>
+<div class="infoValue" id="konami">
+AAAA-000-000-000
+</div>
+</div>
+
+<div class="infoItem">
+<div class="infoLabel">DEVICE</div>
+<div class="infoValue" id="device">
+iPhone
+</div>
+</div>
+
+<div class="infoItem">
+<div class="infoLabel">ROLE</div>
+<div class="infoValue" id="role">
+PLAYER
+</div>
 </div>
 
 </div>
+
+<!-- STATS -->
 
 <div class="statsGrid">
 
 <div class="statCard">
-<h2 id="matchPlayed">0</h2>
-<p>MATCH PLAYED</p>
+<div class="statNum">0</div>
+<div class="statText">RANK</div>
 </div>
 
 <div class="statCard">
-<h2 id="wins">0</h2>
-<p>WINS</p>
+<div class="statNum">0</div>
+<div class="statText">MATCH PLAYED</div>
 </div>
 
 <div class="statCard">
-<h2 id="draws">0</h2>
-<p>DRAWS</p>
+<div class="statNum">0</div>
+<div class="statText">WINS</div>
 </div>
 
 <div class="statCard">
-<h2 id="losses">0</h2>
-<p>LOSSES</p>
+<div class="statNum">0</div>
+<div class="statText">DRAWS</div>
 </div>
 
 <div class="statCard">
-<h2 id="motm">0</h2>
-<p>MOTM</p>
+<div class="statNum">0</div>
+<div class="statText">LOSSES</div>
 </div>
 
 <div class="statCard">
-<h2 id="hattrick">0</h2>
-<p>HAT-TRICK</p>
+<div class="statNum">0%</div>
+<div class="statText">WIN RATE</div>
 </div>
 
 <div class="statCard">
-<h2 id="goals7">0</h2>
-<p>7+ GOALS</p>
+<div class="statNum">0</div>
+<div class="statText">HAT-TRICK</div>
 </div>
 
 <div class="statCard">
-<h2 id="winrate">0%</h2>
-<p>WIN RATE</p>
+<div class="statNum">0</div>
+<div class="statText">MOTM</div>
+</div>
+
+<div class="statCard">
+<div class="statNum">0</div>
+<div class="statText">7+ GOALS</div>
+</div>
+
+<div class="statCard">
+<div class="statNum">0</div>
+<div class="statText">CLEAN SHEETS</div>
+</div>
+
+<div class="statCard">
+<div class="statNum">0</div>
+<div class="statText">GOALS FOR</div>
+</div>
+
+<div class="statCard">
+<div class="statNum">0</div>
+<div class="statText">GOALS AGAINST</div>
 </div>
 
 </div>
+
+<!-- ADS -->
+
+<div class="adsBox">
+ADS SPACE
+</div>
+
+<!-- TABS -->
 
 <div class="tabs">
 
-<div class="tab active">
+<button class="active">
+Overview
+</button>
+
+<button>
 Performance
-</div>
+</button>
 
-<div class="tab">
+<button>
 Achievements
-</div>
+</button>
 
-<div class="tab">
+<button>
 Trophies
-</div>
+</button>
 
-<div class="tab">
-Gift & Coins
-</div>
-
-<div class="tab">
-Activity
-</div>
+<button>
+Gift Coins
+</button>
 
 </div>
 
-<div class="contentBox">
+<!-- SECTION -->
 
-COMING NEXT STEP...
+<div class="section">
 
+<div class="sectionTitle">
+Player Overview
 </div>
 
-</div>
+<div style="font-size:12px;color:#94a3b8;line-height:1.8">
 
-<div class="adsBox">
-
-ADS AREA
+Competition system connected হলে এখানে সব match data, graph, activity, achievements show হবে.
 
 </div>
 
 </div>
 
-<script type="module"
-src="app.js"></script>
+</div>
+
+</div>
+
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
