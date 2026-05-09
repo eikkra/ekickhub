@@ -277,16 +277,34 @@ border-radius:20px;
 
 }
 
-input[type="date"]{
-
-color:#9ca3af;
-
+.dobBox{
+position:relative;
 }
 
-input[type="date"]:valid{
-
+.dobInput{
+width:100%;
+padding:13px;
+background:#0f172a;
+border:1px solid #1e293b;
+border-radius:14px;
 color:white;
+font-size:13px;
+}
 
+.dobPlaceholder{
+position:absolute;
+left:14px;
+top:50%;
+transform:translateY(-50%);
+color:#9ca3af;
+font-size:13px;
+pointer-events:none;
+transition:.2s;
+}
+
+.dobBox.focused .dobPlaceholder,
+.dobInput:valid + .dobPlaceholder{
+opacity:0;
 }
 
 </style>
@@ -334,12 +352,16 @@ CONTINUE WITH GOOGLE
 <input type="text" id="phone" placeholder="Phone Number">
 </div>
 
-<div class="inputBox">
+<div class="inputBox dobBox">
 
 <input
 type="date"
 id="dob"
-placeholder="Date of Birth">
+class="dobInput">
+
+<span class="dobPlaceholder" id="dobPlaceholder">
+Date of Birth
+</span>
 
 </div>
 
