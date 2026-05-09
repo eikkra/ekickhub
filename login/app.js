@@ -11,7 +11,9 @@ signInWithPopup,
 
 signInWithEmailAndPassword,
 
-sendPasswordResetEmail
+sendPasswordResetEmail,
+
+fetchSignInMethodsForEmail
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -76,15 +78,10 @@ document.getElementById("msg")
 document.getElementById("eyeBtn")
 .onclick = ()=>{
 
-if(password.type === "password"){
-
-password.type = "text"
-
-}else{
-
-password.type = "password"
-
-}
+password.type =
+password.type === "password"
+? "text"
+: "password"
 
 }
 
@@ -101,14 +98,56 @@ msg.innerHTML =
 
 try{
 
+const emailValue =
+email.value.trim()
+
+const passwordValue =
+password.value.trim()
+
+
+
+if(!emailValue || !passwordValue){
+
+msg.innerHTML =
+"Enter email & password"
+
+return
+
+}
+
+
+
+/* CHECK LOGIN METHOD */
+
+const methods =
+await fetchSignInMethodsForEmail(
+auth,
+emailValue
+)
+
+
+
+if(methods.length === 0){
+
+msg.innerHTML =
+"No account found"
+
+return
+
+}
+
+
+
+/* EMAIL LOGIN */
+
 const result =
 await signInWithEmailAndPassword(
 
 auth,
 
-email.value.trim(),
+emailValue,
 
-password.value.trim()
+passwordValue
 
 )
 
@@ -178,8 +217,19 @@ window.location.href =
 
 console.log(error)
 
+
+
+if(error.code === "auth/invalid-credential"){
+
+msg.innerHTML =
+"Wrong email or password"
+
+}else{
+
 msg.innerHTML =
 error.message
+
+}
 
 }
 
@@ -247,6 +297,8 @@ return
 
 
 
+/* ADMIN REDIRECT */
+
 if(
 
 Array.isArray(data.roles) &&
@@ -285,7 +337,11 @@ error.message
 document.getElementById("forgotBtn")
 .onclick = async ()=>{
 
-if(!email.value){
+const emailValue =
+email.value.trim()
+
+
+if(!emailValue){
 
 msg.innerHTML =
 "Enter your email first"
@@ -301,7 +357,7 @@ await sendPasswordResetEmail(
 
 auth,
 
-email.value.trim()
+emailValue
 
 )
 
