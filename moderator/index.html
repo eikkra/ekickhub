@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Moderator Dashboard • eKickHub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:#020617;
+color:white;
+overflow-x:hidden;
+}
+
+/* BG */
+
+.bg1,.bg2{
+position:fixed;
+width:420px;
+height:420px;
+border-radius:50%;
+filter:blur(160px);
+z-index:-1;
+opacity:.14;
+}
+
+.bg1{
+background:#00ffe1;
+top:-120px;
+left:-120px;
+}
+
+.bg2{
+background:#ff00c8;
+right:-120px;
+bottom:-120px;
+}
+
+/* TOPBAR */
+
+.topbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:64px;
+padding:0 18px;
+background:rgba(2,6,23,.85);
+backdrop-filter:blur(14px);
+border-bottom:1px solid rgba(255,255,255,.06);
+display:flex;
+align-items:center;
+justify-content:space-between;
+z-index:999;
+}
+
+.leftTop{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.menuBtn{
+width:42px;
+height:42px;
+border-radius:12px;
+background:#0f172a;
+border:1px solid #1e293b;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+cursor:pointer;
+color:#00ffe1;
+}
+
+.logo{
+font-size:20px;
+font-weight:800;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.topRight{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.topIcon{
+width:42px;
+height:42px;
+border-radius:12px;
+background:#0f172a;
+border:1px solid #1e293b;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:16px;
+color:#00ffe1;
+cursor:pointer;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+top:0;
+left:-290px;
+width:280px;
+height:100vh;
+background:#081120;
+border-right:1px solid rgba(255,255,255,.08);
+padding:20px;
+transition:.35s;
+z-index:1000;
+overflow-y:auto;
+}
+
+.sidebar.active{
+left:0;
+}
+
+.sideTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:25px;
+}
+
+.closeBtn{
+width:40px;
+height:40px;
+border:none;
+border-radius:12px;
+background:#0f172a;
+color:#ff4d6d;
+font-size:17px;
+cursor:pointer;
+}
+
+.adminBox{
+display:flex;
+align-items:center;
+gap:14px;
+padding:15px;
+border-radius:20px;
+background:linear-gradient(135deg,#0f172a,#111827);
+border:1px solid rgba(255,255,255,.06);
+margin-bottom:22px;
+}
+
+.adminBox img{
+width:58px;
+height:58px;
+border-radius:16px;
+object-fit:cover;
+border:2px solid #00ffe1;
+}
+
+.adminName{
+font-size:14px;
+font-weight:700;
+}
+
+.adminRole{
+font-size:11px;
+color:#00ffe1;
+margin-top:4px;
+}
+
+.sideMenu{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.menuItem{
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px;
+border-radius:15px;
+background:#0f172a;
+border:1px solid #1e293b;
+cursor:pointer;
+font-size:13px;
+transition:.25s;
+}
+
+.menuItem:hover{
+border-color:#00ffe1;
+transform:translateX(3px);
+}
+
+.menuItem i{
+color:#00ffe1;
+width:18px;
+}
+
+/* MAIN */
+
+.main{
+padding:92px 16px 30px;
+max-width:1450px;
+margin:auto;
+}
+
+/* HEADER */
+
+.headerCard{
+padding:22px;
+border-radius:28px;
+background:linear-gradient(135deg,#07111f,#0f172a);
+border:1px solid rgba(255,255,255,.06);
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.headerTitle{
+font-size:25px;
+font-weight:800;
+}
+
+.headerSub{
+font-size:11px;
+color:#9ca3af;
+margin-top:7px;
+line-height:1.6;
+}
+
+.badge{
+padding:11px 16px;
+border-radius:14px;
+font-size:11px;
+font-weight:700;
+background:linear-gradient(90deg,#00ffe1,#00c2ff);
+color:#001018;
+}
+
+/* STATS */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.statCard{
+padding:20px;
+border-radius:24px;
+background:#0f172a;
+border:1px solid rgba(255,255,255,.06);
+}
+
+.statTop{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:14px;
+}
+
+.statIcon{
+width:48px;
+height:48px;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+background:rgba(0,255,225,.12);
+color:#00ffe1;
+}
+
+.statValue{
+font-size:28px;
+font-weight:800;
+}
+
+.statLabel{
+font-size:11px;
+color:#9ca3af;
+margin-top:6px;
+}
+
+/* TABLE */
+
+.tableWrap{
+background:#0f172a;
+border:1px solid rgba(255,255,255,.06);
+border-radius:28px;
+padding:20px;
+overflow:auto;
+}
+
+.tableTitle{
+font-size:17px;
+font-weight:700;
+margin-bottom:18px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1050px;
+}
+
+th{
+padding:15px;
+font-size:11px;
+text-align:left;
+color:#00ffe1;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+td{
+padding:15px;
+font-size:12px;
+border-bottom:1px solid rgba(255,255,255,.05);
+vertical-align:middle;
+}
+
+.userFlex{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.userFlex img{
+width:50px;
+height:50px;
+border-radius:14px;
+object-fit:cover;
+border:2px solid rgba(255,255,255,.1);
+}
+
+.playerName{
+font-size:13px;
+font-weight:700;
+}
+
+.playerEmail{
+font-size:10px;
+color:#9ca3af;
+margin-top:5px;
+}
+
+/* BUTTONS */
+
+.actionBtns{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.acceptBtn,
+.rejectBtn{
+padding:11px 14px;
+border:none;
+border-radius:12px;
+font-size:11px;
+font-weight:700;
+cursor:pointer;
+}
+
+.acceptBtn{
+background:linear-gradient(90deg,#00ffe1,#00c2ff);
+color:#001018;
+}
+
+.rejectBtn{
+background:linear-gradient(90deg,#ff3d81,#ff0066);
+color:white;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.logo{
+font-size:17px;
+}
+
+.headerTitle{
+font-size:20px;
+}
+
+.stats{
+grid-template-columns:1fr 1fr;
+}
+
+.statValue{
+font-size:22px;
+}
+
+.tableWrap{
+padding:14px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<div class="leftTop">
+
+<div class="menuBtn" id="menuBtn">
+<i class="fa-solid fa-bars"></i>
+</div>
+
+<div class="logo">
+eKickHub
+</div>
+
+</div>
+
+<div class="topRight">
+
+<div class="topIcon">
+<i class="fa-solid fa-bell"></i>
+</div>
+
+<div class="topIcon">
+<i class="fa-solid fa-envelope"></i>
+</div>
+
+</div>
+
+</div>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="sideTop">
+
+<div class="logo">
+Moderator
+</div>
+
+<button class="closeBtn" id="closeBtn">
+<i class="fa-solid fa-xmark"></i>
+</button>
+
+</div>
+
+<div class="adminBox">
+
+<img id="modImage"
+src="https://i.ibb.co/4pDNDk1/avatar.png">
+
+<div>
+
+<div class="adminName"
+id="modName">
+Loading...
+</div>
+
+<div class="adminRole">
+Moderator Access
+</div>
+
+</div>
+
+</div>
+
+<div class="sideMenu">
+
+<div class="menuItem">
+<i class="fa-solid fa-user-check"></i>
+Pending Approvals
+</div>
+
+<div class="menuItem">
+<i class="fa-solid fa-users"></i>
+Players List
+</div>
+
+<div class="menuItem">
+<i class="fa-solid fa-flag"></i>
+Reports
+</div>
+
+<div class="menuItem">
+<i class="fa-solid fa-trophy"></i>
+Competitions
+</div>
+
+<div class="menuItem">
+<i class="fa-solid fa-chart-line"></i>
+Analytics
+</div>
+
+<div class="menuItem"
+id="logoutBtn">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="headerCard">
+
+<div>
+
+<div class="headerTitle">
+Moderator Control Panel
+</div>
+
+<div class="headerSub">
+Approve or reject player registrations securely.
+</div>
+
+</div>
+
+<div class="badge">
+LIMITED MODERATOR ACCESS
+</div>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="statCard">
+
+<div class="statTop">
+
+<div class="statIcon">
+<i class="fa-solid fa-user-clock"></i>
+</div>
+
+</div>
+
+<div class="statValue"
+id="pendingCount">
+0
+</div>
+
+<div class="statLabel">
+Pending Approvals
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statTop">
+
+<div class="statIcon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+</div>
+
+<div class="statValue"
+id="approvedCount">
+0
+</div>
+
+<div class="statLabel">
+Approved Players
+</div>
+
+</div>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="tableWrap">
+
+<div class="tableTitle">
+Pending Registration Requests
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>PLAYER</th>
+<th>PLAYER ID</th>
+<th>COUNTRY</th>
+<th>POSITION</th>
+<th>KONAMI ID</th>
+<th>ACTION</th>
+
+</tr>
+
+</thead>
+
+<tbody id="pendingTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
