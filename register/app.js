@@ -533,11 +533,37 @@ await getDownloadURL(imageRef)
 
 
 
-/* PLAYER ID */
+/* UNIQUE PLAYER ID */
 
-const player_id =
-`EKH-${String(totalUsers+1).padStart(6,'0')}`
+let player_id = ""
 
+while(true){
+
+const randomNum =
+Math.floor(
+100000 + Math.random() * 900000
+)
+
+player_id = `EKH-${randomNum}`
+
+const checkSnap =
+await getDocs(collection(db,"users"))
+
+let exists = false
+
+checkSnap.forEach((d)=>{
+
+if(d.data().player_id === player_id){
+
+exists = true
+
+}
+
+})
+
+if(!exists) break
+
+}
 
 
 /* SAVE DATA */

@@ -359,6 +359,13 @@ onclick="addRole('${docItem.id}')">
 
 Role
 
+<button class="editBtn"
+onclick="editEmail('${docItem.id}')">
+
+Email
+
+</button>
+
 </button>
 
 ${
@@ -648,5 +655,32 @@ await signOut(auth)
 
 window.location.href =
 "../login/"
+
+}
+
+/* EMAIL EDIT */
+
+window.editEmail = async(uid)=>{
+
+const newEmail =
+prompt("Enter new Gmail")
+
+if(!newEmail) return
+
+await updateDoc(
+
+doc(db,"users",uid),
+
+{
+email:newEmail
+}
+
+)
+
+alert(
+"Firestore email updated"
+)
+
+loadDashboard()
 
 }
