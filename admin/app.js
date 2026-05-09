@@ -1,3 +1,5 @@
+// admin/app.js
+
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -5,7 +7,9 @@ import {
 
 getAuth,
 onAuthStateChanged,
-signOut
+signOut,
+deleteUser,
+updateEmail
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -22,8 +26,6 @@ deleteDoc
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -50,6 +52,8 @@ getAuth(app)
 const db =
 getFirestore(app)
 
+let currentAdmin = null
+
 /* SIDEBAR */
 
 const sidebar =
@@ -71,8 +75,6 @@ sidebar.classList.remove("active")
 
 /* AUTH */
 
-let currentAdmin = null
-
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
@@ -84,13 +86,13 @@ return
 
 }
 
-const userRef =
+const ref =
 doc(db,"users",user.uid)
 
-const userSnap =
-await getDoc(userRef)
+const snap =
+await getDoc(ref)
 
-if(!userSnap.exists()){
+if(!snap.exists()){
 
 window.location.href =
 "../login/"
@@ -99,11 +101,10 @@ return
 }
 
 const data =
-userSnap.data()
+snap.data()
 
 if(
-!Array.isArray(data.roles) ||
-!data.roles.includes("admin")
+!data.roles?.includes("admin")
 ){
 
 window.location.href =
@@ -122,18 +123,22 @@ document.getElementById("adminImage")
 .src =
 data.image
 
-loadUsers()
+loadDashboard()
 
 })
 
-/* LOAD USERS */
+/* LOAD */
 
-async function loadUsers(){
+async function loadDashboard(){
 
-const table =
+const approvalTable =
+document.getElementById("approvalTable")
+
+const userTable =
 document.getElementById("userTable")
 
-table.innerHTML = ""
+approvalTable.innerHTML = ""
+userTable.innerHTML = ""
 
 const snap =
 await getDocs(collection(db,"users"))
@@ -141,7 +146,7 @@ await getDocs(collection(db,"users"))
 let total = 0
 let pending = 0
 let admins = 0
-let mods = 0
+let banned = 0
 
 snap.forEach((docItem)=>{
 
@@ -150,28 +155,25 @@ docItem.data()
 
 total++
 
-if(data.approved !== true){
-
-pending++
-
-}
-
 if(data.roles?.includes("admin")){
 
 admins++
 
 }
 
-if(data.roles?.includes("moderator")){
+if(data.banned === true){
 
-mods++
+banned++
 
 }
 
-const tr =
-document.createElement("tr")
+if(data.approved !== true){
 
-tr.innerHTML = `
+pending++
+
+approvalTable.innerHTML += `
+
+<tr>
 
 <td>
 
@@ -203,27 +205,6 @@ ${data.email}
 
 <td>
 
-<div class="roleWrap">
-
-${renderRoles(
-data.roles || [],
-docItem.id
-)}
-
-</div>
-
-</td>
-
-<td>
-
-${data.approved === true
-? "Approved"
-: "Pending"}
-
-</td>
-
-<td>
-
 <div class="actionBtns">
 
 <button class="approveBtn"
@@ -240,10 +221,111 @@ Reject
 
 </button>
 
-<button class="addRole"
-onclick="addRolePrompt('${docItem.id}')">
+</div>
 
-Add Role
+</td>
+
+</tr>
+
+`
+
+}
+
+userTable.innerHTML += `
+
+<tr>
+
+<td>
+
+<div class="userFlex">
+
+<img src="${data.image}">
+
+<div>
+
+<div class="playerName">
+${data.full_name}
+</div>
+
+<div class="playerEmail">
+${data.email}
+</div>
+
+</div>
+
+</div>
+
+</td>
+
+<td>${data.player_id}</td>
+
+<td>
+
+<div class="roleWrap">
+
+${renderRoles(
+data.roles || [],
+docItem.id
+)}
+
+</div>
+
+</td>
+
+<td>
+
+${data.banned === true
+? '<span class="banned">BANNED</span>'
+: data.approved === true
+? '<span class="approved">APPROVED</span>'
+: '<span class="pending">PENDING</span>'
+}
+
+</td>
+
+<td>
+
+<div class="actionBtns">
+
+<button class="roleBtn"
+onclick="addRole('${docItem.id}')">
+
+Role
+
+</button>
+
+<button class="editBtn"
+onclick="editEmail('${docItem.id}')">
+
+Email
+
+</button>
+
+${
+data.banned === true
+?
+
+`<button class="unbanBtn"
+onclick="toggleBan('${docItem.id}',false)">
+
+Unban
+
+</button>`
+
+:
+
+`<button class="banBtn"
+onclick="toggleBan('${docItem.id}',true)">
+
+Ban
+
+</button>`
+}
+
+<button class="deleteBtn"
+onclick="deleteProfile('${docItem.id}')">
+
+Delete
 
 </button>
 
@@ -251,9 +333,9 @@ Add Role
 
 </td>
 
-`
+</tr>
 
-table.appendChild(tr)
+`
 
 })
 
@@ -266,55 +348,37 @@ document.getElementById("pendingUsers")
 document.getElementById("admins")
 .innerHTML = admins
 
-document.getElementById("mods")
-.innerHTML = mods
+document.getElementById("bannedUsers")
+.innerHTML = banned
 
 }
 
-/* RENDER ROLE */
+/* ROLE RENDER */
 
 function renderRoles(roles,uid){
 
 return roles.map(role=>{
 
-let className = "playerRole"
+let cls = "playerRole"
 
-if(role === "admin"){
+if(role === "admin") cls = "adminRole"
+if(role === "moderator") cls = "modRole"
+if(role === "manager") cls = "managerRole"
+if(role === "referee") cls = "refRole"
 
-className = "adminRoleChip"
-
-}
-
-if(role === "moderator"){
-
-className = "modRole"
-
-}
-
-if(role === "manager"){
-
-className = "managerRole"
-
-}
-
-if(role === "referee"){
-
-className = "refRole"
-
-}
-
-const removeBtn = role === "player"
+const remove =
+role === "player"
 ? ""
 : `<i class="fa-solid fa-xmark"
 onclick="removeRole('${uid}','${role}')"></i>`
 
 return `
 
-<div class="roleChip ${className}">
+<div class="roleChip ${cls}">
 
 ${role}
 
-${removeBtn}
+${remove}
 
 </div>
 
@@ -329,16 +393,13 @@ ${removeBtn}
 window.approveUser = async(uid)=>{
 
 await updateDoc(
-
 doc(db,"users",uid),
-
 {
 approved:true
 }
-
 )
 
-loadUsers()
+loadDashboard()
 
 }
 
@@ -346,41 +407,38 @@ loadUsers()
 
 window.rejectUser = async(uid)=>{
 
-const confirmDelete =
-confirm("Delete this user?")
+const ok =
+confirm("Reject player?")
 
-if(!confirmDelete) return
+if(!ok) return
 
 await deleteDoc(
 doc(db,"users",uid)
 )
 
-loadUsers()
+loadDashboard()
 
 }
 
-/* ADD ROLE */
+/* ROLE */
 
-window.addRolePrompt = async(uid)=>{
+window.addRole = async(uid)=>{
 
 const role =
 prompt(
-"Enter role:\nmoderator\nmanager\nreferee\nadmin"
+"admin / moderator / manager / referee"
 )
 
 if(!role) return
 
-const userRef =
+const ref =
 doc(db,"users",uid)
 
-const userSnap =
-await getDoc(userRef)
-
-const data =
-userSnap.data()
+const snap =
+await getDoc(ref)
 
 let roles =
-data.roles || []
+snap.data().roles || []
 
 if(!roles.includes(role)){
 
@@ -388,15 +446,11 @@ roles.push(role)
 
 }
 
-await updateDoc(userRef,{
-roles
-})
+await updateDoc(ref,{roles})
 
-loadUsers()
+loadDashboard()
 
 }
-
-/* REMOVE ROLE */
 
 window.removeRole = async(uid,role)=>{
 
@@ -407,38 +461,99 @@ return
 
 }
 
-/* SELF ADMIN REMOVE BLOCK */
-
 if(
 uid === currentAdmin &&
 role === "admin"
 ){
 
-alert("You can't remove your own admin role")
+alert("Can't remove your own admin role")
 return
 
 }
 
-const userRef =
+const ref =
 doc(db,"users",uid)
 
-const userSnap =
-await getDoc(userRef)
-
-const data =
-userSnap.data()
+const snap =
+await getDoc(ref)
 
 let roles =
-data.roles || []
+snap.data().roles || []
 
 roles =
 roles.filter(r=>r !== role)
 
-await updateDoc(userRef,{
-roles
-})
+await updateDoc(ref,{roles})
 
-loadUsers()
+loadDashboard()
+
+}
+
+/* EMAIL EDIT */
+
+window.editEmail = async(uid)=>{
+
+const newEmail =
+prompt("Enter new Gmail")
+
+if(!newEmail) return
+
+await updateDoc(
+
+doc(db,"users",uid),
+
+{
+email:newEmail
+}
+
+)
+
+alert(
+"Firestore email updated.\nUser can now login using this email if Auth updated too."
+)
+
+loadDashboard()
+
+}
+
+/* BAN */
+
+window.toggleBan = async(uid,status)=>{
+
+await updateDoc(
+
+doc(db,"users",uid),
+
+{
+banned:status
+}
+
+)
+
+loadDashboard()
+
+}
+
+/* DELETE */
+
+window.deleteProfile = async(uid)=>{
+
+const ok =
+confirm(
+"Delete full player profile?"
+)
+
+if(!ok) return
+
+await deleteDoc(
+doc(db,"users",uid)
+)
+
+alert(
+"Firestore profile deleted.\nAuth delete requires Firebase Admin SDK backend later."
+)
+
+loadDashboard()
 
 }
 

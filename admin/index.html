@@ -30,48 +30,41 @@ color:white;
 overflow-x:hidden;
 }
 
-/* BG */
-
-.bg1{
+.bg1,.bg2{
 position:fixed;
 width:350px;
 height:350px;
-background:#00ffe1;
 filter:blur(170px);
 opacity:.12;
+z-index:-1;
+}
+
+.bg1{
+background:#00ffe1;
 top:-100px;
 left:-100px;
-z-index:-1;
 }
 
 .bg2{
-position:fixed;
-width:350px;
-height:350px;
 background:#ff00c8;
-filter:blur(170px);
-opacity:.12;
 bottom:-100px;
 right:-100px;
-z-index:-1;
 }
-
-/* TOPBAR */
 
 .topbar{
 
 height:60px;
-padding:0 15px;
+padding:0 16px;
 
 display:flex;
 align-items:center;
 justify-content:space-between;
 
-border-bottom:
-1px solid rgba(255,255,255,.06);
-
 background:
 rgba(255,255,255,.03);
+
+border-bottom:
+1px solid rgba(255,255,255,.05);
 
 backdrop-filter:blur(12px);
 
@@ -83,7 +76,7 @@ z-index:999;
 .leftTop{
 display:flex;
 align-items:center;
-gap:12px;
+gap:14px;
 }
 
 .menuBtn{
@@ -93,18 +86,22 @@ color:#00ffe1;
 }
 
 .logo{
+
 font-size:18px;
 font-weight:900;
+
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
+
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
+
 }
 
 .rightTop{
 display:flex;
 align-items:center;
-gap:15px;
+gap:16px;
 }
 
 .topIcon{
@@ -112,8 +109,6 @@ font-size:17px;
 cursor:pointer;
 color:#cbd5e1;
 }
-
-/* SIDEBAR */
 
 .sidebar{
 
@@ -131,9 +126,10 @@ border-right:
 
 transition:.3s;
 
+padding:18px;
+
 z-index:9999;
 
-padding:18px;
 overflow-y:auto;
 }
 
@@ -145,7 +141,7 @@ left:0;
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
+margin-bottom:28px;
 }
 
 .closeBtn{
@@ -158,7 +154,7 @@ color:#ff4d6d;
 display:flex;
 align-items:center;
 gap:12px;
-margin-bottom:30px;
+margin-bottom:28px;
 }
 
 .adminBox img{
@@ -177,7 +173,7 @@ font-weight:700;
 .adminRole{
 font-size:10px;
 color:#94a3b8;
-margin-top:3px;
+margin-top:4px;
 }
 
 .menu{
@@ -213,26 +209,20 @@ linear-gradient(90deg,#00ffe120,#ff00c820);
 }
 
 .logoutBtn{
-margin-top:25px;
 background:#ff174420!important;
 color:#ff4d6d!important;
+margin-top:15px;
 }
-
-/* MAIN */
 
 .main{
 padding:18px;
 }
 
-/* CARDS */
-
 .cards{
-
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:15px;
-
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .card{
@@ -251,7 +241,7 @@ border-radius:20px;
 .cardTitle{
 font-size:11px;
 color:#94a3b8;
-margin-bottom:10px;
+margin-bottom:8px;
 }
 
 .cardValue{
@@ -259,10 +249,29 @@ font-size:24px;
 font-weight:900;
 }
 
-/* SEARCH */
+.section{
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+border-radius:22px;
+
+padding:18px;
+
+margin-bottom:20px;
+}
+
+.sectionTitle{
+font-size:14px;
+font-weight:700;
+margin-bottom:15px;
+}
 
 .searchBox{
-margin-bottom:20px;
+margin-bottom:18px;
 }
 
 .searchBox input{
@@ -271,35 +280,24 @@ width:100%;
 
 padding:14px;
 
+background:#0f172a;
+
 border:none;
 outline:none;
-
-background:#0f172a;
 
 border-radius:16px;
 
 color:white;
 }
 
-/* TABLE */
-
 .tableWrap{
-
 overflow:auto;
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
-border-radius:20px;
 }
 
 table{
 width:100%;
 border-collapse:collapse;
-min-width:1100px;
+min-width:1200px;
 }
 
 th,td{
@@ -338,8 +336,6 @@ color:#94a3b8;
 margin-top:4px;
 }
 
-/* ROLE */
-
 .roleWrap{
 display:flex;
 flex-wrap:wrap;
@@ -358,12 +354,6 @@ font-weight:700;
 display:flex;
 align-items:center;
 gap:6px;
-
-background:#132033;
-}
-
-.roleChip i{
-cursor:pointer;
 }
 
 .playerRole{
@@ -371,7 +361,7 @@ background:#00ffe120;
 color:#00ffe1;
 }
 
-.adminRoleChip{
+.adminRole{
 background:#ff00c820;
 color:#ff4dff;
 }
@@ -391,7 +381,9 @@ background:#10b98120;
 color:#34d399;
 }
 
-/* ACTIONS */
+.roleChip i{
+cursor:pointer;
+}
 
 .actionBtns{
 display:flex;
@@ -422,15 +414,40 @@ background:#00c853;
 background:#ff1744;
 }
 
-.saveBtn{
-background:#00b0ff;
-}
-
-.addRole{
+.roleBtn{
 background:#7c3aed;
 }
 
-/* MOBILE */
+.editBtn{
+background:#0284c7;
+}
+
+.banBtn{
+background:#dc2626;
+}
+
+.unbanBtn{
+background:#16a34a;
+}
+
+.deleteBtn{
+background:#991b1b;
+}
+
+.banned{
+color:#ff4d6d;
+font-weight:700;
+}
+
+.approved{
+color:#00e676;
+font-weight:700;
+}
+
+.pending{
+color:#fbbf24;
+font-weight:700;
+}
 
 @media(max-width:900px){
 
@@ -446,10 +463,6 @@ grid-template-columns:repeat(2,1fr);
 grid-template-columns:1fr;
 }
 
-.logo{
-font-size:16px;
-}
-
 }
 
 </style>
@@ -460,8 +473,6 @@ font-size:16px;
 
 <div class="bg1"></div>
 <div class="bg2"></div>
-
-<!-- TOPBAR -->
 
 <div class="topbar">
 
@@ -485,8 +496,6 @@ eKickHub Admin
 </div>
 
 </div>
-
-<!-- SIDEBAR -->
 
 <div class="sidebar"
 id="sidebar">
@@ -530,12 +539,17 @@ Dashboard
 </a>
 
 <a href="#">
+<i class="fa-solid fa-user-check"></i>
+Player Approval
+</a>
+
+<a href="#">
 <i class="fa-solid fa-users"></i>
 Users
 </a>
 
 <a href="#">
-<i class="fa-solid fa-shield"></i>
+<i class="fa-solid fa-shield-halved"></i>
 Roles
 </a>
 
@@ -568,11 +582,7 @@ Logout
 
 </div>
 
-<!-- MAIN -->
-
 <div class="main">
-
-<!-- CARDS -->
 
 <div class="cards">
 
@@ -592,7 +602,7 @@ id="totalUsers">
 <div class="card">
 
 <div class="cardTitle">
-PENDING USERS
+PENDING APPROVAL
 </div>
 
 <div class="cardValue"
@@ -618,11 +628,11 @@ id="admins">
 <div class="card">
 
 <div class="cardTitle">
-MODERATORS
+BANNED USERS
 </div>
 
 <div class="cardValue"
-id="mods">
+id="bannedUsers">
 0
 </div>
 
@@ -630,17 +640,13 @@ id="mods">
 
 </div>
 
-<!-- SEARCH -->
+<!-- APPROVAL -->
 
-<div class="searchBox">
+<div class="section">
 
-<input type="text"
-id="searchInput"
-placeholder="Search player name / email / ID">
-
+<div class="sectionTitle">
+Player Approval Queue
 </div>
-
-<!-- TABLE -->
 
 <div class="tableWrap">
 
@@ -654,6 +660,48 @@ placeholder="Search player name / email / ID">
 <th>ID</th>
 <th>COUNTRY</th>
 <th>POSITION</th>
+<th>ACTION</th>
+
+</tr>
+
+</thead>
+
+<tbody id="approvalTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- USERS -->
+
+<div class="section">
+
+<div class="sectionTitle">
+User Management
+</div>
+
+<div class="searchBox">
+
+<input type="text"
+id="searchInput"
+placeholder="Search user / player ID / email">
+
+</div>
+
+<div class="tableWrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>PLAYER</th>
+<th>PLAYER ID</th>
 <th>ROLES</th>
 <th>STATUS</th>
 <th>ACTION</th>
