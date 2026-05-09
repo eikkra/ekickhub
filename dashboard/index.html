@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>eKickHub Player</title>
+<title>eKickHub Player Profile</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"/>
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 <style>
 
@@ -22,23 +22,24 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-background:#050816;
+background:#020617;
 color:white;
 overflow-x:hidden;
 }
 
-a{
-text-decoration:none;
-color:inherit;
+body::-webkit-scrollbar{
+width:0;
 }
 
-.bg1,.bg2{
+.bg1,
+.bg2{
 position:fixed;
-width:350px;
-height:350px;
-filter:blur(140px);
+width:420px;
+height:420px;
+border-radius:50%;
+filter:blur(180px);
 z-index:-1;
-opacity:.15;
+opacity:.18;
 }
 
 .bg1{
@@ -55,13 +56,13 @@ right:-120px;
 
 .topbar{
 height:58px;
-padding:0 15px;
+padding:0 14px;
 display:flex;
 align-items:center;
 justify-content:space-between;
-border-bottom:1px solid rgba(255,255,255,.07);
-background:rgba(10,14,30,.92);
-backdrop-filter:blur(14px);
+background:rgba(15,23,42,.82);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,.05);
 position:sticky;
 top:0;
 z-index:999;
@@ -74,13 +75,14 @@ gap:12px;
 }
 
 .menuBtn{
-font-size:22px;
+font-size:18px;
 cursor:pointer;
+color:#00ffe1;
 }
 
 .logo{
-font-size:18px;
-font-weight:900;
+font-size:19px;
+font-weight:800;
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
@@ -90,24 +92,31 @@ background:linear-gradient(90deg,#00ffe1,#ff00c8);
 display:flex;
 align-items:center;
 gap:16px;
-font-size:18px;
 }
 
-.iconBtn{
+.topIcon{
+font-size:16px;
 cursor:pointer;
+color:#d1d5db;
+transition:.3s;
+}
+
+.topIcon:hover{
+color:#00ffe1;
 }
 
 .sidebar{
 position:fixed;
-top:0;
 left:-280px;
+top:0;
 width:260px;
 height:100vh;
-background:#0b1223;
-border-right:1px solid rgba(255,255,255,.08);
-transition:.35s;
-z-index:9999;
+background:#081120;
+backdrop-filter:blur(14px);
+border-right:1px solid rgba(255,255,255,.06);
 padding:20px;
+z-index:1000;
+transition:.35s;
 overflow-y:auto;
 }
 
@@ -115,323 +124,276 @@ overflow-y:auto;
 left:0;
 }
 
-.sideTop{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-}
-
 .closeBtn{
-font-size:24px;
+font-size:20px;
 cursor:pointer;
+margin-bottom:18px;
+color:#ff00c8;
 }
 
-.sideMenu{
-display:flex;
-flex-direction:column;
-gap:12px;
+.sideTitle{
+font-size:13px;
+color:#00ffe1;
+margin:22px 0 10px;
 }
 
 .sideItem{
 padding:13px 14px;
 border-radius:14px;
-background:#111b31;
-font-size:13px;
+background:#0f172a;
+margin-bottom:10px;
+font-size:12px;
 cursor:pointer;
-border:1px solid rgba(255,255,255,.05);
+display:flex;
+align-items:center;
+gap:12px;
+border:1px solid rgba(255,255,255,.04);
+transition:.3s;
 }
 
-.sideTitle{
-font-size:11px;
-color:#7dd3fc;
-margin-top:18px;
-margin-bottom:8px;
+.sideItem:hover{
+background:#111c31;
+border-color:#00ffe1;
 }
 
 .container{
-max-width:1150px;
+width:100%;
+max-width:1100px;
 margin:auto;
-padding:18px 14px 90px;
+padding:22px 14px 50px;
 }
 
 .profileCard{
 background:rgba(255,255,255,.04);
 border:1px solid rgba(255,255,255,.06);
-border-radius:26px;
-padding:20px;
-backdrop-filter:blur(15px);
+border-radius:28px;
+padding:24px 18px;
+backdrop-filter:blur(14px);
 box-shadow:0 0 30px rgba(0,255,225,.08);
 }
 
 .profileTop{
 display:flex;
-gap:18px;
+flex-direction:column;
 align-items:center;
-flex-wrap:wrap;
+text-align:center;
 }
 
-.playerImage{
-width:120px;
-height:120px;
+.profileImage{
+width:118px;
+height:118px;
 border-radius:24px;
 object-fit:cover;
 border:2px solid #00ffe1;
-}
-
-.playerInfo{
-flex:1;
-min-width:240px;
+box-shadow:0 0 25px rgba(0,255,225,.35);
 }
 
 .playerName{
-font-size:24px;
-font-weight:900;
+font-size:20px;
+font-weight:700;
+margin-top:14px;
 display:flex;
 align-items:center;
+justify-content:center;
 gap:10px;
-flex-wrap:wrap;
 }
 
-.fbIcon{
-font-size:18px;
-color:#00b7ff;
-cursor:pointer;
+.playerName a{
+color:#1877f2;
+font-size:17px;
 }
 
-.miniInfo{
+.infoRow{
+margin-top:12px;
 display:flex;
-gap:10px;
 flex-wrap:wrap;
-margin-top:10px;
+justify-content:center;
+gap:10px;
 }
 
-.miniBox{
-background:#10192d;
-padding:8px 12px;
+.infoBadge{
+padding:9px 14px;
 border-radius:12px;
+background:#0f172a;
 font-size:10px;
-border:1px solid rgba(255,255,255,.06);
-color:#d1d5db;
+display:flex;
+align-items:center;
+gap:7px;
+border:1px solid rgba(255,255,255,.04);
 }
 
-.ratingWrap{
-margin-top:14px;
+.ratingBox{
+margin-top:18px;
+width:100%;
+max-width:520px;
 }
 
-.ratingText{
+.ratingHead{
+display:flex;
+justify-content:space-between;
 font-size:11px;
-margin-bottom:8px;
-color:#facc15;
-font-weight:700;
+margin-bottom:7px;
+color:#d1d5db;
 }
 
 .ratingBar{
 height:16px;
 background:#111827;
-border-radius:30px;
+border-radius:50px;
 overflow:hidden;
-border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.05);
 }
 
 .ratingFill{
 height:100%;
 width:56%;
-background:linear-gradient(90deg,#00ffe1,#06b6d4,#ff00c8);
+background:linear-gradient(90deg,#00ffe1,#00b7ff,#8b5cf6,#ff00c8);
+border-radius:50px;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+padding-right:10px;
+font-size:10px;
+font-weight:700;
+}
+
+.idGrid{
+display:grid;
+grid-template-columns:1fr;
+gap:10px;
+margin-top:20px;
+}
+
+.idCard{
+background:#0f172a;
+border-radius:14px;
+padding:12px 14px;
+border:1px solid rgba(255,255,255,.05);
+font-size:11px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+}
+
+.idTitle{
+color:#00ffe1;
+font-size:10px;
+white-space:nowrap;
+}
+
+.idValue{
+color:#fff;
+overflow:hidden;
+text-overflow:ellipsis;
+white-space:nowrap;
+}
+
+.adBox{
+margin-top:18px;
+height:95px;
+border-radius:18px;
+background:linear-gradient(90deg,#0f172a,#111827);
+border:1px dashed rgba(255,255,255,.08);
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:10px;
-font-weight:900;
-}
-
-.infoGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:12px;
-margin-top:18px;
-}
-
-.infoBox{
-background:#10192d;
-padding:12px;
-border-radius:14px;
-font-size:12px;
-border:1px solid rgba(255,255,255,.06);
-}
-
-.infoLabel{
-font-size:10px;
-color:#7dd3fc;
-margin-bottom:4px;
+font-size:13px;
+color:#9ca3af;
 }
 
 .tabs{
 display:flex;
 gap:10px;
-margin-top:18px;
-flex-wrap:wrap;
+margin-top:22px;
+overflow:auto;
+padding-bottom:5px;
 }
 
-.tab{
-padding:11px 16px;
-background:#111827;
+.tabs::-webkit-scrollbar{
+height:0;
+}
+
+.tabBtn{
+padding:10px 16px;
 border-radius:12px;
-font-size:12px;
+background:#0f172a;
+font-size:11px;
+white-space:nowrap;
 cursor:pointer;
-border:1px solid rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.04);
 }
 
-.tab.active{
+.tabBtn.active{
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 }
 
 .statsGrid{
-margin-top:18px;
+margin-top:20px;
 display:grid;
-grid-template-columns:repeat(6,1fr);
+grid-template-columns:repeat(3,1fr);
 gap:10px;
 }
 
-.statBox{
+.statCard{
 background:#0f172a;
-padding:12px 8px;
-border-radius:16px;
+border-radius:14px;
+padding:14px 8px;
 text-align:center;
-border:1px solid rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.04);
 }
 
 .statValue{
 font-size:16px;
-font-weight:900;
+font-weight:700;
 color:#00ffe1;
 line-height:1;
 }
 
 .statLabel{
 font-size:9px;
-margin-top:7px;
-color:#cbd5e1;
+margin-top:8px;
+color:#d1d5db;
 line-height:1.4;
 }
 
-.adsBox{
-margin-top:18px;
-height:90px;
-border-radius:18px;
-border:1px dashed rgba(255,255,255,.15);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:12px;
-color:#94a3b8;
-background:#0b1220;
-}
-
-.editModal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.75);
-display:none;
-justify-content:center;
-align-items:center;
-padding:20px;
-z-index:99999;
-}
-
-.editModal.active{
-display:flex;
-}
-
-.editBox{
-width:100%;
-max-width:520px;
-max-height:90vh;
-overflow-y:auto;
-background:#081120;
-padding:20px;
-border-radius:24px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.editBox input,
-.editBox select{
-width:100%;
-padding:13px;
-margin-bottom:12px;
-background:#0f172a;
-border:none;
-border-radius:12px;
-color:white;
-}
-
-.editBtns{
-display:flex;
-gap:10px;
-}
-
-.saveBtn,.cancelBtn{
-flex:1;
-padding:13px;
-border:none;
-border-radius:12px;
-font-weight:700;
-cursor:pointer;
-}
-
-.saveBtn{
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
-color:white;
-}
-
-.cancelBtn{
-background:#1e293b;
-color:white;
-}
-
-#cropContainer{
-display:none;
-margin-bottom:12px;
-}
-
-#preview{
-width:100%;
-border-radius:18px;
-}
-
-@media(max-width:768px){
-
-.playerName{
-justify-content:center;
-text-align:center;
-font-size:21px;
-}
-
-.playerInfo{
-text-align:center;
-}
+@media(min-width:768px){
 
 .profileTop{
-justify-content:center;
+flex-direction:row;
+align-items:center;
+text-align:left;
+gap:22px;
 }
 
-.infoGrid{
-grid-template-columns:1fr;
+.profileInfo{
+flex:1;
 }
 
-.statsGrid{
+.playerName{
+justify-content:flex-start;
+}
+
+.infoRow{
+justify-content:flex-start;
+}
+
+.ratingBox{
+max-width:420px;
+}
+
+.idGrid{
 grid-template-columns:repeat(3,1fr);
 }
 
-.infoBox{
-font-size:11px;
+.statsGrid{
+grid-template-columns:repeat(6,1fr);
 }
 
 }
 
 </style>
 </head>
-
 <body>
 
 <div class="bg1"></div>
@@ -439,35 +401,42 @@ font-size:11px;
 
 <div class="sidebar" id="sidebar">
 
-<div class="sideTop">
-<div class="logo">eKickHub</div>
-<div class="closeBtn" id="closeSidebar">✕</div>
+<div class="closeBtn" id="closeSidebar">
+<i class="fa-solid fa-xmark"></i>
 </div>
 
-<div class="sideMenu">
+<div class="sideTitle">
+MAIN MENU
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-user"></i>
+Profile
+</div>
 
 <div class="sideItem" id="editBtn">
-⚙ Edit Profile
+<i class="fa-solid fa-pen"></i>
+Edit Profile
 </div>
 
 <div class="sideItem">
-🏆 Leaderboard
+<i class="fa-solid fa-trophy"></i>
+Leaderboard
 </div>
 
 <div class="sideItem">
-🎮 Competition Center
+<i class="fa-solid fa-futbol"></i>
+Competition Center
 </div>
 
 <div class="sideItem">
-🎁 Gift Store
+<i class="fa-solid fa-gift"></i>
+Gift Center
 </div>
 
 <div class="sideItem">
-📊 Analytics
-</div>
-
-<div class="sideItem" id="logoutBtn">
-🚪 Logout
+<i class="fa-solid fa-bell"></i>
+Notifications
 </div>
 
 <div class="sideTitle">
@@ -476,19 +445,45 @@ SWITCH ROLE
 
 <div id="roleList"></div>
 
+<div class="sideTitle">
+ACCOUNT
 </div>
+
+<div class="sideItem" id="logoutBtn">
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</div>
+
 </div>
 
 <div class="topbar">
 
 <div class="leftTop">
-<div class="menuBtn" id="menuBtn">☰</div>
-<div class="logo">eKickHub</div>
+
+<div class="menuBtn" id="menuBtn">
+<i class="fa-solid fa-bars"></i>
+</div>
+
+<div class="logo">
+eKickHub
+</div>
+
 </div>
 
 <div class="rightTop">
-<div class="iconBtn">🔔</div>
-<div class="iconBtn">💬</div>
+
+<div class="topIcon">
+<i class="fa-solid fa-envelope"></i>
+</div>
+
+<div class="topIcon">
+<i class="fa-solid fa-bell"></i>
+</div>
+
+<div class="topIcon">
+<i class="fa-solid fa-user"></i>
+</div>
+
 </div>
 
 </div>
@@ -499,38 +494,59 @@ SWITCH ROLE
 
 <div class="profileTop">
 
-<img id="playerImage"
-class="playerImage">
+<img id="profileImage"
+class="profileImage"/>
 
-<div class="playerInfo">
+<div class="profileInfo">
 
 <div class="playerName">
 
-<span id="playerName"></span>
+<span id="playerName">
+Player Name
+</span>
 
 <a id="fbLink" target="_blank">
-<span class="fbIcon">📘</span>
+<i class="fa-brands fa-facebook"></i>
 </a>
 
 </div>
 
-<div class="miniInfo">
+<div class="infoRow">
 
-<div class="miniBox" id="country"></div>
-<div class="miniBox" id="position"></div>
-<div class="miniBox" id="age"></div>
+<div class="infoBadge">
+<i class="fa-solid fa-location-dot"></i>
+<span id="playerCountry"></span>
+</div>
+
+<div class="infoBadge">
+<i class="fa-solid fa-gamepad"></i>
+<span id="playerPosition"></span>
+</div>
+
+<div class="infoBadge">
+<i class="fa-solid fa-cake-candles"></i>
+<span id="playerAge"></span>
+</div>
 
 </div>
 
-<div class="ratingWrap">
+<div class="ratingBox">
 
-<div class="ratingText">
-ELITE PLAYER RATING
+<div class="ratingHead">
+
+<span>
+Elite Player Rating
+</span>
+
+<span id="ratingText">
+56 / 100
+</span>
+
 </div>
 
 <div class="ratingBar">
 <div class="ratingFill" id="ratingFill">
-56
+56%
 </div>
 </div>
 
@@ -540,165 +556,122 @@ ELITE PLAYER RATING
 
 </div>
 
-<div class="infoGrid">
+<div class="idGrid">
 
-<div class="infoBox">
-<div class="infoLabel">Player ID</div>
-<div id="player_id"></div>
+<div class="idCard">
+<div class="idTitle">
+Player ID:
+</div>
+<div class="idValue" id="playerId"></div>
 </div>
 
-<div class="infoBox">
-<div class="infoLabel">Konami ID</div>
-<div id="konami_id"></div>
+<div class="idCard">
+<div class="idTitle">
+Konami ID:
+</div>
+<div class="idValue" id="konamiId"></div>
 </div>
 
-<div class="infoBox">
-<div class="infoLabel">Device</div>
-<div id="device_name"></div>
+<div class="idCard">
+<div class="idTitle">
+Device:
+</div>
+<div class="idValue" id="deviceName"></div>
 </div>
 
+</div>
+
+<div class="adBox">
+ADS SPACE • eKickHub Sponsor Area
 </div>
 
 <div class="tabs">
 
-<div class="tab active">
+<div class="tabBtn active">
 Overall
 </div>
 
-<div class="tab">
+<div class="tabBtn">
 Achievements
 </div>
 
-<div class="tab">
+<div class="tabBtn">
 Trophies
 </div>
 
-<div class="tab">
-Coins
+<div class="tabBtn">
+Gift Coins
 </div>
 
 </div>
 
 <div class="statsGrid">
 
-<div class="statBox">
-<div class="statValue">0</div>
+<div class="statCard">
+<div class="statValue">#0</div>
 <div class="statLabel">RANK</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">MATCH PLAYED</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">WINS</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">DRAWS</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">LOSSES</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0%</div>
 <div class="statLabel">WIN RATE</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">HAT-TRICK</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">MOTM</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">7+ GOALS</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">CLEAN SHEETS</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">GOALS FOR</div>
 </div>
 
-<div class="statBox">
+<div class="statCard">
 <div class="statValue">0</div>
 <div class="statLabel">GOALS AGAINST</div>
 </div>
 
 </div>
 
-<div class="adsBox">
-ADS SPACE
 </div>
 
 </div>
-
-</div>
-
-<div class="editModal" id="editModal">
-
-<div class="editBox">
-
-<input type="text" id="edit_name" placeholder="Full Name">
-<input type="text" id="edit_phone" placeholder="Phone Number">
-<input type="date" id="edit_dob">
-<input type="text" id="edit_device" placeholder="Device Name">
-<input type="text" id="edit_konami" placeholder="ASDF-000-000-000">
-<input type="text" id="edit_fb" placeholder="Facebook URL">
-
-<select id="edit_position">
-<option>CF</option>
-<option>SS</option>
-<option>LWF</option>
-<option>RWF</option>
-<option>AMF</option>
-<option>CMF</option>
-<option>DMF</option>
-<option>LB</option>
-<option>RB</option>
-<option>CB</option>
-<option>GK</option>
-</select>
-
-<input type="file" id="edit_image" accept="image/*">
-
-<div id="cropContainer">
-<img id="preview">
-</div>
-
-<div class="editBtns">
-
-<button class="cancelBtn" id="cancelEdit">
-Cancel
-</button>
-
-<button class="saveBtn" id="saveEdit">
-Save Changes
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
 <script type="module" src="app.js"></script>
 
