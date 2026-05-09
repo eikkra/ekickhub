@@ -154,8 +154,20 @@ reader.readAsDataURL(file)
 
 /* REGISTER */
 
+const registerBtn =
 document.getElementById("registerBtn")
-.onclick = async ()=>{
+
+let isRegistering = false
+
+registerBtn.onclick = async ()=>{
+
+if(isRegistering) return
+
+isRegistering = true
+
+registerBtn.disabled = true
+
+registerBtn.innerHTML = "PLEASE WAIT..."
 
 msg.innerHTML = "Please wait..."
 
@@ -394,12 +406,24 @@ created_at:new Date().toISOString()
 msg.innerHTML =
 "Registration successful. Waiting for admin approval."
 
+isRegistering = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML = "REGISTER NOW"
+
 setTimeout(()=>{
 
 window.location.href =
 "../login/"
 
 },2500)
+
+isRegistering = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML = "REGISTER NOW"
 
 }catch(error){
 
