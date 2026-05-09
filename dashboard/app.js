@@ -32,29 +32,50 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app = initializeApp(firebaseConfig)
+const app =
+initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const auth =
+getAuth(app)
 
-const db = getFirestore(app)
+const db =
+getFirestore(app)
 
 /* SIDEBAR */
-
-const menuBtn =
-document.getElementById("menuBtn")
 
 const sidebar =
 document.getElementById("sidebar")
 
-menuBtn.onclick = ()=>{
+document.getElementById("menuBtn")
+.addEventListener("click",()=>{
 
-sidebar.classList.toggle("active")
+sidebar.classList.add("active")
 
+})
+
+document.getElementById("closeBtn")
+.addEventListener("click",()=>{
+
+sidebar.classList.remove("active")
+
+})
+
+/* CLOSE OUTSIDE CLICK */
+
+window.addEventListener("click",(e)=>{
+
+if(
+!sidebar.contains(e.target) &&
+!document.getElementById("menuBtn").contains(e.target)
+){
+sidebar.classList.remove("active")
 }
 
-/* LOAD PLAYER */
+})
 
-onAuthStateChanged(auth, async(user)=>{
+/* PROFILE */
+
+onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
@@ -73,95 +94,128 @@ doc(db,"users",user.uid)
 const docSnap =
 await getDoc(docRef)
 
-if(!docSnap.exists()){
-
-alert("Profile not found")
-
-return
-
-}
+if(!docSnap.exists()) return
 
 const data =
 docSnap.data()
 
-/* BASIC */
+/* DATA */
 
 document.getElementById("playerImage")
-.src =
-data.image
+.src = data.image || ""
 
 document.getElementById("playerName")
-.innerHTML =
-data.full_name || "Player"
+.innerHTML = data.full_name || "Unknown"
 
-document.getElementById("playerID")
-.innerHTML =
-data.player_id || "-"
+document.getElementById("playerId")
+.innerHTML = data.player_id || "-"
 
-document.getElementById("konami")
-.innerHTML =
-data.konami_id || "-"
+document.getElementById("konamiId")
+.innerHTML = data.konami_id || "-"
 
-document.getElementById("device")
-.innerHTML =
-data.device_name || "-"
+document.getElementById("deviceName")
+.innerHTML = data.device_name || "-"
 
-document.getElementById("role")
-.innerHTML =
-data.roles?.join(", ") || "player"
-
-/* META */
+document.getElementById("playerPlan")
+.innerHTML = (data.plan || "free").toUpperCase()
 
 document.getElementById("playerCountry")
-.innerHTML =
-`🌍 ${data.country || "Unknown"}`
+.innerHTML = data.country || "Unknown"
 
 document.getElementById("playerPosition")
-.innerHTML =
-`⚽ ${data.position || "-"}`
+.innerHTML = data.position || "-"
+
+document.getElementById("fbLink")
+.href = data.fb_id_url || "#"
 
 /* AGE */
 
 if(data.dob){
 
-const birthYear =
-new Date(data.dob).getFullYear()
+const birth =
+new Date(data.dob)
 
-const currentYear =
-new Date().getFullYear()
+const today =
+new Date()
 
-const age =
-currentYear - birthYear
+let age =
+today.getFullYear() -
+birth.getFullYear()
+
+const m =
+today.getMonth() -
+birth.getMonth()
+
+if(
+m < 0 ||
+(m === 0 && today.getDate() < birth.getDate())
+){
+age--
+}
 
 document.getElementById("playerAge")
 .innerHTML =
-`🎂 ${age}Y`
+`${age} YEARS`
 
 }
 
-/* PLAN */
-
-document.getElementById("playerPlan")
-.innerHTML =
-`💎 ${(data.plan || "FREE").toUpperCase()}`
-
-/* FB */
-
-document.getElementById("fbLink")
-.href =
-data.fb_id_url || "#"
-
 /* RATING */
 
-document.getElementById("rating")
-.innerHTML =
-data.rating || 56
+let rating = 78
+
+document.getElementById("playerRating")
+.innerHTML = rating
+
+/* ROLE SWITCH */
+
+const roleContainer =
+document.getElementById("roleContainer")
+
+roleContainer.innerHTML = ""
+
+if(Array.isArray(data.roles)){
+
+data.roles.forEach((role)=>{
+
+const div =
+document.createElement("div")
+
+div.className =
+"sideItem"
+
+div.innerHTML = `
+
+<i class="fa-solid fa-right-left"></i>
+
+SWITCH TO ${role.toUpperCase()}
+
+`
+
+div.onclick = ()=>{
+
+if(role === "admin"){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
+}
+
+roleContainer.appendChild(div)
+
+})
+
+}
 
 }catch(error){
 
 console.log(error)
-
-alert(error.message)
 
 }
 

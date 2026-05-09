@@ -6,9 +6,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>eKickHub Player</title>
+<title>eKickHub Player Profile</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 <style>
 
@@ -33,9 +36,9 @@ width:350px;
 height:350px;
 background:#00ffe1;
 filter:blur(160px);
-opacity:.10;
-top:-120px;
-left:-120px;
+opacity:.12;
+top:-100px;
+left:-100px;
 z-index:-1;
 }
 
@@ -45,34 +48,34 @@ width:350px;
 height:350px;
 background:#ff00c8;
 filter:blur(160px);
-opacity:.10;
-bottom:-120px;
-right:-120px;
+opacity:.12;
+bottom:-100px;
+right:-100px;
 z-index:-1;
 }
 
-/* TOP BAR */
+/* TOPBAR */
 
 .topbar{
 
-position:sticky;
+position:fixed;
 top:0;
-
+left:0;
 width:100%;
 height:58px;
 
-padding:0 14px;
+background:rgba(2,6,23,.92);
+
+backdrop-filter:blur(18px);
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
 
 display:flex;
 align-items:center;
 justify-content:space-between;
 
-background:rgba(10,15,25,.75);
-
-backdrop-filter:blur(16px);
-
-border-bottom:
-1px solid rgba(255,255,255,.06);
+padding:0 15px;
 
 z-index:999;
 }
@@ -80,61 +83,37 @@ z-index:999;
 .leftTop{
 display:flex;
 align-items:center;
-gap:10px;
+gap:12px;
 }
 
 .menuBtn{
-
 font-size:20px;
 cursor:pointer;
 color:#00ffe1;
-
 }
 
 .logo{
 
-font-size:16px;
-font-weight:800;
+font-size:18px;
+font-weight:900;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
 
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
 }
 
-.rightTop{
+.topIcons{
 display:flex;
 align-items:center;
-gap:14px;
+gap:16px;
 }
 
-.iconBtn{
-font-size:18px;
+.topIcons i{
+font-size:16px;
+color:#d1d5db;
 cursor:pointer;
-position:relative;
-}
-
-.badge{
-
-position:absolute;
-top:-4px;
-right:-6px;
-
-background:#ff004c;
-
-width:15px;
-height:15px;
-
-border-radius:50%;
-
-font-size:8px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
 }
 
 /* SIDEBAR */
@@ -143,419 +122,410 @@ justify-content:center;
 
 position:fixed;
 top:0;
-left:-260px;
+left:-280px;
 
-width:250px;
+width:260px;
 height:100vh;
 
-background:#07111f;
-
-padding:25px 18px;
-
-transition:.35s;
-
-z-index:9999;
+background:#081120;
 
 border-right:
 1px solid rgba(255,255,255,.06);
 
+padding:18px;
+
+transition:.35s ease;
+
+z-index:1000;
+
+overflow-y:auto;
 }
 
 .sidebar.active{
 left:0;
 }
 
-.sideTitle{
-
-font-size:18px;
-font-weight:700;
-
-margin-bottom:25px;
-
-color:#00ffe1;
-
-}
-
-.sideBtn{
-
-width:100%;
-
-padding:13px;
-
-margin-bottom:12px;
-
-border:none;
-
-border-radius:12px;
-
-background:#111827;
-
-color:white;
-
-font-size:12px;
-
-cursor:pointer;
-
-text-align:left;
-
-}
-
-/* CONTAINER */
-
-.container{
-
-width:100%;
-max-width:1150px;
-
-margin:auto;
-
-padding:18px 14px 80px;
-
-}
-
-/* PLAYER CARD */
-
-.playerCard{
-
-background:
-rgba(255,255,255,.05);
-
-border:
-1px solid rgba(255,255,255,.06);
-
-border-radius:28px;
-
-padding:22px 18px;
-
-backdrop-filter:blur(14px);
-
-box-shadow:
-0 0 35px rgba(0,255,225,.10);
-
-}
-
-/* TOP */
-
-.playerTop{
-
+.sideTop{
 display:flex;
 align-items:center;
-gap:16px;
-
-flex-wrap:wrap;
-
+justify-content:space-between;
+margin-bottom:28px;
 }
 
-.playerImg{
+.sideLogo{
 
-width:95px;
-height:95px;
-
-border-radius:24px;
-
-object-fit:cover;
-
-border:
-2px solid #00ffe1;
-
-}
-
-.playerInfo{
-flex:1;
-min-width:200px;
-}
-
-.playerName{
-
-font-size:20px;
-font-weight:700;
-
-display:flex;
-align-items:center;
-gap:8px;
-
-}
-
-.fbIcon{
-font-size:15px;
-cursor:pointer;
-text-decoration:none;
-}
-
-.playerMeta{
-
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-
-margin-top:10px;
-
-}
-
-.metaTag{
-
-padding:7px 11px;
-
-background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-border-radius:12px;
-
-font-size:10px;
-
-color:#cbd5e1;
-
-}
-
-/* RATING */
-
-.ratingBox{
-
-padding:14px 16px;
-
-border-radius:18px;
-
-background:
-linear-gradient(135deg,#00ffe115,#ff00c815);
-
-border:
-1px solid rgba(255,255,255,.08);
-
-text-align:center;
-
-min-width:120px;
-
-}
-
-.ratingText{
-font-size:9px;
-color:#94a3b8;
-}
-
-.ratingNum{
-
-font-size:32px;
-font-weight:800;
-
-margin-top:3px;
+font-size:22px;
+font-weight:900;
 
 background:
 linear-gradient(90deg,#00ffe1,#ff00c8);
 
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
 }
 
-/* INFO BOX */
-
-.infoGrid{
-
-display:grid;
-grid-template-columns:repeat(2,1fr);
-
-gap:10px;
-
-margin-top:18px;
-
+.closeBtn{
+font-size:22px;
+cursor:pointer;
 }
 
-.infoItem{
-
-background:#0f172a;
-
-padding:12px;
-
-border-radius:15px;
-
-border:
-1px solid rgba(255,255,255,.04);
-
-}
-
-.infoLabel{
-font-size:9px;
-color:#94a3b8;
-margin-bottom:4px;
-}
-
-.infoValue{
+.sideTitle{
 font-size:11px;
-font-weight:600;
-word-break:break-word;
+color:#00ffe1;
+margin:20px 0 10px;
+font-weight:700;
 }
 
-/* STATS */
+.sideItem{
 
-.statsGrid{
-
-display:grid;
-grid-template-columns:repeat(4,1fr);
-
-gap:10px;
-
-margin-top:18px;
-
-}
-
-.statCard{
+display:flex;
+align-items:center;
+gap:12px;
 
 background:#0f172a;
-
-padding:12px 8px;
-
-border-radius:16px;
-
-text-align:center;
 
 border:
 1px solid rgba(255,255,255,.05);
 
-}
+padding:13px;
 
-.statNum{
+border-radius:14px;
 
-font-size:16px;
+margin-bottom:10px;
+
+font-size:11px;
 font-weight:700;
 
+cursor:pointer;
+
+transition:.25s;
+}
+
+.sideItem:hover{
+border-color:#00ffe1;
+transform:translateX(4px);
+}
+
+.sideItem i{
 color:#00ffe1;
+width:18px;
+}
+
+/* MAIN */
+
+.main{
+padding:76px 14px 30px;
+max-width:1150px;
+margin:auto;
+}
+
+/* PROFILE */
+
+.profile{
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+border-radius:28px;
+
+padding:22px 16px;
+
+backdrop-filter:blur(16px);
+
+box-shadow:
+0 0 35px rgba(0,255,225,.08);
+}
+
+/* PLAYER TOP */
+
+.playerTop{
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+}
+
+.playerImg{
+
+width:108px;
+height:108px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid #00ffe1;
+
+box-shadow:
+0 0 25px rgba(0,255,225,.28);
 
 }
 
-.statText{
+.playerName{
+
+margin-top:14px;
+
+font-size:20px;
+font-weight:900;
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+
+flex-wrap:wrap;
+
+text-align:center;
+}
+
+.fbBtn{
+color:#00acee;
+font-size:15px;
+}
+
+.playerMini{
+
+margin-top:10px;
+
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:8px;
+}
+
+.mini{
+
+background:#0f172a;
+
+border:
+1px solid rgba(255,255,255,.05);
+
+padding:8px 10px;
+
+border-radius:12px;
 
 font-size:9px;
+font-weight:700;
+
+color:#d1d5db;
+}
+
+/* RATING */
+
+.rating{
+
+margin-top:18px;
+
+width:100%;
+max-width:310px;
+
+padding:16px;
+
+border-radius:22px;
+
+background:
+linear-gradient(135deg,#00ffe1,#00b7ff,#ff00c8);
+
+background-size:300% 300%;
+
+animation:rgb 6s ease infinite;
+
+box-shadow:
+0 0 35px rgba(255,0,200,.22);
+
+}
+
+@keyframes rgb{
+
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+
+}
+
+.ratingTitle{
+font-size:11px;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.ratingValue{
+font-size:38px;
+font-weight:900;
+line-height:1;
+}
+
+/* INFO */
+
+.infoGrid{
+
+margin-top:18px;
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.info{
+
+background:#0f172a;
+
+border:
+1px solid rgba(255,255,255,.05);
+
+padding:12px;
+
+border-radius:14px;
+}
+
+.infoLabel{
+font-size:8px;
 color:#94a3b8;
+margin-bottom:5px;
+}
 
-margin-top:4px;
-
-line-height:1.4;
-
+.infoValue{
+font-size:10px;
+font-weight:700;
+word-break:break-word;
 }
 
 /* ADS */
 
-.adsBox{
+.ads{
 
 margin-top:18px;
 
-height:90px;
+height:85px;
 
 border-radius:18px;
 
+background:
+linear-gradient(135deg,#111827,#1e293b);
+
 border:
-1px dashed rgba(255,255,255,.15);
+1px dashed rgba(255,255,255,.12);
 
 display:flex;
 align-items:center;
 justify-content:center;
 
-font-size:13px;
+font-size:12px;
+font-weight:700;
 
-color:#64748b;
-
-background:#0f172a;
-
+color:#94a3b8;
 }
 
 /* TABS */
 
 .tabs{
 
-display:flex;
-gap:10px;
-
-overflow:auto;
-
 margin-top:18px;
 
-padding-bottom:3px;
+display:grid;
+grid-template-columns:repeat(4,1fr);
 
+gap:10px;
 }
 
-.tabs button{
-
-padding:11px 16px;
-
-border:none;
-
-border-radius:12px;
+.tab{
 
 background:#0f172a;
-
-color:white;
-
-font-size:11px;
-
-cursor:pointer;
-
-white-space:nowrap;
-
-}
-
-.tabs .active{
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-}
-
-/* SECTION */
-
-.section{
-
-margin-top:16px;
-
-background:#0f172a;
-
-padding:18px;
-
-border-radius:20px;
 
 border:
 1px solid rgba(255,255,255,.05);
 
-min-height:180px;
+padding:13px 8px;
 
-}
+border-radius:14px;
 
-.sectionTitle{
+text-align:center;
 
-font-size:14px;
+font-size:9px;
 font-weight:700;
 
-margin-bottom:10px;
-
+cursor:pointer;
 }
 
-/* MOBILE */
+/* STATS */
 
-@media(max-width:768px){
+.stats{
 
-.playerTop{
-flex-direction:column;
-align-items:center;
+margin-top:18px;
+
+display:grid;
+grid-template-columns:repeat(3,1fr);
+
+gap:10px;
+}
+
+.stat{
+
+background:#0f172a;
+
+border:
+1px solid rgba(255,255,255,.05);
+
+padding:12px 8px;
+
+border-radius:14px;
+
 text-align:center;
 }
 
-.playerInfo{
-width:100%;
+.statValue{
+font-size:17px;
+font-weight:900;
+color:#00ffe1;
+margin-bottom:4px;
 }
 
-.playerMeta{
-justify-content:center;
+.statTitle{
+font-size:8px;
+color:#d1d5db;
+line-height:1.5;
 }
 
-.ratingBox{
-width:100%;
+@media(min-width:768px){
+
+.main{
+padding:88px 22px 40px;
 }
 
-.statsGrid{
-grid-template-columns:repeat(2,1fr);
+.profile{
+padding:28px;
 }
 
-.infoGrid{
-grid-template-columns:1fr;
+.playerWrap{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:30px;
+}
+
+.playerTop{
+align-items:flex-start;
+text-align:left;
+}
+
+.playerName{
+justify-content:flex-start;
+}
+
+.playerMini{
+justify-content:flex-start;
+}
+
+.rating{
+margin-top:0;
+max-width:250px;
+}
+
+.stats{
+grid-template-columns:repeat(6,1fr);
 }
 
 }
@@ -585,20 +555,11 @@ eKickHub
 
 </div>
 
-<div class="rightTop">
+<div class="topIcons">
 
-<div class="iconBtn">
-🔔
-<div class="badge">2</div>
-</div>
+<i class="fa-regular fa-bell"></i>
 
-<div class="iconBtn">
-💬
-</div>
-
-<div class="iconBtn">
-👤
-</div>
+<i class="fa-regular fa-envelope"></i>
 
 </div>
 
@@ -608,96 +569,103 @@ eKickHub
 
 <div class="sidebar" id="sidebar">
 
-<div class="sideTitle">
+<div class="sideTop">
+
+<div class="sideLogo">
+eKickHub
+</div>
+
+<div class="closeBtn" id="closeBtn">
+✕
+</div>
+
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-user"></i>
+Profile
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-pen"></i>
+Edit Profile
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-ranking-star"></i>
+Leaderboard
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-trophy"></i>
+Tournament
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-gift"></i>
+Rewards
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-gear"></i>
 Settings
 </div>
 
-<button class="sideBtn">
-Edit Profile
-</button>
+<div class="sideTitle">
+SWITCH ROLE
+</div>
 
-<button class="sideBtn">
-Switch Role
-</button>
-
-<button class="sideBtn">
-Notifications
-</button>
-
-<button class="sideBtn">
-My Club
-</button>
-
-<button class="sideBtn">
-Logout
-</button>
+<div id="roleContainer"></div>
 
 </div>
 
-<!-- CONTAINER -->
+<!-- MAIN -->
 
-<div class="container">
+<div class="main">
 
-<div class="playerCard">
+<div class="profile">
 
-<!-- TOP -->
+<div class="playerWrap">
 
 <div class="playerTop">
 
-<img
-id="playerImage"
-class="playerImg"
-src="">
-
-<div class="playerInfo">
+<img id="playerImage"
+class="playerImg">
 
 <div class="playerName">
 
-<span id="playerName">
-Player Name
-</span>
+<span id="playerName"></span>
 
-<a
-id="fbLink"
-target="_blank"
-class="fbIcon">
+<a id="fbLink"
+class="fbBtn"
+target="_blank">
 
-📘
+<i class="fa-brands fa-facebook-f"></i>
 
 </a>
 
 </div>
 
-<div class="playerMeta">
+<div class="playerMini">
 
-<div class="metaTag" id="playerCountry">
-🌍 Bangladesh
-</div>
+<div class="mini" id="playerCountry"></div>
 
-<div class="metaTag" id="playerPosition">
-⚽ CF
-</div>
+<div class="mini" id="playerPosition"></div>
 
-<div class="metaTag" id="playerAge">
-🎂 20Y
-</div>
-
-<div class="metaTag" id="playerPlan">
-💎 FREE
-</div>
+<div class="mini" id="playerAge"></div>
 
 </div>
 
 </div>
 
-<div class="ratingBox">
+<div class="rating">
 
-<div class="ratingText">
-ELITE RATING
+<div class="ratingTitle">
+ELITE PLAYER RATING
 </div>
 
-<div class="ratingNum" id="rating">
-56
+<div class="ratingValue" id="playerRating">
+78
 </div>
 
 </div>
@@ -708,105 +676,31 @@ ELITE RATING
 
 <div class="infoGrid">
 
-<div class="infoItem">
+<div class="info">
 <div class="infoLabel">PLAYER ID</div>
-<div class="infoValue" id="playerID">
-EKH-000001
-</div>
+<div class="infoValue" id="playerId"></div>
 </div>
 
-<div class="infoItem">
+<div class="info">
 <div class="infoLabel">KONAMI ID</div>
-<div class="infoValue" id="konami">
-AAAA-000-000-000
-</div>
+<div class="infoValue" id="konamiId"></div>
 </div>
 
-<div class="infoItem">
+<div class="info">
 <div class="infoLabel">DEVICE</div>
-<div class="infoValue" id="device">
-iPhone
-</div>
+<div class="infoValue" id="deviceName"></div>
 </div>
 
-<div class="infoItem">
-<div class="infoLabel">ROLE</div>
-<div class="infoValue" id="role">
-PLAYER
-</div>
-</div>
-
-</div>
-
-<!-- STATS -->
-
-<div class="statsGrid">
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">RANK</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">MATCH PLAYED</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">WINS</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">DRAWS</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">LOSSES</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0%</div>
-<div class="statText">WIN RATE</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">HAT-TRICK</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">MOTM</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">7+ GOALS</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">CLEAN SHEETS</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">GOALS FOR</div>
-</div>
-
-<div class="statCard">
-<div class="statNum">0</div>
-<div class="statText">GOALS AGAINST</div>
+<div class="info">
+<div class="infoLabel">PLAN</div>
+<div class="infoValue" id="playerPlan"></div>
 </div>
 
 </div>
 
 <!-- ADS -->
 
-<div class="adsBox">
+<div class="ads">
 ADS SPACE
 </div>
 
@@ -814,40 +708,86 @@ ADS SPACE
 
 <div class="tabs">
 
-<button class="active">
-Overview
-</button>
+<div class="tab">
+OVERALL
+</div>
 
-<button>
-Performance
-</button>
+<div class="tab">
+ACHIEVEMENTS
+</div>
 
-<button>
-Achievements
-</button>
+<div class="tab">
+TROPHIES
+</div>
 
-<button>
-Trophies
-</button>
-
-<button>
-Gift Coins
-</button>
+<div class="tab">
+GIFTS
+</div>
 
 </div>
 
-<!-- SECTION -->
+<!-- STATS -->
 
-<div class="section">
+<div class="stats">
 
-<div class="sectionTitle">
-Player Overview
+<div class="stat">
+<div class="statValue">#0</div>
+<div class="statTitle">RANK</div>
 </div>
 
-<div style="font-size:12px;color:#94a3b8;line-height:1.8">
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">MATCH PLAYED</div>
+</div>
 
-Competition system connected হলে এখানে সব match data, graph, activity, achievements show হবে.
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">WINS</div>
+</div>
 
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">DRAWS</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">LOSSES</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0%</div>
+<div class="statTitle">WIN RATE</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">HAT-TRICK</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">MOTM</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">7+ GOALS</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">CLEAN SHEETS</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">GOALS FOR</div>
+</div>
+
+<div class="stat">
+<div class="statValue">0</div>
+<div class="statTitle">GOALS AGAINST</div>
 </div>
 
 </div>
