@@ -52,22 +52,14 @@ right:-100px;
 }
 
 .topbar{
-
 height:60px;
 padding:0 16px;
-
 display:flex;
 align-items:center;
 justify-content:space-between;
-
-background:
-rgba(255,255,255,.03);
-
-border-bottom:
-1px solid rgba(255,255,255,.05);
-
+background:rgba(255,255,255,.03);
+border-bottom:1px solid rgba(255,255,255,.05);
 backdrop-filter:blur(12px);
-
 position:sticky;
 top:0;
 z-index:999;
@@ -86,16 +78,11 @@ color:#00ffe1;
 }
 
 .logo{
-
 font-size:18px;
 font-weight:900;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
 }
 
 .rightTop{
@@ -111,25 +98,16 @@ color:#cbd5e1;
 }
 
 .sidebar{
-
 position:fixed;
 left:-270px;
 top:0;
-
 width:260px;
 height:100vh;
-
 background:#081120;
-
-border-right:
-1px solid rgba(255,255,255,.08);
-
+border-right:1px solid rgba(255,255,255,.08);
 transition:.3s;
-
 padding:18px;
-
 z-index:9999;
-
 overflow-y:auto;
 }
 
@@ -176,6 +154,35 @@ color:#94a3b8;
 margin-top:4px;
 }
 
+.roleSwitchBox{
+margin-bottom:20px;
+}
+
+.roleTitle{
+font-size:11px;
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.roleSwitchBtn{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+margin-bottom:10px;
+cursor:pointer;
+font-size:11px;
+font-weight:700;
+color:white;
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
+transition:.2s;
+}
+
+.roleSwitchBtn:hover{
+background:linear-gradient(90deg,#00ffe120,#ff00c820);
+}
+
 .menu{
 display:flex;
 flex-direction:column;
@@ -183,31 +190,19 @@ gap:10px;
 }
 
 .menu a{
-
 display:flex;
 align-items:center;
 gap:12px;
-
 padding:14px;
-
 border-radius:14px;
-
 text-decoration:none;
-
 color:#e2e8f0;
-
 font-size:12px;
-
-background:
-rgba(255,255,255,.03);
-
-transition:.2s;
-
+background:rgba(255,255,255,.03);
 }
 
 .menu a:hover{
-background:
-linear-gradient(90deg,#00ffe120,#ff00c820);
+background:linear-gradient(90deg,#00ffe120,#ff00c820);
 }
 
 .logoutBtn{
@@ -228,15 +223,9 @@ margin-bottom:18px;
 }
 
 .card{
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 padding:18px;
-
 border-radius:20px;
 }
 
@@ -252,17 +241,10 @@ font-weight:900;
 }
 
 .section{
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 border-radius:22px;
-
 padding:18px;
-
 margin-bottom:20px;
 }
 
@@ -277,18 +259,12 @@ margin-bottom:18px;
 }
 
 .searchBox input{
-
 width:100%;
-
 padding:14px;
-
 background:#0f172a;
-
 border:none;
 outline:none;
-
 border-radius:16px;
-
 color:white;
 }
 
@@ -306,8 +282,7 @@ th,td{
 padding:14px;
 text-align:left;
 font-size:11px;
-border-bottom:
-1px solid rgba(255,255,255,.05);
+border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 th{
@@ -345,14 +320,10 @@ gap:6px;
 }
 
 .roleChip{
-
 padding:7px 10px;
-
 border-radius:50px;
-
 font-size:10px;
 font-weight:700;
-
 display:flex;
 align-items:center;
 gap:6px;
@@ -363,7 +334,7 @@ background:#00ffe120;
 color:#00ffe1;
 }
 
-.adminRole{
+.adminRoleChip{
 background:#ff00c820;
 color:#ff4dff;
 }
@@ -394,17 +365,12 @@ flex-wrap:wrap;
 }
 
 .actionBtns button{
-
 border:none;
 cursor:pointer;
-
 padding:9px 12px;
-
 border-radius:10px;
-
 font-size:10px;
 font-weight:700;
-
 color:white;
 }
 
@@ -465,19 +431,6 @@ grid-template-columns:repeat(2,1fr);
 grid-template-columns:1fr;
 }
 
-.topbar{
-height:56px;
-}
-
-.logo{
-font-size:16px;
-}
-
-.menu a{
-font-size:11px;
-padding:12px;
-}
-
 }
 
 </style>
@@ -488,8 +441,6 @@ padding:12px;
 
 <div class="bg1"></div>
 <div class="bg2"></div>
-
-<!-- TOPBAR -->
 
 <div class="topbar">
 
@@ -513,8 +464,6 @@ eKickHub Admin
 </div>
 
 </div>
-
-<!-- SIDEBAR -->
 
 <div class="sidebar"
 id="sidebar">
@@ -547,6 +496,18 @@ SUPER ADMIN
 </div>
 
 </div>
+
+</div>
+
+<!-- ROLE SWITCH -->
+
+<div class="roleSwitchBox">
+
+<div class="roleTitle">
+SWITCH ROLE
+</div>
+
+<div id="roleSwitchList"></div>
 
 </div>
 
@@ -601,69 +562,31 @@ Logout
 
 </div>
 
-<!-- MAIN -->
-
 <div class="main">
-
-<!-- CARDS -->
 
 <div class="cards">
 
 <div class="card">
-
-<div class="cardTitle">
-TOTAL USERS
-</div>
-
-<div class="cardValue"
-id="totalUsers">
-0
-</div>
-
+<div class="cardTitle">TOTAL USERS</div>
+<div class="cardValue" id="totalUsers">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-PENDING APPROVAL
-</div>
-
-<div class="cardValue"
-id="pendingUsers">
-0
-</div>
-
+<div class="cardTitle">PENDING APPROVAL</div>
+<div class="cardValue" id="pendingUsers">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-ADMINS
-</div>
-
-<div class="cardValue"
-id="admins">
-0
-</div>
-
+<div class="cardTitle">ADMINS</div>
+<div class="cardValue" id="admins">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-BANNED USERS
-</div>
-
-<div class="cardValue"
-id="bannedUsers">
-0
+<div class="cardTitle">BANNED USERS</div>
+<div class="cardValue" id="bannedUsers">0</div>
 </div>
 
 </div>
-
-</div>
-
-<!-- APPROVAL -->
 
 <div class="section">
 
@@ -678,28 +601,22 @@ Player Approval Queue
 <thead>
 
 <tr>
-
 <th>PLAYER</th>
 <th>ID</th>
 <th>COUNTRY</th>
 <th>POSITION</th>
 <th>ACTION</th>
-
 </tr>
 
 </thead>
 
-<tbody id="approvalTable">
-
-</tbody>
+<tbody id="approvalTable"></tbody>
 
 </table>
 
 </div>
 
 </div>
-
-<!-- USERS -->
 
 <div class="section">
 
@@ -722,24 +639,18 @@ placeholder="Search user / player ID / email">
 <thead>
 
 <tr>
-
 <th>PLAYER</th>
 <th>PLAYER ID</th>
 <th>ROLES</th>
 <th>STATUS</th>
 <th>ACTION</th>
-
 </tr>
 
 </thead>
 
-<tbody id="userTable">
-
-</tbody>
+<tbody id="userTable"></tbody>
 
 </table>
-
-</div>
 
 </div>
 

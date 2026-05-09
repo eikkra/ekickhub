@@ -4,13 +4,16 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+
 getAuth,
 onAuthStateChanged,
 signOut
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
 getFirestore,
 collection,
 getDocs,
@@ -18,6 +21,7 @@ doc,
 getDoc,
 updateDoc,
 deleteDoc
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -37,13 +41,17 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app = initializeApp(firebaseConfig)
+const app =
+initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const auth =
+getAuth(app)
 
-const db = getFirestore(app)
+const db =
+getFirestore(app)
 
 let currentAdmin = null
+let currentRoles = []
 
 /* SIDEBAR */
 
@@ -70,7 +78,8 @@ onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
-window.location.href = "../login/"
+window.location.href =
+"../login/"
 return
 
 }
@@ -83,31 +92,103 @@ await getDoc(ref)
 
 if(!snap.exists()){
 
-window.location.href = "../login/"
+window.location.href =
+"../login/"
 return
 
 }
 
-const data = snap.data()
+const data =
+snap.data()
 
-if(!data.roles?.includes("admin")){
+if(
+!data.roles?.includes("admin")
+){
 
-window.location.href = "../dashboard/"
+window.location.href =
+"../dashboard/"
 return
 
 }
 
 currentAdmin = user.uid
+currentRoles = data.roles || []
 
 document.getElementById("adminName")
-.innerHTML = data.full_name
+.innerHTML =
+data.full_name
 
 document.getElementById("adminImage")
-.src = data.image
+.src =
+data.image
+
+renderRoleSwitch(currentRoles)
 
 loadDashboard()
 
 })
+
+/* ROLE SWITCH */
+
+function renderRoleSwitch(roles){
+
+const box =
+document.getElementById("roleSwitchList")
+
+box.innerHTML = ""
+
+roles.forEach(role=>{
+
+let icon =
+"fa-user"
+
+let path =
+"../dashboard/"
+
+if(role === "admin"){
+
+icon = "fa-shield-halved"
+path = "../admin/"
+
+}
+
+if(role === "moderator"){
+
+icon = "fa-user-shield"
+path = "../moderator/"
+
+}
+
+if(role === "manager"){
+
+icon = "fa-people-group"
+path = "../manager/"
+
+}
+
+if(role === "referee"){
+
+icon = "fa-whistle"
+path = "../referee/"
+
+}
+
+box.innerHTML += `
+
+<button class="roleSwitchBtn"
+onclick="window.location.href='${path}'">
+
+<i class="fa-solid ${icon}"></i>
+
+${role.toUpperCase()}
+
+</button>
+
+`
+
+})
+
+}
 
 /* LOAD DASHBOARD */
 
@@ -132,13 +213,22 @@ let banned = 0
 
 snap.forEach((docItem)=>{
 
-const data = docItem.data()
+const data =
+docItem.data()
 
 total++
 
-if(data.roles?.includes("admin")) admins++
+if(data.roles?.includes("admin")){
 
-if(data.banned === true) banned++
+admins++
+
+}
+
+if(data.banned === true){
+
+banned++
+
+}
 
 /* APPROVAL */
 
@@ -172,11 +262,11 @@ ${data.email || '-'}
 
 </td>
 
-<td>${data.player_id || '-'}</td>
+<td>${data.player_id || "-"}</td>
 
-<td>${data.country || '-'}</td>
+<td>${data.country || "-"}</td>
 
-<td>${data.position || '-'}</td>
+<td>${data.position || "-"}</td>
 
 <td>
 
@@ -206,7 +296,7 @@ Reject
 
 }
 
-/* USER TABLE */
+/* USERS */
 
 userTable.innerHTML += `
 
@@ -234,7 +324,7 @@ ${data.email || '-'}
 
 </td>
 
-<td>${data.player_id || '-'}</td>
+<td>${data.player_id || "-"}</td>
 
 <td>
 
@@ -252,15 +342,10 @@ docItem.id
 <td>
 
 ${data.banned === true
-
 ? '<span class="banned">BANNED</span>'
-
 : data.approved === true
-
 ? '<span class="approved">APPROVED</span>'
-
 : '<span class="pending">PENDING</span>'
-
 }
 
 </td>
@@ -276,16 +361,8 @@ Role
 
 </button>
 
-<button class="editBtn"
-onclick="editEmail('${docItem.id}')">
-
-Email
-
-</button>
-
 ${
 data.banned === true
-
 ?
 
 `<button class="unbanBtn"
@@ -336,7 +413,7 @@ document.getElementById("bannedUsers")
 
 }
 
-/* ROLE CHIP */
+/* ROLE RENDER */
 
 function renderRoles(roles,uid){
 
@@ -344,28 +421,16 @@ return roles.map(role=>{
 
 let cls = "playerRole"
 
-if(role === "admin") cls = "adminRole"
-
+if(role === "admin") cls = "adminRoleChip"
 if(role === "moderator") cls = "modRole"
-
 if(role === "manager") cls = "managerRole"
-
 if(role === "referee") cls = "refRole"
 
-const removeBtn =
-
+const remove =
 role === "player"
-
 ? ""
-
-: `
-
-<i class="fa-solid fa-xmark"
-onclick="removeRole('${uid}','${role}')">
-
-</i>
-
-`
+: `<i class="fa-solid fa-xmark"
+onclick="removeRole('${uid}','${role}')"></i>`
 
 return `
 
@@ -373,7 +438,7 @@ return `
 
 ${role}
 
-${removeBtn}
+${remove}
 
 </div>
 
@@ -415,7 +480,7 @@ loadDashboard()
 
 }
 
-/* ROLE SYSTEM FIXED */
+/* ADD ROLE */
 
 window.addRole = async(uid)=>{
 
@@ -426,17 +491,17 @@ prompt(
 
 if(!role) return
 
-const allowedRoles = [
+const cleanRole =
+role.toLowerCase().trim()
+
+const validRoles = [
 "admin",
 "moderator",
 "manager",
 "referee"
 ]
 
-const cleanRole =
-role.toLowerCase().trim()
-
-if(!allowedRoles.includes(cleanRole)){
+if(!validRoles.includes(cleanRole)){
 
 alert("Invalid role")
 return
@@ -449,29 +514,20 @@ doc(db,"users",uid)
 const snap =
 await getDoc(ref)
 
-if(!snap.exists()) return
-
 let roles =
-snap.data().roles || ["player"]
+snap.data().roles || []
 
-/* FIX DUPLICATE */
+if(!roles.includes(cleanRole)){
 
-if(roles.includes(cleanRole)){
-
-alert("Role already added")
-return
+roles.push(cleanRole)
 
 }
-
-/* ALWAYS KEEP PLAYER */
 
 if(!roles.includes("player")){
 
 roles.unshift("player")
 
 }
-
-roles.push(cleanRole)
 
 await updateDoc(ref,{roles})
 
@@ -506,48 +562,13 @@ doc(db,"users",uid)
 const snap =
 await getDoc(ref)
 
-if(!snap.exists()) return
-
 let roles =
 snap.data().roles || []
 
 roles =
 roles.filter(r=>r !== role)
 
-/* ALWAYS KEEP PLAYER */
-
-if(!roles.includes("player")){
-
-roles.unshift("player")
-
-}
-
 await updateDoc(ref,{roles})
-
-loadDashboard()
-
-}
-
-/* EMAIL EDIT */
-
-window.editEmail = async(uid)=>{
-
-const newEmail =
-prompt("Enter new Gmail")
-
-if(!newEmail) return
-
-await updateDoc(
-
-doc(db,"users",uid),
-
-{
-email:newEmail
-}
-
-)
-
-alert("Email updated")
 
 loadDashboard()
 
@@ -576,7 +597,9 @@ loadDashboard()
 window.deleteProfile = async(uid)=>{
 
 const ok =
-confirm("Delete full profile?")
+confirm(
+"Delete player profile?"
+)
 
 if(!ok) return
 
@@ -607,12 +630,9 @@ document.querySelectorAll("#userTable tr")
 rows.forEach(row=>{
 
 row.style.display =
-
 row.innerText.toLowerCase()
 .includes(value)
-
 ? ""
-
 : "none"
 
 })
