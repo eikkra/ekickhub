@@ -4,12 +4,16 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
 <title>eKickHub Player Profile</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
 <style>
 
@@ -21,63 +25,98 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
+
 background:#020617;
 color:white;
-min-height:100vh;
 overflow-x:hidden;
-padding-bottom:100px;
+
+}
+
+body::-webkit-scrollbar{
+width:0;
 }
 
 .bg1{
 position:fixed;
-width:400px;
-height:400px;
+width:350px;
+height:350px;
 background:#00ffe1;
 filter:blur(180px);
 opacity:.12;
-top:-100px;
-left:-100px;
+top:-120px;
+left:-120px;
 z-index:-1;
 }
 
 .bg2{
 position:fixed;
-width:400px;
-height:400px;
+width:350px;
+height:350px;
 background:#ff00c8;
 filter:blur(180px);
 opacity:.12;
-bottom:-100px;
-right:-100px;
+bottom:-120px;
+right:-120px;
 z-index:-1;
 }
+
+/* TOPBAR */
 
 .topbar{
 
 width:100%;
-padding:18px 20px;
+height:62px;
+
+padding:0 16px;
 
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
 
 position:sticky;
 top:0;
 
-backdrop-filter:blur(16px);
-
-background:rgba(2,6,23,.7);
-
 z-index:999;
+
+background:
+rgba(2,6,23,.75);
+
+backdrop-filter:blur(14px);
 
 border-bottom:
 1px solid rgba(255,255,255,.05);
 
 }
 
+.leftTop{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.menuBtn{
+
+width:40px;
+height:40px;
+
+border-radius:12px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+rgba(255,255,255,.05);
+
+font-size:17px;
+
+cursor:pointer;
+
+}
+
 .logo{
 
-font-size:24px;
+font-size:21px;
 font-weight:900;
 
 background:
@@ -88,194 +127,301 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 
 }
 
-.topIcons{
+.rightTop{
 display:flex;
-gap:12px;
+gap:10px;
 align-items:center;
 }
 
-.iconBtn{
+.topIcon{
 
-width:42px;
-height:42px;
+width:38px;
+height:38px;
 
-border-radius:14px;
-
-background:
-rgba(255,255,255,.06);
+border-radius:12px;
 
 display:flex;
 justify-content:center;
 align-items:center;
 
-font-size:18px;
+background:
+rgba(255,255,255,.05);
+
+font-size:15px;
 
 cursor:pointer;
 
-border:
-1px solid rgba(255,255,255,.06);
+}
+
+/* SIDEBAR */
+
+.sidebar{
+
+position:fixed;
+top:0;
+left:-280px;
+
+width:260px;
+height:100vh;
+
+background:#08111f;
+
+z-index:9999;
+
+padding:25px 18px;
+
+transition:.35s;
+
+border-right:
+1px solid rgba(255,255,255,.05);
+
+overflow-y:auto;
 
 }
+
+.sidebar.active{
+left:0;
+}
+
+.closeBtn{
+
+font-size:22px;
+cursor:pointer;
+margin-bottom:25px;
+
+}
+
+.sideItem{
+
+width:100%;
+
+padding:14px 16px;
+
+border-radius:14px;
+
+margin-bottom:12px;
+
+background:
+rgba(255,255,255,.04);
+
+display:flex;
+align-items:center;
+gap:12px;
+
+cursor:pointer;
+
+font-size:13px;
+
+}
+
+.sideTitle{
+
+font-size:12px;
+color:#00ffe1;
+margin:20px 0 10px;
+
+}
+
+/* MAIN */
 
 .container{
+
 width:100%;
-max-width:1200px;
+max-width:1100px;
+
 margin:auto;
-padding:20px;
+
+padding:20px 14px 90px;
+
 }
+
+/* PROFILE */
 
 .profileCard{
 
 background:
-rgba(255,255,255,.05);
+rgba(255,255,255,.04);
 
 border:
-1px solid rgba(255,255,255,.08);
+1px solid rgba(255,255,255,.06);
 
 border-radius:30px;
 
-padding:25px;
+padding:28px 18px;
 
-backdrop-filter:blur(16px);
+backdrop-filter:blur(14px);
 
 box-shadow:
-0 0 35px rgba(0,255,225,.08);
+0 0 30px rgba(0,255,225,.08);
+
+text-align:center;
 
 }
 
-.profileTop{
+.playerImg{
 
-display:flex;
-gap:25px;
-flex-wrap:wrap;
-align-items:center;
+width:135px;
+height:135px;
 
-}
-
-.profileImg{
-
-width:140px;
-height:140px;
-
-border-radius:30px;
+border-radius:28px;
 
 object-fit:cover;
 
 border:
 3px solid #00ffe1;
 
+margin:auto;
+
+display:block;
+
+box-shadow:
+0 0 25px rgba(0,255,225,.35);
+
 }
 
-.info{
-flex:1;
-min-width:250px;
-}
-
-.name{
+.playerName{
 
 font-size:28px;
 font-weight:900;
-margin-bottom:10px;
 
-}
-
-.idBox{
+margin-top:18px;
 
 display:flex;
+justify-content:center;
+align-items:center;
+gap:12px;
+
 flex-wrap:wrap;
-gap:10px;
-margin-bottom:10px;
 
 }
 
-.tag{
+.fbBtn{
 
-padding:8px 14px;
+width:38px;
+height:38px;
+
 border-radius:12px;
 
+display:flex;
+justify-content:center;
+align-items:center;
+
 background:
-rgba(255,255,255,.06);
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+cursor:pointer;
+
+font-size:16px;
+
+}
+
+.playerMeta{
+
+margin-top:18px;
+
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+
+}
+
+.metaBox{
+
+padding:10px 14px;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.05);
 
 font-size:11px;
 
+border:
+1px solid rgba(255,255,255,.05);
+
 }
 
-.ratingBox{
+/* RATING */
 
-margin-top:12px;
+.ratingWrap{
+
+margin-top:25px;
 
 display:flex;
+justify-content:center;
 align-items:center;
-gap:10px;
+gap:18px;
+
+flex-wrap:wrap;
 
 }
 
-.rating{
+.ratingCircle{
 
-font-size:38px;
+width:90px;
+height:90px;
+
+border-radius:50%;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+conic-gradient(#00ffe1 0deg,#ff00c8 240deg,#111827 240deg);
+
+box-shadow:
+0 0 25px rgba(255,0,200,.25);
+
+}
+
+.ratingInner{
+
+width:68px;
+height:68px;
+
+border-radius:50%;
+
+background:#020617;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:24px;
 font-weight:900;
 
 color:#00ffe1;
 
 }
 
-.progress{
-
-width:180px;
-height:10px;
-
-background:#111827;
-border-radius:50px;
-overflow:hidden;
-
+.ratingInfo{
+text-align:left;
 }
 
-.progress div{
-
-height:100%;
-width:56%;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
+.ratingInfo h3{
+font-size:18px;
+margin-bottom:6px;
 }
 
-.actionBtns{
-
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-margin-top:18px;
-
+.ratingInfo p{
+font-size:11px;
+color:#aaa;
+line-height:1.7;
 }
 
-.btn{
-
-padding:12px 18px;
-border:none;
-border-radius:14px;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
-color:white;
-
-font-size:12px;
-font-weight:700;
-
-cursor:pointer;
-
-}
+/* STATS */
 
 .statsGrid{
 
-margin-top:25px;
+margin-top:28px;
 
 display:grid;
 grid-template-columns:
-repeat(auto-fit,minmax(150px,1fr));
+repeat(auto-fit,minmax(130px,1fr));
 
-gap:15px;
+gap:12px;
 
 }
 
@@ -284,105 +430,95 @@ gap:15px;
 background:
 rgba(255,255,255,.05);
 
-padding:20px;
-
-border-radius:22px;
-
-text-align:center;
-
 border:
-1px solid rgba(255,255,255,.06);
+1px solid rgba(255,255,255,.05);
+
+padding:18px 10px;
+
+border-radius:20px;
 
 }
 
 .statCard h2{
-font-size:26px;
+
+font-size:24px;
 margin-bottom:8px;
+
 color:#00ffe1;
+
 }
 
 .statCard p{
-font-size:11px;
-color:#aaa;
-}
 
-.section{
-
-margin-top:25px;
-
-background:
-rgba(255,255,255,.05);
-
-padding:25px;
-
-border-radius:25px;
-
-border:
-1px solid rgba(255,255,255,.06);
+font-size:10px;
+color:#9ca3af;
 
 }
 
-.sectionTitle{
+/* TAB */
 
-font-size:20px;
-font-weight:800;
+.tabs{
 
-margin-bottom:20px;
-
-}
-
-.graph{
-
-height:250px;
-
-border-radius:20px;
-
-background:
-linear-gradient(
-180deg,
-rgba(0,255,225,.15),
-rgba(255,0,200,.05)
-);
+margin-top:28px;
 
 display:flex;
-justify-content:center;
-align-items:center;
+gap:10px;
 
-font-size:14px;
-color:#aaa;
+overflow:auto;
 
-}
-
-.achievementGrid{
-
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(160px,1fr));
-
-gap:15px;
+padding-bottom:5px;
 
 }
 
-.achievement{
+.tabs::-webkit-scrollbar{
+height:0;
+}
 
-padding:18px;
+.tab{
 
-border-radius:18px;
+padding:12px 16px;
+
+border-radius:14px;
 
 background:
 rgba(255,255,255,.05);
 
-text-align:center;
+font-size:11px;
+
+white-space:nowrap;
+
+cursor:pointer;
+
+}
+
+.tab.active{
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+}
+
+/* CONTENT */
+
+.contentBox{
+
+margin-top:18px;
+
+background:
+rgba(255,255,255,.04);
 
 border:
-1px solid rgba(255,255,255,.06);
+1px solid rgba(255,255,255,.05);
+
+border-radius:24px;
+
+padding:20px;
+
+min-height:180px;
 
 }
 
-.achievement h3{
-margin-bottom:8px;
-font-size:14px;
-}
+/* ADS */
 
 .adsBox{
 
@@ -390,38 +526,38 @@ margin-top:25px;
 
 height:120px;
 
-border-radius:20px;
+border-radius:24px;
 
 display:flex;
 justify-content:center;
 align-items:center;
 
 background:
-rgba(255,255,255,.04);
+rgba(255,255,255,.03);
 
 border:
 2px dashed rgba(255,255,255,.08);
 
-color:#888;
+color:#7c8597;
 
-font-size:14px;
+font-size:13px;
 
 }
+
+/* MOBILE */
 
 @media(max-width:768px){
 
-.profileTop{
+.playerName{
+font-size:23px;
+}
+
+.ratingInfo{
+text-align:center;
+}
+
+.ratingWrap{
 flex-direction:column;
-align-items:flex-start;
-}
-
-.profileImg{
-width:120px;
-height:120px;
-}
-
-.name{
-font-size:22px;
 }
 
 }
@@ -435,108 +571,141 @@ font-size:22px;
 <div class="bg1"></div>
 <div class="bg2"></div>
 
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="closeBtn"
+id="closeBtn">
+✕
+</div>
+
+<div class="sideTitle">
+ACCOUNT
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-user"></i>
+Edit Profile
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-lock"></i>
+Security
+</div>
+
+<div class="sideItem">
+<i class="fa-solid fa-bell"></i>
+Notifications
+</div>
+
+<div class="sideTitle">
+ROLE SWITCH
+</div>
+
+<div id="roleList"></div>
+
+</div>
+
+<!-- TOPBAR -->
+
 <div class="topbar">
+
+<div class="leftTop">
+
+<div class="menuBtn"
+id="menuBtn">
+
+☰
+
+</div>
 
 <div class="logo">
 eKickHub
 </div>
 
-<div class="topIcons">
+</div>
 
-<div class="iconBtn">
+<div class="rightTop">
+
+<div class="topIcon">
 🔔
 </div>
 
-<div class="iconBtn">
+<div class="topIcon">
 💬
 </div>
 
-<div class="iconBtn">
-👤
 </div>
 
 </div>
 
-</div>
+<!-- MAIN -->
 
 <div class="container">
 
 <div class="profileCard">
 
-<div class="profileTop">
-
 <img
 id="profileImage"
-class="profileImg">
+class="playerImg">
 
-<div class="info">
+<div class="playerName">
 
-<div
-class="name"
-id="playerName">
-
+<span id="playerName">
 Loading...
+</span>
+
+<div class="fbBtn"
+id="fbBtn">
+
+<i class="fa-brands fa-facebook-f"></i>
 
 </div>
 
-<div class="idBox">
+</div>
 
-<div class="tag"
+<div class="playerMeta">
+
+<div class="metaBox"
 id="playerId">
 Player ID
 </div>
 
-<div class="tag"
+<div class="metaBox"
 id="konamiId">
 Konami ID
 </div>
 
-<div class="tag"
+<div class="metaBox"
 id="deviceName">
 Device
 </div>
 
 </div>
 
-<div class="ratingBox">
+<div class="ratingWrap">
 
-<div class="rating"
+<div class="ratingCircle">
+
+<div class="ratingInner"
 id="rating">
+
 56
-</div>
-
-<div>
-
-<div style="font-size:11px;margin-bottom:5px;">
-Player Rating
-</div>
-
-<div class="progress">
-<div id="ratingBar"></div>
-</div>
 
 </div>
 
 </div>
 
-<div class="actionBtns">
+<div class="ratingInfo">
 
-<button class="btn"
-id="fbBtn">
+<h3>
+Elite Player Rating
+</h3>
 
-MESSAGE PLAYER
-
-</button>
-
-<button class="btn">
-EDIT PROFILE
-</button>
-
-<button class="btn">
-SWITCH ROLE
-</button>
-
-</div>
+<p>
+Performance based dynamic esports rating system.
+</p>
 
 </div>
 
@@ -586,86 +755,33 @@ SWITCH ROLE
 
 </div>
 
+<div class="tabs">
+
+<div class="tab active">
+Performance
 </div>
 
-<div class="section">
-
-<div class="sectionTitle">
-Performance Analysis
-</div>
-
-<div class="graph">
-GRAPH SYSTEM COMING NEXT STEP
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="sectionTitle">
+<div class="tab">
 Achievements
 </div>
 
-<div class="achievementGrid">
-
-<div class="achievement">
-<h3>50 Wins</h3>
-<p>LOCKED</p>
-</div>
-
-<div class="achievement">
-<h3>100 Goals</h3>
-<p>LOCKED</p>
-</div>
-
-<div class="achievement">
-<h3>Top Scorer</h3>
-<p>LOCKED</p>
-</div>
-
-<div class="achievement">
-<h3>Champion</h3>
-<p>LOCKED</p>
-</div>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="sectionTitle">
+<div class="tab">
 Trophies
 </div>
 
-<div class="achievementGrid">
+<div class="tab">
+Gift & Coins
+</div>
 
-<div class="achievement">
-🏆<br><br>
-No Trophy Yet
+<div class="tab">
+Activity
 </div>
 
 </div>
 
-</div>
+<div class="contentBox">
 
-<div class="section">
-
-<div class="sectionTitle">
-Gift & Coin System
-</div>
-
-<div class="achievementGrid">
-
-<div class="achievement">
-<h3>Coins</h3>
-<p>0 EK Coin</p>
-</div>
-
-<div class="achievement">
-<h3>Gift</h3>
-<p>No Gift Yet</p>
-</div>
+COMING NEXT STEP...
 
 </div>
 

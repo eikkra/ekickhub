@@ -43,7 +43,26 @@ getAuth(app)
 const db =
 getFirestore(app)
 
-/* CHECK LOGIN */
+/* SIDEBAR */
+
+const sidebar =
+document.getElementById("sidebar")
+
+document.getElementById("menuBtn")
+.onclick = ()=>{
+
+sidebar.classList.add("active")
+
+}
+
+document.getElementById("closeBtn")
+.onclick = ()=>{
+
+sidebar.classList.remove("active")
+
+}
+
+/* USER */
 
 onAuthStateChanged(auth,async(user)=>{
 
@@ -73,7 +92,7 @@ return
 const data =
 docSnap.data()
 
-/* BASIC INFO */
+/* PROFILE */
 
 document.getElementById("profileImage")
 .src = data.image
@@ -90,18 +109,25 @@ document.getElementById("konamiId")
 document.getElementById("deviceName")
 .innerHTML = data.device_name
 
+/* FB */
+
+document.getElementById("fbBtn")
+.onclick = ()=>{
+
+window.open(
+data.fb_id_url,
+"_blank"
+)
+
+}
+
 /* RATING */
 
-const rating =
+document.getElementById("rating")
+.innerHTML =
 data.rating || 56
 
-document.getElementById("rating")
-.innerHTML = rating
-
-document.getElementById("ratingBar")
-.style.width = rating + "%"
-
-/* MATCH STATS */
+/* STATS */
 
 document.getElementById("matchPlayed")
 .innerHTML =
@@ -149,17 +175,48 @@ Math.round((wins / played) * 100)
 }
 
 document.getElementById("winrate")
-.innerHTML = rate + "%"
+.innerHTML =
+rate + "%"
 
-/* FACEBOOK */
+/* ROLE SWITCH */
 
-document.getElementById("fbBtn")
-.onclick = ()=>{
+const roleList =
+document.getElementById("roleList")
 
-window.open(
-data.fb_id_url,
-"_blank"
-)
+if(Array.isArray(data.roles)){
+
+data.roles.forEach((role)=>{
+
+const div =
+document.createElement("div")
+
+div.className =
+"sideItem"
+
+div.innerHTML = `
+<i class="fa-solid fa-shield"></i>
+Switch to ${role}
+`
+
+div.onclick = ()=>{
+
+if(role === "admin"){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
+}
+
+roleList.appendChild(div)
+
+})
 
 }
 
