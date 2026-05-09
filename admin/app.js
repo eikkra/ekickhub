@@ -24,17 +24,28 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = {
 
 apiKey: "AIzaSyDwPilelp6BgHhHD8Hs_cHx96ZJNZdeYag",
+
 authDomain: "ekickhub-bd.firebaseapp.com",
+
 projectId: "ekickhub-bd",
+
 storageBucket: "ekickhub-bd.firebasestorage.app",
+
 messagingSenderId: "306381500871",
+
 appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
 const app = initializeApp(firebaseConfig)
+
 const auth = getAuth(app)
+
 const db = getFirestore(app)
+
+let currentAdmin = null
+
+/* SIDEBAR */
 
 const sidebar =
 document.getElementById("sidebar")
@@ -53,12 +64,13 @@ sidebar.classList.remove("active")
 
 }
 
+/* AUTH */
+
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
-window.location.href =
-"../login/"
+window.location.href = "../login/"
 return
 
 }
@@ -71,76 +83,33 @@ await getDoc(ref)
 
 if(!snap.exists()){
 
-window.location.href =
-"../login/"
+window.location.href = "../login/"
 return
 
 }
 
-const data =
-snap.data()
+const data = snap.data()
 
 if(!data.roles?.includes("admin")){
 
-window.location.href =
-"../dashboard/"
+window.location.href = "../dashboard/"
 return
 
 }
 
+currentAdmin = user.uid
+
 document.getElementById("adminName")
-.innerHTML =
-data.full_name
+.innerHTML = data.full_name
 
 document.getElementById("adminImage")
-.src =
-data.image
-
-/* ROLE SWITCH */
-
-const roleButtons =
-document.getElementById("roleButtons")
-
-roleButtons.innerHTML = ""
-
-const roles =
-data.roles || []
-
-roles.forEach(role=>{
-
-let page = "../dashboard/"
-
-if(role === "admin"){
-page = "../admin/"
-}
-
-if(role === "moderator"){
-page = "../moderator/"
-}
-
-if(role === "manager"){
-page = "../manager/"
-}
-
-if(role === "referee"){
-page = "../referee/"
-}
-
-roleButtons.innerHTML += `
-
-<button onclick="window.location.href='${page}'">
-
-${role.toUpperCase()}
-
-</button>
-
-`
-
-})
+.src = data.image
 
 loadDashboard()
 
 })
+
+/* LOAD DASHBOARD */
 
 async function loadDashboard(){
 
@@ -163,8 +132,7 @@ let banned = 0
 
 snap.forEach((docItem)=>{
 
-const data =
-docItem.data()
+const data = docItem.data()
 
 total++
 
@@ -175,6 +143,8 @@ admins++
 if(data.banned === true){
 banned++
 }
+
+/* APPROVAL */
 
 if(data.approved !== true){
 
@@ -188,10 +158,18 @@ approvalTable.innerHTML += `
 
 <div class="userFlex">
 
-<img src="${data.image}">
+<img src="${data.image || ''}">
 
 <div>
-${data.full_name}
+
+<div class="playerName">
+${data.full_name || '-'}
+</div>
+
+<div class="playerEmail">
+${data.email || '-'}
+</div>
+
 </div>
 
 </div>
@@ -232,6 +210,8 @@ Reject
 
 }
 
+/* USER TABLE */
+
 userTable.innerHTML += `
 
 <tr>
@@ -240,33 +220,52 @@ userTable.innerHTML += `
 
 <div class="userFlex">
 
-<img src="${data.image}">
+<img src="${data.image || ''}">
 
 <div>
-${data.full_name}
+
+<div class="playerName">
+${data.full_name || '-'}
+</div>
+
+<div class="playerEmail">
+${data.email || '-'}
+</div>
+
 </div>
 
 </div>
 
 </td>
 
-<td>${data.player_id || "-"}</td>
+<td>${data.player_id || '-'}</td>
 
 <td>
 
 <div class="roleWrap">
 
-${(data.roles || []).map(role=>`
-
-<div class="roleChip">
-
-${role}
-
-</div>
-
-`).join("")}
+${renderRoles(
+data.roles || [],
+docItem.id
+)}
 
 </div>
+
+</td>
+
+<td>
+
+${data.banned === true
+
+? '<span class="banned">BANNED</span>'
+
+: data.approved === true
+
+? '<span class="approved">APPROVED</span>'
+
+: '<span class="pending">PENDING</span>'
+
+}
 
 </td>
 
@@ -278,6 +277,43 @@ ${role}
 onclick="addRole('${docItem.id}')">
 
 Role
+
+</button>
+
+<button class="editBtn"
+onclick="editEmail('${docItem.id}')">
+
+Email
+
+</button>
+
+${
+data.banned === true
+
+?
+
+`<button class="unbanBtn"
+onclick="toggleBan('${docItem.id}',false)">
+
+Unban
+
+</button>`
+
+:
+
+`<button class="banBtn"
+onclick="toggleBan('${docItem.id}',true)">
+
+Ban
+
+</button>`
+
+}
+
+<button class="deleteBtn"
+onclick="deleteProfile('${docItem.id}')">
+
+Delete
 
 </button>
 
@@ -305,6 +341,57 @@ document.getElementById("bannedUsers")
 
 }
 
+/* ROLE UI */
+
+function renderRoles(roles,uid){
+
+return roles.map(role=>{
+
+let cls = "playerRole"
+
+if(role === "admin"){
+cls = "adminRole"
+}
+
+if(role === "moderator"){
+cls = "modRole"
+}
+
+if(role === "manager"){
+cls = "managerRole"
+}
+
+if(role === "referee"){
+cls = "refRole"
+}
+
+const removeBtn =
+
+role === "player"
+
+? ""
+
+: `<i class="fa-solid fa-xmark"
+onclick="removeRole('${uid}','${role}')"></i>`
+
+return `
+
+<div class="roleChip ${cls}">
+
+${role}
+
+${removeBtn}
+
+</div>
+
+`
+
+}).join("")
+
+}
+
+/* APPROVE */
+
 window.approveUser = async(uid)=>{
 
 await updateDoc(
@@ -318,7 +405,14 @@ loadDashboard()
 
 }
 
+/* REJECT */
+
 window.rejectUser = async(uid)=>{
+
+const ok =
+confirm("Reject player?")
+
+if(!ok) return
 
 await deleteDoc(
 doc(db,"users",uid)
@@ -328,14 +422,31 @@ loadDashboard()
 
 }
 
+/* ADD ROLE */
+
 window.addRole = async(uid)=>{
 
-const role =
-prompt(
-"admin / moderator / manager / referee"
+let role = prompt(
+"Enter Role:\nadmin\nmoderator\nmanager\nreferee"
 )
 
 if(!role) return
+
+role = role.toLowerCase().trim()
+
+const validRoles = [
+"admin",
+"moderator",
+"manager",
+"referee"
+]
+
+if(!validRoles.includes(role)){
+
+alert("Invalid Role")
+return
+
+}
 
 const ref =
 doc(db,"users",uid)
@@ -346,10 +457,70 @@ await getDoc(ref)
 let roles =
 snap.data().roles || []
 
-if(!roles.includes(role)){
+/* PLAYER ALWAYS */
+
+if(!roles.includes("player")){
+roles.unshift("player")
+}
+
+/* PREVENT DUPLICATE */
+
+if(roles.includes(role)){
+
+alert("Role already added")
+return
+
+}
+
+/* ADD NEW ROLE */
 
 roles.push(role)
 
+await updateDoc(ref,{roles})
+
+loadDashboard()
+
+}
+
+/* REMOVE ROLE */
+
+window.removeRole = async(uid,role)=>{
+
+if(role === "player"){
+
+alert("Player role can't remove")
+return
+
+}
+
+/* OWN ADMIN REMOVE BLOCK */
+
+if(
+uid === currentAdmin &&
+role === "admin"
+){
+
+alert("You can't remove your own admin role")
+return
+
+}
+
+const ref =
+doc(db,"users",uid)
+
+const snap =
+await getDoc(ref)
+
+let roles =
+snap.data().roles || []
+
+roles =
+roles.filter(r=>r !== role)
+
+/* KEEP PLAYER ALWAYS */
+
+if(!roles.includes("player")){
+roles.unshift("player")
 }
 
 await updateDoc(ref,{roles})
@@ -357,6 +528,64 @@ await updateDoc(ref,{roles})
 loadDashboard()
 
 }
+
+/* EMAIL EDIT */
+
+window.editEmail = async(uid)=>{
+
+const newEmail =
+prompt("Enter new email")
+
+if(!newEmail) return
+
+await updateDoc(
+doc(db,"users",uid),
+{
+email:newEmail
+}
+)
+
+alert("Email updated")
+
+loadDashboard()
+
+}
+
+/* BAN */
+
+window.toggleBan = async(uid,status)=>{
+
+await updateDoc(
+doc(db,"users",uid),
+{
+banned:status
+}
+)
+
+loadDashboard()
+
+}
+
+/* DELETE */
+
+window.deleteProfile = async(uid)=>{
+
+const ok =
+confirm("Delete profile?")
+
+if(!ok) return
+
+await deleteDoc(
+doc(db,"users",uid)
+)
+
+alert("Profile deleted")
+
+loadDashboard()
+
+}
+
+/* SEARCH */
 
 document.getElementById("searchInput")
 .oninput = ()=>{
@@ -371,14 +600,19 @@ document.querySelectorAll("#userTable tr")
 rows.forEach(row=>{
 
 row.style.display =
+
 row.innerText.toLowerCase()
 .includes(value)
+
 ? ""
+
 : "none"
 
 })
 
 }
+
+/* LOGOUT */
 
 document.getElementById("logoutBtn")
 .onclick = async ()=>{
