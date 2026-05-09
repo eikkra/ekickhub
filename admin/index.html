@@ -1,5 +1,4 @@
 <!-- admin/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -214,6 +213,51 @@ color:#ff4d6d!important;
 margin-top:15px;
 }
 
+.roleSwitch{
+
+margin-top:10px;
+
+padding:12px;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.03);
+
+}
+
+.roleSwitchTitle{
+font-size:10px;
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.roleButtons{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.roleButtons button{
+
+width:100%;
+
+border:none;
+cursor:pointer;
+
+padding:11px;
+
+border-radius:10px;
+
+font-size:11px;
+font-weight:700;
+
+background:
+linear-gradient(90deg,#00ffe120,#ff00c820);
+
+color:white;
+}
+
 .main{
 padding:18px;
 }
@@ -308,10 +352,6 @@ border-bottom:
 1px solid rgba(255,255,255,.05);
 }
 
-th{
-color:#94a3b8;
-}
-
 .userFlex{
 display:flex;
 align-items:center;
@@ -325,17 +365,6 @@ border-radius:12px;
 object-fit:cover;
 }
 
-.playerName{
-font-size:12px;
-font-weight:700;
-}
-
-.playerEmail{
-font-size:10px;
-color:#94a3b8;
-margin-top:4px;
-}
-
 .roleWrap{
 display:flex;
 flex-wrap:wrap;
@@ -343,46 +372,15 @@ gap:6px;
 }
 
 .roleChip{
-
 padding:7px 10px;
-
 border-radius:50px;
-
 font-size:10px;
 font-weight:700;
-
 display:flex;
 align-items:center;
 gap:6px;
-}
-
-.playerRole{
 background:#00ffe120;
 color:#00ffe1;
-}
-
-.adminRole{
-background:#ff00c820;
-color:#ff4dff;
-}
-
-.modRole{
-background:#f59e0b20;
-color:#fbbf24;
-}
-
-.managerRole{
-background:#3b82f620;
-color:#60a5fa;
-}
-
-.refRole{
-background:#10b98120;
-color:#34d399;
-}
-
-.roleChip i{
-cursor:pointer;
 }
 
 .actionBtns{
@@ -416,37 +414,6 @@ background:#ff1744;
 
 .roleBtn{
 background:#7c3aed;
-}
-
-.editBtn{
-background:#0284c7;
-}
-
-.banBtn{
-background:#dc2626;
-}
-
-.unbanBtn{
-background:#16a34a;
-}
-
-.deleteBtn{
-background:#991b1b;
-}
-
-.banned{
-color:#ff4d6d;
-font-weight:700;
-}
-
-.approved{
-color:#00e676;
-font-weight:700;
-}
-
-.pending{
-color:#fbbf24;
-font-weight:700;
 }
 
 @media(max-width:900px){
@@ -548,25 +515,24 @@ Player Approval
 Users
 </a>
 
-<a href="#">
-<i class="fa-solid fa-shield-halved"></i>
-Roles
-</a>
+</div>
 
-<a href="#">
-<i class="fa-solid fa-trophy"></i>
-Competition
-</a>
+<!-- ROLE SWITCH -->
 
-<a href="#">
-<i class="fa-solid fa-ranking-star"></i>
-Leaderboard
-</a>
+<div class="roleSwitch">
 
-<a href="#">
-<i class="fa-solid fa-gear"></i>
-Settings
-</a>
+<div class="roleSwitchTitle">
+SWITCH ROLE
+</div>
+
+<div class="roleButtons"
+id="roleButtons">
+
+</div>
+
+</div>
+
+<div class="menu">
 
 <a href="#"
 class="logoutBtn"
@@ -587,60 +553,26 @@ Logout
 <div class="cards">
 
 <div class="card">
-
-<div class="cardTitle">
-TOTAL USERS
-</div>
-
-<div class="cardValue"
-id="totalUsers">
-0
-</div>
-
+<div class="cardTitle">TOTAL USERS</div>
+<div class="cardValue" id="totalUsers">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-PENDING APPROVAL
-</div>
-
-<div class="cardValue"
-id="pendingUsers">
-0
-</div>
-
+<div class="cardTitle">PENDING APPROVAL</div>
+<div class="cardValue" id="pendingUsers">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-ADMINS
-</div>
-
-<div class="cardValue"
-id="admins">
-0
-</div>
-
+<div class="cardTitle">ADMINS</div>
+<div class="cardValue" id="admins">0</div>
 </div>
 
 <div class="card">
-
-<div class="cardTitle">
-BANNED USERS
-</div>
-
-<div class="cardValue"
-id="bannedUsers">
-0
+<div class="cardTitle">BANNED USERS</div>
+<div class="cardValue" id="bannedUsers">0</div>
 </div>
 
 </div>
-
-</div>
-
-<!-- APPROVAL -->
 
 <div class="section">
 
@@ -676,8 +608,6 @@ Player Approval Queue
 
 </div>
 
-<!-- USERS -->
-
 <div class="section">
 
 <div class="sectionTitle">
@@ -688,7 +618,7 @@ User Management
 
 <input type="text"
 id="searchInput"
-placeholder="Search user / player ID / email">
+placeholder="Search user">
 
 </div>
 
@@ -703,7 +633,6 @@ placeholder="Search user / player ID / email">
 <th>PLAYER</th>
 <th>PLAYER ID</th>
 <th>ROLES</th>
-<th>STATUS</th>
 <th>ACTION</th>
 
 </tr>

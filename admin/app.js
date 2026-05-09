@@ -4,18 +4,13 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-
 getAuth,
 onAuthStateChanged,
-signOut,
-deleteUser,
-updateEmail
-
+signOut
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
 getFirestore,
 collection,
 getDocs,
@@ -23,38 +18,23 @@ doc,
 getDoc,
 updateDoc,
 deleteDoc
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
 
 apiKey: "AIzaSyDwPilelp6BgHhHD8Hs_cHx96ZJNZdeYag",
-
 authDomain: "ekickhub-bd.firebaseapp.com",
-
 projectId: "ekickhub-bd",
-
 storageBucket: "ekickhub-bd.firebasestorage.app",
-
 messagingSenderId: "306381500871",
-
 appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app =
-initializeApp(firebaseConfig)
-
-const auth =
-getAuth(app)
-
-const db =
-getFirestore(app)
-
-let currentAdmin = null
-
-/* SIDEBAR */
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
 
 const sidebar =
 document.getElementById("sidebar")
@@ -73,15 +53,12 @@ sidebar.classList.remove("active")
 
 }
 
-/* AUTH */
-
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
 window.location.href =
 "../login/"
-
 return
 
 }
@@ -103,17 +80,13 @@ return
 const data =
 snap.data()
 
-if(
-!data.roles?.includes("admin")
-){
+if(!data.roles?.includes("admin")){
 
 window.location.href =
 "../dashboard/"
 return
 
 }
-
-currentAdmin = user.uid
 
 document.getElementById("adminName")
 .innerHTML =
@@ -123,11 +96,51 @@ document.getElementById("adminImage")
 .src =
 data.image
 
-loadDashboard()
+/* ROLE SWITCH */
+
+const roleButtons =
+document.getElementById("roleButtons")
+
+roleButtons.innerHTML = ""
+
+const roles =
+data.roles || []
+
+roles.forEach(role=>{
+
+let page = "../dashboard/"
+
+if(role === "admin"){
+page = "../admin/"
+}
+
+if(role === "moderator"){
+page = "../moderator/"
+}
+
+if(role === "manager"){
+page = "../manager/"
+}
+
+if(role === "referee"){
+page = "../referee/"
+}
+
+roleButtons.innerHTML += `
+
+<button onclick="window.location.href='${page}'">
+
+${role.toUpperCase()}
+
+</button>
+
+`
 
 })
 
-/* LOAD */
+loadDashboard()
+
+})
 
 async function loadDashboard(){
 
@@ -156,15 +169,11 @@ docItem.data()
 total++
 
 if(data.roles?.includes("admin")){
-
 admins++
-
 }
 
 if(data.banned === true){
-
 banned++
-
 }
 
 if(data.approved !== true){
@@ -182,15 +191,7 @@ approvalTable.innerHTML += `
 <img src="${data.image}">
 
 <div>
-
-<div class="playerName">
 ${data.full_name}
-</div>
-
-<div class="playerEmail">
-${data.email}
-</div>
-
 </div>
 
 </div>
@@ -242,44 +243,30 @@ userTable.innerHTML += `
 <img src="${data.image}">
 
 <div>
-
-<div class="playerName">
 ${data.full_name}
-</div>
-
-<div class="playerEmail">
-${data.email}
-</div>
-
 </div>
 
 </div>
 
 </td>
 
-<td>${data.player_id}</td>
+<td>${data.player_id || "-"}</td>
 
 <td>
 
 <div class="roleWrap">
 
-${renderRoles(
-data.roles || [],
-docItem.id
-)}
+${(data.roles || []).map(role=>`
+
+<div class="roleChip">
+
+${role}
 
 </div>
 
-</td>
+`).join("")}
 
-<td>
-
-${data.banned === true
-? '<span class="banned">BANNED</span>'
-: data.approved === true
-? '<span class="approved">APPROVED</span>'
-: '<span class="pending">PENDING</span>'
-}
+</div>
 
 </td>
 
@@ -291,41 +278,6 @@ ${data.banned === true
 onclick="addRole('${docItem.id}')">
 
 Role
-
-</button>
-
-<button class="editBtn"
-onclick="editEmail('${docItem.id}')">
-
-Email
-
-</button>
-
-${
-data.banned === true
-?
-
-`<button class="unbanBtn"
-onclick="toggleBan('${docItem.id}',false)">
-
-Unban
-
-</button>`
-
-:
-
-`<button class="banBtn"
-onclick="toggleBan('${docItem.id}',true)">
-
-Ban
-
-</button>`
-}
-
-<button class="deleteBtn"
-onclick="deleteProfile('${docItem.id}')">
-
-Delete
 
 </button>
 
@@ -353,43 +305,6 @@ document.getElementById("bannedUsers")
 
 }
 
-/* ROLE RENDER */
-
-function renderRoles(roles,uid){
-
-return roles.map(role=>{
-
-let cls = "playerRole"
-
-if(role === "admin") cls = "adminRole"
-if(role === "moderator") cls = "modRole"
-if(role === "manager") cls = "managerRole"
-if(role === "referee") cls = "refRole"
-
-const remove =
-role === "player"
-? ""
-: `<i class="fa-solid fa-xmark"
-onclick="removeRole('${uid}','${role}')"></i>`
-
-return `
-
-<div class="roleChip ${cls}">
-
-${role}
-
-${remove}
-
-</div>
-
-`
-
-}).join("")
-
-}
-
-/* APPROVE */
-
 window.approveUser = async(uid)=>{
 
 await updateDoc(
@@ -403,14 +318,7 @@ loadDashboard()
 
 }
 
-/* REJECT */
-
 window.rejectUser = async(uid)=>{
-
-const ok =
-confirm("Reject player?")
-
-if(!ok) return
 
 await deleteDoc(
 doc(db,"users",uid)
@@ -419,8 +327,6 @@ doc(db,"users",uid)
 loadDashboard()
 
 }
-
-/* ROLE */
 
 window.addRole = async(uid)=>{
 
@@ -452,113 +358,6 @@ loadDashboard()
 
 }
 
-window.removeRole = async(uid,role)=>{
-
-if(role === "player"){
-
-alert("Player role can't remove")
-return
-
-}
-
-if(
-uid === currentAdmin &&
-role === "admin"
-){
-
-alert("Can't remove your own admin role")
-return
-
-}
-
-const ref =
-doc(db,"users",uid)
-
-const snap =
-await getDoc(ref)
-
-let roles =
-snap.data().roles || []
-
-roles =
-roles.filter(r=>r !== role)
-
-await updateDoc(ref,{roles})
-
-loadDashboard()
-
-}
-
-/* EMAIL EDIT */
-
-window.editEmail = async(uid)=>{
-
-const newEmail =
-prompt("Enter new Gmail")
-
-if(!newEmail) return
-
-await updateDoc(
-
-doc(db,"users",uid),
-
-{
-email:newEmail
-}
-
-)
-
-alert(
-"Firestore email updated.\nUser can now login using this email if Auth updated too."
-)
-
-loadDashboard()
-
-}
-
-/* BAN */
-
-window.toggleBan = async(uid,status)=>{
-
-await updateDoc(
-
-doc(db,"users",uid),
-
-{
-banned:status
-}
-
-)
-
-loadDashboard()
-
-}
-
-/* DELETE */
-
-window.deleteProfile = async(uid)=>{
-
-const ok =
-confirm(
-"Delete full player profile?"
-)
-
-if(!ok) return
-
-await deleteDoc(
-doc(db,"users",uid)
-)
-
-alert(
-"Firestore profile deleted.\nAuth delete requires Firebase Admin SDK backend later."
-)
-
-loadDashboard()
-
-}
-
-/* SEARCH */
-
 document.getElementById("searchInput")
 .oninput = ()=>{
 
@@ -580,8 +379,6 @@ row.innerText.toLowerCase()
 })
 
 }
-
-/* LOGOUT */
 
 document.getElementById("logoutBtn")
 .onclick = async ()=>{
