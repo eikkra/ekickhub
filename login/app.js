@@ -6,7 +6,8 @@ import {
 getAuth,
 GoogleAuthProvider,
 signInWithPopup,
-createUserWithEmailAndPassword
+signInWithEmailAndPassword,
+sendPasswordResetEmail
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -15,22 +16,10 @@ import {
 
 getFirestore,
 doc,
-setDoc,
-getDocs,
-collection
+getDoc
 
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-
-getStorage,
-ref,
-uploadBytes,
-getDownloadURL
-
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 
 
@@ -63,31 +52,18 @@ getAuth(app)
 const db =
 getFirestore(app)
 
-const storage =
-getStorage(app)
-
 
 
 /* ELEMENTS */
 
-const msg =
-document.getElementById("msg")
-
-const emailInput =
+const email =
 document.getElementById("email")
 
-const passwordInput =
+const password =
 document.getElementById("password")
 
-
-
-/* GLOBAL */
-
-let currentUser = null
-
-let cropper
-
-let croppedBlob = null
+const msg =
+document.getElementById("msg")
 
 
 
@@ -96,8 +72,8 @@ let croppedBlob = null
 document.getElementById("eyeBtn")
 .onclick = ()=>{
 
-passwordInput.type =
-passwordInput.type === "password"
+password.type =
+password.type === "password"
 ? "text"
 : "password"
 
@@ -105,7 +81,157 @@ passwordInput.type === "password"
 
 
 
-/* GOOGLE CONNECT */
+/* LOGIN */
+
+document.getElementById("loginBtn")
+.onclick = async ()=>{
+
+msg.innerHTML =
+"Please wait..."
+
+
+try{
+
+const emailValue =
+email.value.trim()
+
+const passwordValue =
+password.value.trim()
+
+
+
+if(!emailValue || !passwordValue){
+
+msg.innerHTML =
+"Enter email & password"
+
+return
+
+}
+
+
+
+/* FIREBASE LOGIN */
+
+const result =
+await signInWithEmailAndPassword(
+
+auth,
+
+emailValue,
+
+passwordValue
+
+)
+
+const user =
+result.user
+
+
+
+/* GET USER DATA */
+
+const docRef =
+doc(db,"users",user.uid)
+
+const docSnap =
+await getDoc(docRef)
+
+
+
+if(!docSnap.exists()){
+
+msg.innerHTML =
+"Profile not found"
+
+return
+
+}
+
+
+
+const data =
+docSnap.data()
+
+
+
+/* APPROVAL CHECK */
+
+if(data.approved !== true){
+
+msg.innerHTML =
+"Waiting for admin approval"
+
+return
+
+}
+
+
+
+/* ADMIN CHECK */
+
+if(
+
+Array.isArray(data.roles) &&
+
+data.roles.includes("admin")
+
+){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
+
+
+}catch(error){
+
+console.log(error)
+
+
+
+if(
+
+error.code === "auth/invalid-credential" ||
+
+error.code === "auth/wrong-password" ||
+
+error.code === "auth/user-not-found"
+
+){
+
+msg.innerHTML =
+"Invalid email or password"
+
+}else if(
+
+error.code === "auth/invalid-email"
+
+){
+
+msg.innerHTML =
+"Invalid email format"
+
+}else{
+
+msg.innerHTML =
+error.message
+
+}
+
+}
+
+}
+
+
+
+/* GOOGLE LOGIN */
 
 document.getElementById("googleBtn")
 .onclick = async ()=>{
@@ -125,14 +251,71 @@ auth,
 provider
 )
 
-currentUser =
+const user =
 result.user
 
-emailInput.value =
-currentUser.email
+
+
+const docRef =
+doc(db,"users",user.uid)
+
+const docSnap =
+await getDoc(docRef)
+
+
+
+/* NO ACCOUNT */
+
+if(!docSnap.exists()){
+
+window.location.href =
+"../register/"
+
+return
+
+}
+
+
+
+const data =
+docSnap.data()
+
+
+
+/* APPROVAL */
+
+if(data.approved !== true){
 
 msg.innerHTML =
-"Google connected successfully"
+"Waiting for admin approval"
+
+return
+
+}
+
+
+
+/* ADMIN */
+
+if(
+
+Array.isArray(data.roles) &&
+
+data.roles.includes("admin")
+
+){
+
+window.location.href =
+"../admin/"
+
+}else{
+
+window.location.href =
+"../dashboard/"
+
+}
+
+
 
 }catch(error){
 
@@ -147,411 +330,44 @@ error.message
 
 
 
-/* IMAGE CROP */
+/* FORGOT PASSWORD */
 
-document.getElementById("image")
-.onchange = (e)=>{
-
-const file =
-e.target.files[0]
-
-if(!file) return
-
-
-const reader =
-new FileReader()
-
-reader.onload = ()=>{
-
-document.getElementById("cropContainer")
-.style.display = "block"
-
-const image =
-document.getElementById("preview")
-
-image.src =
-reader.result
-
-
-if(cropper){
-
-cropper.destroy()
-
-}
-
-
-cropper =
-new Cropper(image,{
-
-aspectRatio:1,
-
-viewMode:1,
-
-dragMode:"move",
-
-autoCropArea:1,
-
-responsive:true
-
-})
-
-}
-
-reader.readAsDataURL(file)
-
-}
-
-
-
-/* REGISTER */
-
-document.getElementById("registerBtn")
+document.getElementById("forgotBtn")
 .onclick = async ()=>{
 
+const emailValue =
+email.value.trim()
+
+
+if(!emailValue){
+
 msg.innerHTML =
-"Please wait..."
+"Enter your email first"
+
+return
+
+}
 
 
 try{
 
-if(!currentUser){
-
-msg.innerHTML =
-"Connect Google first"
-
-return
-
-}
-
-
-
-/* GET VALUES */
-
-const full_name =
-document.getElementById("full_name").value.trim()
-
-const email =
-emailInput.value.trim()
-
-const password =
-passwordInput.value.trim()
-
-const phone =
-document.getElementById("phone").value.trim()
-
-const dob =
-document.getElementById("dob").value
-
-const gender =
-document.getElementById("gender").value
-
-const country =
-document.getElementById("country").value
-
-const district =
-document.getElementById("district").value.trim()
-
-const position =
-document.getElementById("position").value
-
-const konami_id =
-document.getElementById("konami_id").value.trim()
-
-const device_name =
-document.getElementById("device_name").value.trim()
-
-const fb_id_url =
-document.getElementById("fb_id_url").value.trim()
-
-const imageFile =
-document.getElementById("image").files[0]
-
-
-
-/* VALIDATION */
-
-if(
-!full_name ||
-!email ||
-!password ||
-!phone ||
-!dob ||
-!gender ||
-!country ||
-!district ||
-!position ||
-!konami_id ||
-!device_name ||
-!fb_id_url ||
-!imageFile
-){
-
-msg.innerHTML =
-"Please fill all fields"
-
-return
-
-}
-
-
-
-/* PASSWORD */
-
-if(password.length < 6){
-
-msg.innerHTML =
-"Password minimum 6 characters"
-
-return
-
-}
-
-
-
-/* IMAGE CROP CHECK */
-
-if(!cropper){
-
-msg.innerHTML =
-"Please crop image"
-
-return
-
-}
-
-
-
-/* KONAMI FORMAT */
-
-const konamiPattern =
-/^[A-Z]{4}-[0-9]{3}-[0-9]{3}-[0-9]{3}$/
-
-
-if(!konamiPattern.test(konami_id)){
-
-msg.innerHTML =
-"Format: ASDF-000-000-000"
-
-return
-
-}
-
-
-
-/* CHECK DUPLICATE */
-
-const snapshot =
-await getDocs(
-collection(db,"users")
-)
-
-let totalUsers = 0
-
-let duplicate = false
-
-
-snapshot.forEach((docItem)=>{
-
-const data =
-docItem.data()
-
-totalUsers++
-
-
-if(
-
-data.email === email ||
-
-data.konami_id === konami_id ||
-
-data.fb_id_url === fb_id_url
-
-){
-
-duplicate = true
-
-}
-
-})
-
-
-if(duplicate){
-
-msg.innerHTML =
-"Email / Konami ID / FB URL already used"
-
-return
-
-}
-
-
-
-/* CREATE FIREBASE ACCOUNT */
-
-msg.innerHTML =
-"Creating account..."
-
-
-await createUserWithEmailAndPassword(
+await sendPasswordResetEmail(
 
 auth,
 
-email,
-
-password
+emailValue
 
 )
-
-
-
-/* PROCESS IMAGE */
 
 msg.innerHTML =
-"Processing image..."
-
-
-croppedBlob =
-await new Promise((resolve)=>{
-
-cropper.getCroppedCanvas({
-
-width:500,
-height:500
-
-}).toBlob(
-
-(blob)=>{
-
-resolve(blob)
-
-},
-
-"image/jpeg",
-
-0.82
-
-)
-
-})
-
-
-
-/* UPLOAD IMAGE */
-
-msg.innerHTML =
-"Uploading image..."
-
-
-const imageRef =
-ref(
-storage,
-`players/${Date.now()}.jpg`
-)
-
-await uploadBytes(
-imageRef,
-croppedBlob
-)
-
-const imageUrl =
-await getDownloadURL(imageRef)
-
-
-
-/* PLAYER ID */
-
-const player_id =
-`EKH-${String(totalUsers+1).padStart(6,'0')}`
-
-
-
-/* SAVE DATA */
-
-msg.innerHTML =
-"Saving profile..."
-
-
-const user =
-auth.currentUser
-
-
-await setDoc(
-
-doc(db,"users",user.uid),
-
-{
-
-player_id,
-
-full_name,
-
-email,
-
-phone,
-
-dob,
-
-gender,
-
-country,
-
-district,
-
-position,
-
-konami_id,
-
-device_name,
-
-fb_id_url,
-
-image:imageUrl,
-
-approved:false,
-
-roles:["player"],
-
-plan:"free",
-
-created_at:new Date().toISOString()
-
-}
-
-)
-
-
-
-msg.innerHTML =
-"Registration successful. Waiting for admin approval."
-
-
-
-setTimeout(()=>{
-
-window.location.href =
-"../login/"
-
-},2500)
-
-
+"Password reset email sent"
 
 }catch(error){
 
 console.log(error)
 
-
-
-if(error.code === "auth/email-already-in-use"){
-
-msg.innerHTML =
-"Email already used"
-
-}else{
-
 msg.innerHTML =
 error.message
-
-}
 
 }
 
