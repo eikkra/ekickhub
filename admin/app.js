@@ -136,13 +136,9 @@ const data = docItem.data()
 
 total++
 
-if(data.roles?.includes("admin")){
-admins++
-}
+if(data.roles?.includes("admin")) admins++
 
-if(data.banned === true){
-banned++
-}
+if(data.banned === true) banned++
 
 /* APPROVAL */
 
@@ -176,11 +172,11 @@ ${data.email || '-'}
 
 </td>
 
-<td>${data.player_id || "-"}</td>
+<td>${data.player_id || '-'}</td>
 
-<td>${data.country || "-"}</td>
+<td>${data.country || '-'}</td>
 
-<td>${data.position || "-"}</td>
+<td>${data.position || '-'}</td>
 
 <td>
 
@@ -307,7 +303,6 @@ onclick="toggleBan('${docItem.id}',true)">
 Ban
 
 </button>`
-
 }
 
 <button class="deleteBtn"
@@ -341,7 +336,7 @@ document.getElementById("bannedUsers")
 
 }
 
-/* ROLE UI */
+/* ROLE CHIP */
 
 function renderRoles(roles,uid){
 
@@ -349,21 +344,13 @@ return roles.map(role=>{
 
 let cls = "playerRole"
 
-if(role === "admin"){
-cls = "adminRole"
-}
+if(role === "admin") cls = "adminRole"
 
-if(role === "moderator"){
-cls = "modRole"
-}
+if(role === "moderator") cls = "modRole"
 
-if(role === "manager"){
-cls = "managerRole"
-}
+if(role === "manager") cls = "managerRole"
 
-if(role === "referee"){
-cls = "refRole"
-}
+if(role === "referee") cls = "refRole"
 
 const removeBtn =
 
@@ -371,8 +358,14 @@ role === "player"
 
 ? ""
 
-: `<i class="fa-solid fa-xmark"
-onclick="removeRole('${uid}','${role}')"></i>`
+: `
+
+<i class="fa-solid fa-xmark"
+onclick="removeRole('${uid}','${role}')">
+
+</i>
+
+`
 
 return `
 
@@ -422,28 +415,30 @@ loadDashboard()
 
 }
 
-/* ADD ROLE */
+/* ROLE SYSTEM FIXED */
 
 window.addRole = async(uid)=>{
 
-let role = prompt(
-"Enter Role:\nadmin\nmoderator\nmanager\nreferee"
+const role =
+prompt(
+"Enter role:\nadmin\nmoderator\nmanager\nreferee"
 )
 
 if(!role) return
 
-role = role.toLowerCase().trim()
-
-const validRoles = [
+const allowedRoles = [
 "admin",
 "moderator",
 "manager",
 "referee"
 ]
 
-if(!validRoles.includes(role)){
+const cleanRole =
+role.toLowerCase().trim()
 
-alert("Invalid Role")
+if(!allowedRoles.includes(cleanRole)){
+
+alert("Invalid role")
 return
 
 }
@@ -454,27 +449,29 @@ doc(db,"users",uid)
 const snap =
 await getDoc(ref)
 
+if(!snap.exists()) return
+
 let roles =
-snap.data().roles || []
+snap.data().roles || ["player"]
 
-/* PLAYER ALWAYS */
+/* FIX DUPLICATE */
 
-if(!roles.includes("player")){
-roles.unshift("player")
-}
-
-/* PREVENT DUPLICATE */
-
-if(roles.includes(role)){
+if(roles.includes(cleanRole)){
 
 alert("Role already added")
 return
 
 }
 
-/* ADD NEW ROLE */
+/* ALWAYS KEEP PLAYER */
 
-roles.push(role)
+if(!roles.includes("player")){
+
+roles.unshift("player")
+
+}
+
+roles.push(cleanRole)
 
 await updateDoc(ref,{roles})
 
@@ -493,8 +490,6 @@ return
 
 }
 
-/* OWN ADMIN REMOVE BLOCK */
-
 if(
 uid === currentAdmin &&
 role === "admin"
@@ -511,16 +506,20 @@ doc(db,"users",uid)
 const snap =
 await getDoc(ref)
 
+if(!snap.exists()) return
+
 let roles =
 snap.data().roles || []
 
 roles =
 roles.filter(r=>r !== role)
 
-/* KEEP PLAYER ALWAYS */
+/* ALWAYS KEEP PLAYER */
 
 if(!roles.includes("player")){
+
 roles.unshift("player")
+
 }
 
 await updateDoc(ref,{roles})
@@ -534,15 +533,18 @@ loadDashboard()
 window.editEmail = async(uid)=>{
 
 const newEmail =
-prompt("Enter new email")
+prompt("Enter new Gmail")
 
 if(!newEmail) return
 
 await updateDoc(
+
 doc(db,"users",uid),
+
 {
 email:newEmail
 }
+
 )
 
 alert("Email updated")
@@ -556,10 +558,13 @@ loadDashboard()
 window.toggleBan = async(uid,status)=>{
 
 await updateDoc(
+
 doc(db,"users",uid),
+
 {
 banned:status
 }
+
 )
 
 loadDashboard()
@@ -571,7 +576,7 @@ loadDashboard()
 window.deleteProfile = async(uid)=>{
 
 const ok =
-confirm("Delete profile?")
+confirm("Delete full profile?")
 
 if(!ok) return
 
@@ -579,7 +584,9 @@ await deleteDoc(
 doc(db,"users",uid)
 )
 
-alert("Profile deleted")
+alert(
+"Profile deleted from Firestore"
+)
 
 loadDashboard()
 
