@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>eKickHub Player Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:#020617;
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+padding-bottom:100px;
+}
+
+.bg1{
+position:fixed;
+width:400px;
+height:400px;
+background:#00ffe1;
+filter:blur(180px);
+opacity:.12;
+top:-100px;
+left:-100px;
+z-index:-1;
+}
+
+.bg2{
+position:fixed;
+width:400px;
+height:400px;
+background:#ff00c8;
+filter:blur(180px);
+opacity:.12;
+bottom:-100px;
+right:-100px;
+z-index:-1;
+}
+
+.topbar{
+
+width:100%;
+padding:18px 20px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+position:sticky;
+top:0;
+
+backdrop-filter:blur(16px);
+
+background:rgba(2,6,23,.7);
+
+z-index:999;
+
+border-bottom:
+1px solid rgba(255,255,255,.05);
+
+}
+
+.logo{
+
+font-size:24px;
+font-weight:900;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.topIcons{
+display:flex;
+gap:12px;
+align-items:center;
+}
+
+.iconBtn{
+
+width:42px;
+height:42px;
+
+border-radius:14px;
+
+background:
+rgba(255,255,255,.06);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:18px;
+
+cursor:pointer;
+
+border:
+1px solid rgba(255,255,255,.06);
+
+}
+
+.container{
+width:100%;
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.profileCard{
+
+background:
+rgba(255,255,255,.05);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+border-radius:30px;
+
+padding:25px;
+
+backdrop-filter:blur(16px);
+
+box-shadow:
+0 0 35px rgba(0,255,225,.08);
+
+}
+
+.profileTop{
+
+display:flex;
+gap:25px;
+flex-wrap:wrap;
+align-items:center;
+
+}
+
+.profileImg{
+
+width:140px;
+height:140px;
+
+border-radius:30px;
+
+object-fit:cover;
+
+border:
+3px solid #00ffe1;
+
+}
+
+.info{
+flex:1;
+min-width:250px;
+}
+
+.name{
+
+font-size:28px;
+font-weight:900;
+margin-bottom:10px;
+
+}
+
+.idBox{
+
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:10px;
+
+}
+
+.tag{
+
+padding:8px 14px;
+border-radius:12px;
+
+background:
+rgba(255,255,255,.06);
+
+font-size:11px;
+
+}
+
+.ratingBox{
+
+margin-top:12px;
+
+display:flex;
+align-items:center;
+gap:10px;
+
+}
+
+.rating{
+
+font-size:38px;
+font-weight:900;
+
+color:#00ffe1;
+
+}
+
+.progress{
+
+width:180px;
+height:10px;
+
+background:#111827;
+border-radius:50px;
+overflow:hidden;
+
+}
+
+.progress div{
+
+height:100%;
+width:56%;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+}
+
+.actionBtns{
+
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:18px;
+
+}
+
+.btn{
+
+padding:12px 18px;
+border:none;
+border-radius:14px;
+
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
+
+color:white;
+
+font-size:12px;
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.statsGrid{
+
+margin-top:25px;
+
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(150px,1fr));
+
+gap:15px;
+
+}
+
+.statCard{
+
+background:
+rgba(255,255,255,.05);
+
+padding:20px;
+
+border-radius:22px;
+
+text-align:center;
+
+border:
+1px solid rgba(255,255,255,.06);
+
+}
+
+.statCard h2{
+font-size:26px;
+margin-bottom:8px;
+color:#00ffe1;
+}
+
+.statCard p{
+font-size:11px;
+color:#aaa;
+}
+
+.section{
+
+margin-top:25px;
+
+background:
+rgba(255,255,255,.05);
+
+padding:25px;
+
+border-radius:25px;
+
+border:
+1px solid rgba(255,255,255,.06);
+
+}
+
+.sectionTitle{
+
+font-size:20px;
+font-weight:800;
+
+margin-bottom:20px;
+
+}
+
+.graph{
+
+height:250px;
+
+border-radius:20px;
+
+background:
+linear-gradient(
+180deg,
+rgba(0,255,225,.15),
+rgba(255,0,200,.05)
+);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+font-size:14px;
+color:#aaa;
+
+}
+
+.achievementGrid{
+
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(160px,1fr));
+
+gap:15px;
+
+}
+
+.achievement{
+
+padding:18px;
+
+border-radius:18px;
+
+background:
+rgba(255,255,255,.05);
+
+text-align:center;
+
+border:
+1px solid rgba(255,255,255,.06);
+
+}
+
+.achievement h3{
+margin-bottom:8px;
+font-size:14px;
+}
+
+.adsBox{
+
+margin-top:25px;
+
+height:120px;
+
+border-radius:20px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+2px dashed rgba(255,255,255,.08);
+
+color:#888;
+
+font-size:14px;
+
+}
+
+@media(max-width:768px){
+
+.profileTop{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.profileImg{
+width:120px;
+height:120px;
+}
+
+.name{
+font-size:22px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="bg1"></div>
+<div class="bg2"></div>
+
+<div class="topbar">
+
+<div class="logo">
+eKickHub
+</div>
+
+<div class="topIcons">
+
+<div class="iconBtn">
+🔔
+</div>
+
+<div class="iconBtn">
+💬
+</div>
+
+<div class="iconBtn">
+👤
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="profileCard">
+
+<div class="profileTop">
+
+<img
+id="profileImage"
+class="profileImg">
+
+<div class="info">
+
+<div
+class="name"
+id="playerName">
+
+Loading...
+
+</div>
+
+<div class="idBox">
+
+<div class="tag"
+id="playerId">
+Player ID
+</div>
+
+<div class="tag"
+id="konamiId">
+Konami ID
+</div>
+
+<div class="tag"
+id="deviceName">
+Device
+</div>
+
+</div>
+
+<div class="ratingBox">
+
+<div class="rating"
+id="rating">
+56
+</div>
+
+<div>
+
+<div style="font-size:11px;margin-bottom:5px;">
+Player Rating
+</div>
+
+<div class="progress">
+<div id="ratingBar"></div>
+</div>
+
+</div>
+
+</div>
+
+<div class="actionBtns">
+
+<button class="btn"
+id="fbBtn">
+
+MESSAGE PLAYER
+
+</button>
+
+<button class="btn">
+EDIT PROFILE
+</button>
+
+<button class="btn">
+SWITCH ROLE
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="statsGrid">
+
+<div class="statCard">
+<h2 id="matchPlayed">0</h2>
+<p>MATCH PLAYED</p>
+</div>
+
+<div class="statCard">
+<h2 id="wins">0</h2>
+<p>WINS</p>
+</div>
+
+<div class="statCard">
+<h2 id="draws">0</h2>
+<p>DRAWS</p>
+</div>
+
+<div class="statCard">
+<h2 id="losses">0</h2>
+<p>LOSSES</p>
+</div>
+
+<div class="statCard">
+<h2 id="motm">0</h2>
+<p>MOTM</p>
+</div>
+
+<div class="statCard">
+<h2 id="hattrick">0</h2>
+<p>HAT-TRICK</p>
+</div>
+
+<div class="statCard">
+<h2 id="goals7">0</h2>
+<p>7+ GOALS</p>
+</div>
+
+<div class="statCard">
+<h2 id="winrate">0%</h2>
+<p>WIN RATE</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="sectionTitle">
+Performance Analysis
+</div>
+
+<div class="graph">
+GRAPH SYSTEM COMING NEXT STEP
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="sectionTitle">
+Achievements
+</div>
+
+<div class="achievementGrid">
+
+<div class="achievement">
+<h3>50 Wins</h3>
+<p>LOCKED</p>
+</div>
+
+<div class="achievement">
+<h3>100 Goals</h3>
+<p>LOCKED</p>
+</div>
+
+<div class="achievement">
+<h3>Top Scorer</h3>
+<p>LOCKED</p>
+</div>
+
+<div class="achievement">
+<h3>Champion</h3>
+<p>LOCKED</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="sectionTitle">
+Trophies
+</div>
+
+<div class="achievementGrid">
+
+<div class="achievement">
+🏆<br><br>
+No Trophy Yet
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="sectionTitle">
+Gift & Coin System
+</div>
+
+<div class="achievementGrid">
+
+<div class="achievement">
+<h3>Coins</h3>
+<p>0 EK Coin</p>
+</div>
+
+<div class="achievement">
+<h3>Gift</h3>
+<p>No Gift Yet</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="adsBox">
+
+ADS AREA
+
+</div>
+
+</div>
+
+<script type="module"
+src="app.js"></script>
+
+</body>
+</html>
