@@ -81,8 +81,7 @@ padding:25px;
 border-radius:30px;
 
 box-shadow:
-0 0 35px rgba(0,255,225,.18),
-0 0 60px rgba(255,0,200,.10);
+0 0 35px rgba(0,255,225,.18);
 
 }
 
@@ -100,22 +99,6 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
-}
-
-.label{
-
-display:block;
-
-font-size:11px;
-
-margin-bottom:7px;
-
-color:#00ffe1;
-
-font-weight:700;
-
-letter-spacing:.5px;
 
 }
 
@@ -294,6 +277,18 @@ border-radius:20px;
 
 }
 
+input[type="date"]{
+
+color:#9ca3af;
+
+}
+
+input[type="date"]:valid{
+
+color:white;
+
+}
+
 </style>
 
 </head>
@@ -341,11 +336,10 @@ CONTINUE WITH GOOGLE
 
 <div class="inputBox">
 
-<label class="label">
-Date of Birth
-</label>
-
-<input type="date" id="dob">
+<input
+type="date"
+id="dob"
+placeholder="Date of Birth">
 
 </div>
 
