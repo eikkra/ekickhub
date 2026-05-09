@@ -1,227 +1,195 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getAuth,
-onAuthStateChanged,
-signOut,
-deleteUser
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+signOut
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
 getFirestore,
 collection,
 getDocs,
 doc,
-getDoc,
 updateDoc,
-deleteDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+deleteDoc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* FIREBASE */
 const firebaseConfig = {
+
 apiKey: "AIzaSyDwPilelp6BgHhHD8Hs_cHx96ZJNZdeYag",
 authDomain: "ekickhub-bd.firebaseapp.com",
 projectId: "ekickhub-bd",
 storageBucket: "ekickhub-bd.firebasestorage.app",
 messagingSenderId: "306381500871",
 appId: "1:306381500871:web:50e1cc59d823872328e9e2"
+
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
-
-let currentAdmin = null;
-
-/* AUTH CHECK */
-onAuthStateChanged(auth, async (user) => {
-
-if (!user) {
-window.location.href = "../login/";
-return;
-}
-
-const snap = await getDoc(doc(db, "users", user.uid));
-
-if (!snap.exists()) return;
-
-const data = snap.data();
-
-if (!data.roles.includes("admin")) {
-window.location.href = "../dashboard/";
-return;
-}
-
-currentAdmin = user.uid;
-
-loadUsers();
-
-});
+const auth = getAuth(app);
 
 /* LOAD USERS */
-async function loadUsers() {
 
-const table = document.getElementById("userTable");
-table.innerHTML = "";
+async function load(){
 
-const snap = await getDocs(collection(db, "users"));
+const snap = await getDocs(collection(db,"users"));
 
-let total = 0;
-let pending = 0;
-let banned = 0;
+const box = document.getElementById("users");
+box.innerHTML = "";
 
-snap.forEach((d) => {
+snap.forEach(docu=>{
 
-const data = d.data();
-total++;
+const d = docu.data();
 
-if (!data.approved) pending++;
-if (data.banned) banned++;
+box.innerHTML += `
 
-const tr = document.createElement("tr");
+<tr>
 
-tr.innerHTML = `
-
-<td>${data.full_name || "-"}</td>
-
-<td>${data.player_id || "-"}</td>
+<td>${d.full_name}</td>
 
 <td>
 
-<input value="${data.email || ""}"
-onchange="editEmail('${d.id}', this.value)"
-style="padding:5px;background:#111;color:white;border:none;width:100%">
+<input value="${d.email}"
+onchange="editEmail('${docu.id}',this.value)">
 
 </td>
 
 <td>
 
-<div style="display:flex;gap:5px;flex-wrap:wrap">
+<div class="roleBox">
 
-${(data.roles || []).map(r => `
-<span style="padding:4px 8px;background:#222;border-radius:10px;font-size:10px">
+${(d.roles||[]).map(r=>`
+<span class="roleTag">
 ${r}
+<i onclick="removeRole('${docu.id}','${r}')"
+class="fa fa-xmark"></i>
 </span>
 `).join("")}
 
-<button onclick="addRole('${d.id}')"
-style="background:#7c3aed;color:white;border:none;padding:5px;border-radius:8px">
-+
-</button>
-
 </div>
 
-</td>
-
-<td>
-
-${data.banned
-? "<span style='color:red'>BANNED</span>"
-: data.approved
-? "<span style='color:#00ff99'>ACTIVE</span>"
-: "<span style='color:orange'>PENDING</span>"}
+<button class="btn role"
+onclick="addRole('${docu.id}')">+ Role</button>
 
 </td>
 
 <td>
 
-<button onclick="approve('${d.id}')">Approve</button>
-<button onclick="reject('${d.id}')">Reject</button>
-<button onclick="ban('${d.id}', ${data.banned})">
-${data.banned ? "Unban" : "Ban"}
+${d.banned ? "🚫 BANNED" : "ACTIVE"}
+
+<button class="btn ban"
+onclick="toggleBan('${docu.id}',${d.banned})">
+
+Toggle
+
 </button>
 
-<button onclick="del('${d.id}')"
-style="background:red;color:white">
+</td>
+
+<td>
+
+<button class="btn delete"
+onclick="deleteUser('${docu.id}')">
+
 Delete
+
 </button>
 
 </td>
+
+</tr>
 
 `;
 
-table.appendChild(tr);
-
 });
-
-document.getElementById("totalUsers").innerText = total;
-document.getElementById("pendingPlayers").innerText = pending;
-document.getElementById("banned").innerText = banned;
 
 }
 
-/* APPROVE PLAYER */
-window.approve = async (id) => {
-await updateDoc(doc(db, "users", id), {
-approved: true
-});
-loadUsers();
-};
+/* EMAIL EDIT */
 
-/* REJECT */
-window.reject = async (id) => {
-await deleteDoc(doc(db, "users", id));
-loadUsers();
-};
+window.editEmail = async(id,email)=>{
 
-/* BAN SYSTEM */
-window.ban = async (id, state) => {
-await updateDoc(doc(db, "users", id), {
-banned: !state
-});
-loadUsers();
-};
-
-/* EMAIL EDIT (ADMIN ONLY) */
-window.editEmail = async (id, email) => {
-await updateDoc(doc(db, "users", id), {
+await updateDoc(doc(db,"users",id),{
 email
 });
-};
 
-/* ROLE ADD (ADMIN ONLY) */
-window.addRole = async (id) => {
+}
 
-const role = prompt("moderator / manager / referee / admin");
-if (!role) return;
+/* ROLE ADD */
 
-const ref = doc(db, "users", id);
+window.addRole = async(id)=>{
+
+const role = prompt("role (admin/moderator/manager/referee)");
+
+const ref = doc(db,"users",id);
 const snap = await getDoc(ref);
+const data = snap.data();
 
-let roles = snap.data().roles || [];
+let roles = data.roles || [];
 
-if (!roles.includes(role)) roles.push(role);
+if(!roles.includes(role)){
+roles.push(role);
+}
 
-await updateDoc(ref, { roles });
+await updateDoc(ref,{roles});
+load();
 
-loadUsers();
+}
 
-};
+/* ROLE REMOVE */
 
-/* DELETE FULL USER */
-window.del = async (id) => {
+window.removeRole = async(id,role)=>{
 
-if (!confirm("Delete user completely?")) return;
+if(role === "player") return;
 
-await deleteDoc(doc(db, "users", id));
+const ref = doc(db,"users",id);
+const snap = await getDoc(ref);
+const data = snap.data();
 
-loadUsers();
+let roles = data.roles.filter(r=>r!==role);
 
-};
+await updateDoc(ref,{roles});
+load();
 
-/* SEARCH */
-document.getElementById("searchInput").oninput = (e) => {
+}
 
-const v = e.target.value.toLowerCase();
+/* BAN SYSTEM */
 
-document.querySelectorAll("#userTable tr").forEach(row => {
-row.style.display = row.innerText.toLowerCase().includes(v) ? "" : "none";
+window.toggleBan = async(id,ban)=>{
+
+await updateDoc(doc(db,"users",id),{
+banned:!ban
 });
 
-};
+load();
+
+}
+
+/* DELETE USER */
+
+window.deleteUser = async(id)=>{
+
+if(!confirm("Delete full user?")) return;
+
+await deleteDoc(doc(db,"users",id));
+
+load();
+
+}
 
 /* LOGOUT */
-document.getElementById("logoutBtn").onclick = async () => {
+
+document.getElementById("logoutBtn")
+.onclick = async()=>{
+
 await signOut(auth);
-window.location.href = "../login/";
-};
+location.href="../login/";
+
+}
+
+load();
