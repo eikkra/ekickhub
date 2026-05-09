@@ -3,7 +3,8 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
 getAuth,
-onAuthStateChanged
+onAuthStateChanged,
+signOut
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -19,8 +20,7 @@ import {
 getStorage,
 ref,
 uploadBytes,
-getDownloadURL,
-deleteObject
+getDownloadURL
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
@@ -43,12 +43,6 @@ const db = getFirestore(app)
 
 const storage = getStorage(app)
 
-let currentUserData = null
-
-let cropper = null
-
-/* SIDEBAR */
-
 const sidebar =
 document.getElementById("sidebar")
 
@@ -66,105 +60,120 @@ sidebar.classList.remove("active")
 
 }
 
-/* EDIT OPEN */
-
-document.getElementById("editProfileBtn")
+document.getElementById("cancelEdit")
 .onclick = ()=>{
 
-document.getElementById("editBox")
-.classList.add("active")
-
-sidebar.classList.remove("active")
-
-}
-
-/* CANCEL */
-
-document.getElementById("cancelBtn")
-.onclick = ()=>{
-
-document.getElementById("editBox")
+document.getElementById("editModal")
 .classList.remove("active")
 
 }
 
-/* AUTH */
+document.getElementById("editBtn")
+.onclick = ()=>{
 
-onAuthStateChanged(auth,async(user)=>{
+document.getElementById("editModal")
+.classList.add("active")
+
+}
+
+document.getElementById("logoutBtn")
+.onclick = async ()=>{
+
+await signOut(auth)
+
+window.location.href = "../login/"
+
+}
+
+let currentData = null
+let cropper = null
+
+onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
 
-window.location.href =
-"/login/"
+const urlParams =
+new URLSearchParams(window.location.search)
+
+const uid = urlParams.get("uid")
+
+if(uid){
+
+loadPublicProfile(uid)
+
+}else{
+
+window.location.href = "../login/"
+
+}
 
 return
 
 }
 
-const snap =
+const docSnap =
 await getDoc(doc(db,"users",user.uid))
 
-if(!snap.exists()) return
+if(!docSnap.exists()) return
 
-const data = snap.data()
+const data = docSnap.data()
 
-currentUserData = data
+currentData = data
 
-/* PROFILE */
+loadProfile(data)
 
-document.getElementById("playerImage")
-.src = data.image
+loadRoles(data.roles || [])
 
-document.getElementById("playerName")
-.innerHTML = data.full_name
+})
 
-document.getElementById("country")
-.innerHTML = data.country
+async function loadPublicProfile(uid){
 
-document.getElementById("position")
-.innerHTML = data.position
+const docSnap =
+await getDoc(doc(db,"users",uid))
 
-document.getElementById("playerId")
-.innerHTML = data.player_id
+if(!docSnap.exists()) return
 
-document.getElementById("konamiId")
-.innerHTML = data.konami_id
-
-document.getElementById("deviceName")
-.innerHTML = data.device_name
-
-document.getElementById("fbLink")
-.href = data.fb_id_url
-
-/* AGE */
-
-if(data.dob){
-
-const birthYear =
-new Date(data.dob).getFullYear()
-
-const age =
-new Date().getFullYear() - birthYear
-
-document.getElementById("age")
-.innerHTML = age + " Years"
+loadProfile(docSnap.data())
 
 }
 
-/* ROLE SWITCH */
+function loadProfile(data){
 
-if(Array.isArray(data.roles)){
+document.getElementById("playerImage").src =
+data.image
 
-document.getElementById("roleList")
-.innerHTML =
-data.roles.join(" , ")
+document.getElementById("playerName").innerHTML =
+data.full_name
 
-}
+document.getElementById("fbLink").href =
+data.fb_id_url
 
-/* EDIT FILL */
+document.getElementById("country").innerHTML =
+"🌍 "+data.country
+
+document.getElementById("position").innerHTML =
+"🎮 "+data.position
+
+document.getElementById("age").innerHTML =
+"🎂 "+calculateAge(data.dob)
+
+document.getElementById("player_id").innerHTML =
+data.player_id
+
+document.getElementById("konami_id").innerHTML =
+data.konami_id
+
+document.getElementById("device_name").innerHTML =
+data.device_name
+
+document.getElementById("ratingFill").style.width =
+"56%"
+
+document.getElementById("ratingFill").innerHTML =
+"56"
 
 document.getElementById("edit_name").value =
-data.full_name || ""
+data.full_name
 
 document.getElementById("edit_phone").value =
 data.phone || ""
@@ -184,9 +193,61 @@ data.fb_id_url || ""
 document.getElementById("edit_position").value =
 data.position || ""
 
+}
+
+function calculateAge(dob){
+
+if(!dob) return "N/A"
+
+const birth =
+new Date(dob)
+
+const diff =
+Date.now() - birth.getTime()
+
+const age =
+new Date(diff)
+
+return Math.abs(age.getUTCFullYear()-1970)+"Y"
+
+}
+
+function loadRoles(roles){
+
+const roleList =
+document.getElementById("roleList")
+
+roleList.innerHTML = ""
+
+roles.forEach(role=>{
+
+const div =
+document.createElement("div")
+
+div.className = "sideItem"
+
+div.innerHTML =
+"🔄 "+role.toUpperCase()
+
+div.onclick = ()=>{
+
+if(role === "admin"){
+
+window.location.href = "../admin/"
+
+}else{
+
+window.location.href = "../player/"
+
+}
+
+}
+
+roleList.appendChild(div)
+
 })
 
-/* IMAGE CROP */
+}
 
 document.getElementById("edit_image")
 .onchange = (e)=>{
@@ -217,7 +278,7 @@ cropper = new Cropper(image,{
 
 aspectRatio:1,
 viewMode:1,
-autoCropArea:1
+responsive:true
 
 })
 
@@ -227,84 +288,40 @@ reader.readAsDataURL(file)
 
 }
 
-/* SAVE */
-
-document.getElementById("saveBtn")
-.onclick = async ()=>{
+document.getElementById("saveEdit")
+.onclick = async()=>{
 
 const user = auth.currentUser
 
 if(!user) return
 
-let imageUrl =
-currentUserData.image
+let imageUrl = currentData.image
 
-/* IMAGE UPDATE */
-
-const file =
-document.getElementById("edit_image")
-.files[0]
-
-if(file && cropper){
+if(cropper){
 
 const blob =
-await new Promise((resolve)=>{
+await new Promise(resolve=>{
 
 cropper.getCroppedCanvas({
 
 width:500,
 height:500
 
-}).toBlob(
-
-(blob)=>{
-
-resolve(blob)
-
-},
-
-"image/jpeg",
-0.82
-
-)
+}).toBlob(resolve,"image/jpeg",0.82)
 
 })
 
-/* DELETE OLD */
-
-try{
-
-const oldRef =
-ref(storage,currentUserData.image)
-
-await deleteObject(oldRef)
-
-}catch(e){}
-
-/* NEW IMAGE */
-
 const imageRef =
-ref(storage,
-`players/${user.uid}.jpg`
-)
+ref(storage,`players/${user.uid}.jpg`)
 
-await uploadBytes(
-imageRef,
-blob
-)
+await uploadBytes(imageRef,blob)
 
 imageUrl =
 await getDownloadURL(imageRef)
 
 }
 
-/* UPDATE */
-
-await updateDoc(
-
-doc(db,"users",user.uid),
-
-{
+await updateDoc(doc(db,"users",user.uid),{
 
 full_name:
 document.getElementById("edit_name").value,
@@ -329,11 +346,7 @@ document.getElementById("edit_position").value,
 
 image:imageUrl
 
-}
-
-)
-
-alert("Profile Updated")
+})
 
 location.reload()
 

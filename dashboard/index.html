@@ -7,10 +7,7 @@
 
 <title>eKickHub Player</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css"/>
@@ -25,51 +22,46 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-background:#020617;
+background:#050816;
 color:white;
 overflow-x:hidden;
 }
 
 a{
 text-decoration:none;
-color:white;
+color:inherit;
+}
+
+.bg1,.bg2{
+position:fixed;
+width:350px;
+height:350px;
+filter:blur(140px);
+z-index:-1;
+opacity:.15;
 }
 
 .bg1{
-position:fixed;
-width:420px;
-height:420px;
 background:#00ffe1;
-filter:blur(180px);
-opacity:.12;
 top:-120px;
 left:-120px;
-z-index:-1;
 }
 
 .bg2{
-position:fixed;
-width:420px;
-height:420px;
 background:#ff00c8;
-filter:blur(180px);
-opacity:.12;
 bottom:-120px;
 right:-120px;
-z-index:-1;
 }
-
-/* TOPBAR */
 
 .topbar{
 height:58px;
-padding:0 14px;
+padding:0 15px;
 display:flex;
 align-items:center;
 justify-content:space-between;
 border-bottom:1px solid rgba(255,255,255,.07);
-background:rgba(2,6,23,.88);
-backdrop-filter:blur(18px);
+background:rgba(10,14,30,.92);
+backdrop-filter:blur(14px);
 position:sticky;
 top:0;
 z-index:999;
@@ -82,44 +74,40 @@ gap:12px;
 }
 
 .menuBtn{
-font-size:20px;
+font-size:22px;
 cursor:pointer;
-color:#00ffe1;
 }
 
 .logo{
-font-size:20px;
+font-size:18px;
 font-weight:900;
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
 
-.topIcons{
+.rightTop{
 display:flex;
 align-items:center;
 gap:16px;
+font-size:18px;
 }
 
-.topIcons i{
-font-size:17px;
-color:#d1d5db;
+.iconBtn{
 cursor:pointer;
 }
-
-/* SIDEBAR */
 
 .sidebar{
 position:fixed;
 top:0;
 left:-280px;
-width:270px;
-height:100%;
-background:#081120;
-border-right:1px solid rgba(255,255,255,.06);
-padding:18px;
+width:260px;
+height:100vh;
+background:#0b1223;
+border-right:1px solid rgba(255,255,255,.08);
 transition:.35s;
-z-index:99999;
+z-index:9999;
+padding:20px;
 overflow-y:auto;
 }
 
@@ -127,46 +115,41 @@ overflow-y:auto;
 left:0;
 }
 
-.sidebarTop{
+.sideTop{
 display:flex;
-align-items:center;
 justify-content:space-between;
+align-items:center;
 margin-bottom:25px;
 }
 
 .closeBtn{
-font-size:22px;
+font-size:24px;
 cursor:pointer;
-color:#ff00c8;
 }
 
 .sideMenu{
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:12px;
 }
 
 .sideItem{
-padding:14px;
+padding:13px 14px;
 border-radius:14px;
-background:#0f172a;
-display:flex;
-align-items:center;
-gap:12px;
-font-size:12px;
+background:#111b31;
+font-size:13px;
 cursor:pointer;
 border:1px solid rgba(255,255,255,.05);
 }
 
-.sideItem i{
-color:#00ffe1;
-width:18px;
+.sideTitle{
+font-size:11px;
+color:#7dd3fc;
+margin-top:18px;
+margin-bottom:8px;
 }
 
-/* PROFILE */
-
-.wrapper{
-width:100%;
+.container{
 max-width:1150px;
 margin:auto;
 padding:18px 14px 90px;
@@ -175,227 +158,211 @@ padding:18px 14px 90px;
 .profileCard{
 background:rgba(255,255,255,.04);
 border:1px solid rgba(255,255,255,.06);
-border-radius:28px;
-padding:22px 18px;
-backdrop-filter:blur(18px);
-box-shadow:0 0 40px rgba(0,255,225,.08);
+border-radius:26px;
+padding:20px;
+backdrop-filter:blur(15px);
+box-shadow:0 0 30px rgba(0,255,225,.08);
 }
 
 .profileTop{
 display:flex;
-flex-direction:column;
+gap:18px;
 align-items:center;
-text-align:center;
+flex-wrap:wrap;
 }
 
-.playerImg{
-width:112px;
-height:112px;
+.playerImage{
+width:120px;
+height:120px;
 border-radius:24px;
 object-fit:cover;
 border:2px solid #00ffe1;
-box-shadow:0 0 25px rgba(0,255,225,.35);
+}
+
+.playerInfo{
+flex:1;
+min-width:240px;
 }
 
 .playerName{
-margin-top:14px;
-font-size:22px;
-font-weight:800;
+font-size:24px;
+font-weight:900;
 display:flex;
 align-items:center;
-justify-content:center;
 gap:10px;
-}
-
-.fbBtn{
-width:34px;
-height:34px;
-border-radius:10px;
-background:#1877f2;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:15px;
-}
-
-.metaRow{
-margin-top:10px;
-display:flex;
 flex-wrap:wrap;
-justify-content:center;
-gap:10px;
 }
 
-.metaItem{
+.fbIcon{
+font-size:18px;
+color:#00b7ff;
+cursor:pointer;
+}
+
+.miniInfo{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px;
+}
+
+.miniBox{
+background:#10192d;
 padding:8px 12px;
 border-radius:12px;
-background:#0f172a;
 font-size:10px;
-display:flex;
-align-items:center;
-gap:7px;
-border:1px solid rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.06);
+color:#d1d5db;
 }
-
-.metaItem i{
-color:#00ffe1;
-}
-
-/* RATING */
 
 .ratingWrap{
-margin-top:18px;
-width:100%;
+margin-top:14px;
 }
 
-.ratingHead{
-display:flex;
-justify-content:space-between;
-margin-bottom:8px;
+.ratingText{
 font-size:11px;
+margin-bottom:8px;
+color:#facc15;
+font-weight:700;
 }
 
 .ratingBar{
 height:16px;
-background:#0f172a;
-border-radius:50px;
+background:#111827;
+border-radius:30px;
 overflow:hidden;
-position:relative;
+border:1px solid rgba(255,255,255,.08);
 }
 
 .ratingFill{
 height:100%;
 width:56%;
-background:linear-gradient(90deg,#00ffe1,#00c3ff,#ff00c8);
-border-radius:50px;
+background:linear-gradient(90deg,#00ffe1,#06b6d4,#ff00c8);
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:10px;
-font-weight:700;
+font-weight:900;
 }
 
-/* INFO */
-
 .infoGrid{
-margin-top:18px;
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:10px;
+gap:12px;
+margin-top:18px;
 }
 
 .infoBox{
-background:#0f172a;
-padding:11px;
+background:#10192d;
+padding:12px;
 border-radius:14px;
-font-size:11px;
-border:1px solid rgba(255,255,255,.05);
-line-height:1.7;
+font-size:12px;
+border:1px solid rgba(255,255,255,.06);
 }
 
-.infoBox span{
-color:#00ffe1;
+.infoLabel{
 font-size:10px;
-display:block;
-margin-bottom:3px;
+color:#7dd3fc;
+margin-bottom:4px;
 }
-
-/* TABS */
 
 .tabs{
 display:flex;
 gap:10px;
-margin-top:22px;
-overflow:auto;
-padding-bottom:3px;
+margin-top:18px;
+flex-wrap:wrap;
 }
 
 .tab{
 padding:11px 16px;
-background:#0f172a;
+background:#111827;
 border-radius:12px;
-font-size:11px;
-white-space:nowrap;
-border:1px solid rgba(255,255,255,.06);
+font-size:12px;
 cursor:pointer;
+border:1px solid rgba(255,255,255,.06);
 }
 
 .tab.active{
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 }
 
-/* STATS */
-
 .statsGrid{
-margin-top:20px;
+margin-top:18px;
 display:grid;
 grid-template-columns:repeat(6,1fr);
 gap:10px;
 }
 
-.stat{
+.statBox{
 background:#0f172a;
-padding:10px 6px;
-border-radius:14px;
+padding:12px 8px;
+border-radius:16px;
 text-align:center;
 border:1px solid rgba(255,255,255,.05);
 }
 
-.stat h2{
-font-size:17px;
-margin-bottom:6px;
+.statValue{
+font-size:16px;
+font-weight:900;
 color:#00ffe1;
-word-break:break-word;
+line-height:1;
 }
 
-.stat p{
-font-size:8px;
-color:#d1d5db;
-line-height:1.5;
+.statLabel{
+font-size:9px;
+margin-top:7px;
+color:#cbd5e1;
+line-height:1.4;
 }
-
-/* ADS */
 
 .adsBox{
-margin-top:20px;
+margin-top:18px;
 height:90px;
-border-radius:20px;
-border:2px dashed rgba(255,255,255,.15);
+border-radius:18px;
+border:1px dashed rgba(255,255,255,.15);
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:13px;
-color:#9ca3af;
+font-size:12px;
+color:#94a3b8;
+background:#0b1220;
 }
 
-/* EDIT */
+.editModal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:99999;
+}
+
+.editModal.active{
+display:flex;
+}
 
 .editBox{
-display:none;
-margin-top:22px;
-background:#0f172a;
-padding:18px;
-border-radius:22px;
+width:100%;
+max-width:520px;
+max-height:90vh;
+overflow-y:auto;
+background:#081120;
+padding:20px;
+border-radius:24px;
+border:1px solid rgba(255,255,255,.08);
 }
 
-.editBox.active{
-display:block;
-}
-
-.inputBox{
-margin-bottom:13px;
-}
-
-.inputBox input,
-.inputBox select{
+.editBox input,
+.editBox select{
 width:100%;
 padding:13px;
-background:#081120;
-border:1px solid rgba(255,255,255,.07);
+margin-bottom:12px;
+background:#0f172a;
+border:none;
 border-radius:12px;
-outline:none;
 color:white;
-font-size:12px;
 }
 
 .editBtns{
@@ -403,13 +370,11 @@ display:flex;
 gap:10px;
 }
 
-.saveBtn,
-.cancelBtn{
+.saveBtn,.cancelBtn{
 flex:1;
 padding:13px;
 border:none;
 border-radius:12px;
-font-size:12px;
 font-weight:700;
 cursor:pointer;
 }
@@ -426,180 +391,147 @@ color:white;
 
 #cropContainer{
 display:none;
-margin-top:15px;
+margin-bottom:12px;
 }
 
 #preview{
-max-width:100%;
+width:100%;
 border-radius:18px;
 }
 
-/* MOBILE */
-
 @media(max-width:768px){
 
-.statsGrid{
-grid-template-columns:repeat(3,1fr);
+.playerName{
+justify-content:center;
+text-align:center;
+font-size:21px;
+}
+
+.playerInfo{
+text-align:center;
+}
+
+.profileTop{
+justify-content:center;
 }
 
 .infoGrid{
 grid-template-columns:1fr;
 }
 
-.playerName{
-font-size:19px;
-text-align:center;
+.statsGrid{
+grid-template-columns:repeat(3,1fr);
+}
+
+.infoBox{
+font-size:11px;
 }
 
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="bg1"></div>
 <div class="bg2"></div>
 
-<!-- SIDEBAR -->
-
 <div class="sidebar" id="sidebar">
 
-<div class="sidebarTop">
-
-<div class="logo">
-eKickHub
-</div>
-
-<i class="fa-solid fa-xmark closeBtn"
-id="closeSidebar"></i>
-
+<div class="sideTop">
+<div class="logo">eKickHub</div>
+<div class="closeBtn" id="closeSidebar">✕</div>
 </div>
 
 <div class="sideMenu">
 
-<div class="sideItem" id="editProfileBtn">
-<i class="fa-solid fa-user-pen"></i>
-Edit Profile
+<div class="sideItem" id="editBtn">
+⚙ Edit Profile
 </div>
 
 <div class="sideItem">
-<i class="fa-solid fa-trophy"></i>
-Leaderboard
+🏆 Leaderboard
 </div>
 
 <div class="sideItem">
-<i class="fa-solid fa-shield-halved"></i>
-Competition Center
+🎮 Competition Center
 </div>
 
 <div class="sideItem">
-<i class="fa-solid fa-gift"></i>
-Rewards & Gifts
+🎁 Gift Store
 </div>
 
 <div class="sideItem">
-<i class="fa-solid fa-gear"></i>
-Settings
+📊 Analytics
 </div>
 
-<div class="sideItem">
-<i class="fa-solid fa-right-left"></i>
-Switch Role :
-<span id="roleList">Player</span>
+<div class="sideItem" id="logoutBtn">
+🚪 Logout
 </div>
 
+<div class="sideTitle">
+SWITCH ROLE
 </div>
 
-</div>
+<div id="roleList"></div>
 
-<!-- TOPBAR -->
+</div>
+</div>
 
 <div class="topbar">
 
 <div class="leftTop">
+<div class="menuBtn" id="menuBtn">☰</div>
+<div class="logo">eKickHub</div>
+</div>
 
-<i class="fa-solid fa-bars menuBtn"
-id="menuBtn"></i>
-
-<div class="logo">
-eKickHub
+<div class="rightTop">
+<div class="iconBtn">🔔</div>
+<div class="iconBtn">💬</div>
 </div>
 
 </div>
 
-<div class="topIcons">
-
-<i class="fa-regular fa-envelope"></i>
-
-<i class="fa-regular fa-bell"></i>
-
-</div>
-
-</div>
-
-<div class="wrapper">
+<div class="container">
 
 <div class="profileCard">
 
 <div class="profileTop">
 
 <img id="playerImage"
-class="playerImg">
+class="playerImage">
+
+<div class="playerInfo">
 
 <div class="playerName">
 
-<span id="playerName">
-Player
-</span>
+<span id="playerName"></span>
 
-<a id="fbLink"
-class="fbBtn"
-target="_blank">
-
-<i class="fa-brands fa-facebook-f"></i>
-
+<a id="fbLink" target="_blank">
+<span class="fbIcon">📘</span>
 </a>
 
 </div>
 
-<div class="metaRow">
+<div class="miniInfo">
 
-<div class="metaItem">
-<i class="fa-solid fa-location-dot"></i>
-<span id="country"></span>
-</div>
-
-<div class="metaItem">
-<i class="fa-solid fa-gamepad"></i>
-<span id="position"></span>
-</div>
-
-<div class="metaItem">
-<i class="fa-solid fa-cake-candles"></i>
-<span id="age"></span>
-</div>
+<div class="miniBox" id="country"></div>
+<div class="miniBox" id="position"></div>
+<div class="miniBox" id="age"></div>
 
 </div>
 
 <div class="ratingWrap">
 
-<div class="ratingHead">
-
-<span>
-Elite Player Rating
-</span>
-
-<span id="ratingText">
-56
-</span>
-
+<div class="ratingText">
+ELITE PLAYER RATING
 </div>
 
 <div class="ratingBar">
-
-<div class="ratingFill"
-id="ratingFill">
+<div class="ratingFill" id="ratingFill">
 56
+</div>
 </div>
 
 </div>
@@ -611,18 +543,18 @@ id="ratingFill">
 <div class="infoGrid">
 
 <div class="infoBox">
-<span>Player ID</span>
-<div id="playerId"></div>
+<div class="infoLabel">Player ID</div>
+<div id="player_id"></div>
 </div>
 
 <div class="infoBox">
-<span>Konami ID</span>
-<div id="konamiId"></div>
+<div class="infoLabel">Konami ID</div>
+<div id="konami_id"></div>
 </div>
 
 <div class="infoBox">
-<span>Device</span>
-<div id="deviceName"></div>
+<div class="infoLabel">Device</div>
+<div id="device_name"></div>
 </div>
 
 </div>
@@ -634,10 +566,6 @@ Overall
 </div>
 
 <div class="tab">
-Performance
-</div>
-
-<div class="tab">
 Achievements
 </div>
 
@@ -646,62 +574,94 @@ Trophies
 </div>
 
 <div class="tab">
-Gift Coins
+Coins
 </div>
 
 </div>
 
 <div class="statsGrid">
 
-<div class="stat"><h2>0</h2><p>RANK</p></div>
-<div class="stat"><h2>0</h2><p>MATCH PLAYED</p></div>
-<div class="stat"><h2>0</h2><p>WINS</p></div>
-<div class="stat"><h2>0</h2><p>DRAWS</p></div>
-<div class="stat"><h2>0</h2><p>LOSSES</p></div>
-<div class="stat"><h2>0%</h2><p>WIN RATE</p></div>
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">RANK</div>
+</div>
 
-<div class="stat"><h2>0</h2><p>HAT-TRICK</p></div>
-<div class="stat"><h2>0</h2><p>MOTM</p></div>
-<div class="stat"><h2>0</h2><p>7+ GOALS</p></div>
-<div class="stat"><h2>0</h2><p>CLEAN SHEETS</p></div>
-<div class="stat"><h2>0</h2><p>GOALS FOR</p></div>
-<div class="stat"><h2>0</h2><p>GOALS AGAINST</p></div>
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">MATCH PLAYED</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">WINS</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">DRAWS</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">LOSSES</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0%</div>
+<div class="statLabel">WIN RATE</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">HAT-TRICK</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">MOTM</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">7+ GOALS</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">CLEAN SHEETS</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">GOALS FOR</div>
+</div>
+
+<div class="statBox">
+<div class="statValue">0</div>
+<div class="statLabel">GOALS AGAINST</div>
+</div>
 
 </div>
 
 <div class="adsBox">
-PLAYER PROFILE ADS AREA
+ADS SPACE
 </div>
 
-<!-- EDIT -->
+</div>
 
-<div class="editBox" id="editBox">
+</div>
 
-<div class="inputBox">
+<div class="editModal" id="editModal">
+
+<div class="editBox">
+
 <input type="text" id="edit_name" placeholder="Full Name">
-</div>
-
-<div class="inputBox">
 <input type="text" id="edit_phone" placeholder="Phone Number">
-</div>
-
-<div class="inputBox">
 <input type="date" id="edit_dob">
-</div>
-
-<div class="inputBox">
 <input type="text" id="edit_device" placeholder="Device Name">
-</div>
-
-<div class="inputBox">
-<input type="text" id="edit_konami" placeholder="Konami ID">
-</div>
-
-<div class="inputBox">
+<input type="text" id="edit_konami" placeholder="ASDF-000-000-000">
 <input type="text" id="edit_fb" placeholder="Facebook URL">
-</div>
 
-<div class="inputBox">
 <select id="edit_position">
 <option>CF</option>
 <option>SS</option>
@@ -715,11 +675,8 @@ PLAYER PROFILE ADS AREA
 <option>CB</option>
 <option>GK</option>
 </select>
-</div>
 
-<div class="inputBox">
 <input type="file" id="edit_image" accept="image/*">
-</div>
 
 <div id="cropContainer">
 <img id="preview">
@@ -727,17 +684,13 @@ PLAYER PROFILE ADS AREA
 
 <div class="editBtns">
 
-<button class="saveBtn"
-id="saveBtn">
-SAVE CHANGES
+<button class="cancelBtn" id="cancelEdit">
+Cancel
 </button>
 
-<button class="cancelBtn"
-id="cancelBtn">
-CANCEL
+<button class="saveBtn" id="saveEdit">
+Save Changes
 </button>
-
-</div>
 
 </div>
 
@@ -747,8 +700,7 @@ CANCEL
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 
-<script type="module"
-src="app.js"></script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
