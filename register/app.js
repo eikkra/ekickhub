@@ -410,16 +410,3 @@ msg.innerHTML = error.message
 }
 
 }
-const dobInput = document.getElementById("dob");
-const dobBox = document.querySelector(".dobBox");
-const dobPlaceholder = document.getElementById("dobPlaceholder");
-
-dobInput.addEventListener("focus", () => {
-dobBox.classList.add("focused");
-});
-
-dobInput.addEventListener("blur", () => {
-if (!dobInput.value) {
-dobBox.classList.remove("focused");
-}
-});
