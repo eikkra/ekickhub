@@ -1,37 +1,23 @@
+/* FIREBASE */
+
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-
 getAuth,
-
 onAuthStateChanged,
-
 signOut
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
 getFirestore,
-
-doc,
-
-getDoc,
-
-getDocs,
-
 collection,
-
+getDocs,
+doc,
 updateDoc
-
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-
-/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -49,22 +35,43 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
+const app = initializeApp(firebaseConfig)
 
+const auth = getAuth(app)
 
-const app =
-initializeApp(firebaseConfig)
+const db = getFirestore(app)
 
-const auth =
-getAuth(app)
+const approvalList =
+document.getElementById("approvalList")
 
-const db =
-getFirestore(app)
+const userList =
+document.getElementById("userList")
 
+const msg =
+document.getElementById("msg")
 
+/* SIDEBAR */
 
-/* CHECK ADMIN */
+const sidebar =
+document.getElementById("sidebar")
 
-onAuthStateChanged(auth, async(user)=>{
+document.getElementById("menuBtn")
+.onclick = ()=>{
+
+sidebar.classList.add("active")
+
+}
+
+document.getElementById("closeBtn")
+.onclick = ()=>{
+
+sidebar.classList.remove("active")
+
+}
+
+/* AUTH */
+
+onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
@@ -75,92 +82,32 @@ return
 
 }
 
-
-
-const userRef =
-doc(db,"users",user.uid)
-
-const userSnap =
-await getDoc(userRef)
-
-
-
-if(!userSnap.exists()){
-
-window.location.href =
-"../login/"
-
-return
-
-}
-
-
-
-const userData =
-userSnap.data()
-
-
-
-if(
-
-!Array.isArray(userData.roles) ||
-
-!userData.roles.includes("admin")
-
-){
-
-window.location.href =
-"../dashboard/"
-
-return
-
-}
-
-
-
 loadUsers()
 
 })
-
-
 
 /* LOAD USERS */
 
 async function loadUsers(){
 
-const usersContainer =
-document.getElementById("usersContainer")
-
-usersContainer.innerHTML =
-"Loading..."
-
+approvalList.innerHTML = ""
+userList.innerHTML = ""
 
 const snapshot =
-await getDocs(
-collection(db,"users")
-)
-
-
+await getDocs(collection(db,"users"))
 
 let total = 0
 let pending = 0
 let approved = 0
+let admins = 0
 
-usersContainer.innerHTML = ""
+snapshot.forEach(async(docSnap)=>{
 
-
-snapshot.forEach((docItem)=>{
-
-const data =
-docItem.data()
-
-const uid =
-docItem.id
+const data = docSnap.data()
 
 total++
 
-
-if(data.approved){
+if(data.approved === true){
 
 approved++
 
@@ -170,90 +117,143 @@ pending++
 
 }
 
+if(
+Array.isArray(data.roles) &&
+data.roles.includes("admin")
+){
 
+admins++
 
-/* ONLY SHOW PENDING */
-
-if(data.approved === true){
-return
 }
 
+/* APPROVAL LIST */
 
+if(data.approved !== true){
 
-const div =
-document.createElement("div")
+approvalList.innerHTML += `
 
-div.className =
-"user"
+<div class="userCard">
 
+<div class="userTop">
 
+<img class="userImage"
+src="${data.image}">
 
-div.innerHTML =
+<div class="userInfo">
 
-`
-
-<img src="${data.image}">
-
-<div class="info">
-
-<h3>
+<div class="userName">
 ${data.full_name}
-</h3>
+</div>
 
-<p>
+<div class="userId">
 ${data.player_id}
-</p>
-
-<p>
-${data.country} | ${data.district}
-</p>
-
-<p>
-${data.position}
-</p>
-
-<p>
-${data.email}
-</p>
+</div>
 
 </div>
 
-<div class="actions">
+</div>
 
-<button
-class="approve"
-onclick="approveUser('${uid}')">
+<div class="actionRow">
 
-Approve
+<button class="btn approve"
+onclick="approveUser('${docSnap.id}')">
 
-</button>
-
-<button
-class="adminBtn"
-onclick="makeAdmin('${uid}')">
-
-Make Admin
+APPROVE
 
 </button>
 
-<button
-class="reject"
-onclick="rejectUser('${uid}')">
+<button class="btn reject"
+onclick="rejectUser('${docSnap.id}')">
 
-Reject
+REJECT
 
 </button>
+
+</div>
 
 </div>
 
 `
 
+}
 
-usersContainer.appendChild(div)
+/* ALL USERS */
+
+userList.innerHTML += `
+
+<div class="userCard">
+
+<div class="userTop">
+
+<img class="userImage"
+src="${data.image}">
+
+<div class="userInfo">
+
+<div class="userName">
+${data.full_name}
+</div>
+
+<div class="userId">
+${data.player_id}
+</div>
+
+<div class="userRole">
+
+${(data.roles || [])
+.map(role=>`
+<div class="roleTag">
+${role}
+</div>
+`).join("")}
+
+</div>
+
+</div>
+
+</div>
+
+<select class="roleSelect"
+id="role-${docSnap.id}">
+
+<option value="player">
+Player
+</option>
+
+<option value="moderator">
+Moderator
+</option>
+
+<option value="referee">
+Referee
+</option>
+
+<option value="club_manager">
+Club Manager
+</option>
+
+<option value="admin">
+Admin
+</option>
+
+</select>
+
+<div class="actionRow">
+
+<button class="btn edit"
+onclick="setRole('${docSnap.id}')">
+
+UPDATE ROLE
+
+</button>
+
+</div>
+
+</div>
+
+`
 
 })
-
-
 
 document.getElementById("totalUsers")
 .innerHTML = total
@@ -264,82 +264,81 @@ document.getElementById("pendingUsers")
 document.getElementById("approvedUsers")
 .innerHTML = approved
 
+document.getElementById("admins")
+.innerHTML = admins
+
 }
-
-
 
 /* APPROVE */
 
-window.approveUser = async(uid)=>{
+window.approveUser = async(id)=>{
 
 await updateDoc(
-
-doc(db,"users",uid),
-
+doc(db,"users",id),
 {
-
 approved:true
-
 }
-
 )
+
+msg.innerHTML =
+"Player approved"
 
 loadUsers()
 
 }
-
-
-
-/* MAKE ADMIN */
-
-window.makeAdmin = async(uid)=>{
-
-await updateDoc(
-
-doc(db,"users",uid),
-
-{
-
-approved:true,
-
-roles:["player","admin"]
-
-}
-
-)
-
-loadUsers()
-
-}
-
-
 
 /* REJECT */
 
-window.rejectUser = async(uid)=>{
+window.rejectUser = async(id)=>{
 
 await updateDoc(
-
-doc(db,"users",uid),
-
+doc(db,"users",id),
 {
-
 approved:false
-
 }
-
 )
 
-alert("User kept pending")
+msg.innerHTML =
+"Player rejected"
+
+loadUsers()
 
 }
 
+/* ROLE UPDATE */
 
+window.setRole = async(id)=>{
+
+const value =
+document.getElementById(`role-${id}`).value
+
+await updateDoc(
+doc(db,"users",id),
+{
+roles:["player",value]
+}
+)
+
+msg.innerHTML =
+"Role updated"
+
+loadUsers()
+
+}
+
+/* SWITCH TO PLAYER */
+
+document.getElementById("switchPlayer")
+.onclick = ()=>{
+
+window.location.href =
+"../dashboard/"
+
+}
 
 /* LOGOUT */
 
-document.getElementById("logoutBtn")
-.onclick = async()=>{
+async function logoutNow(){
 
 await signOut(auth)
 
@@ -347,3 +346,9 @@ window.location.href =
 "../login/"
 
 }
+
+document.getElementById("logoutBtn")
+.onclick = logoutNow
+
+document.getElementById("logoutBtn2")
+.onclick = logoutNow
