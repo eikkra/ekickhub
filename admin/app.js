@@ -1,23 +1,29 @@
-/* FIREBASE */
-
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
+
 getAuth,
 onAuthStateChanged,
 signOut
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
 getFirestore,
 collection,
 getDocs,
 doc,
-updateDoc
+getDoc,
+updateDoc,
+deleteDoc
+
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
 
 const firebaseConfig = {
 
@@ -35,20 +41,14 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 
 };
 
-const app = initializeApp(firebaseConfig)
+const app =
+initializeApp(firebaseConfig)
 
-const auth = getAuth(app)
+const auth =
+getAuth(app)
 
-const db = getFirestore(app)
-
-const approvalList =
-document.getElementById("approvalList")
-
-const userList =
-document.getElementById("userList")
-
-const msg =
-document.getElementById("msg")
+const db =
+getFirestore(app)
 
 /* SIDEBAR */
 
@@ -71,6 +71,8 @@ sidebar.classList.remove("active")
 
 /* AUTH */
 
+let currentAdmin = null
+
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
@@ -82,6 +84,44 @@ return
 
 }
 
+const userRef =
+doc(db,"users",user.uid)
+
+const userSnap =
+await getDoc(userRef)
+
+if(!userSnap.exists()){
+
+window.location.href =
+"../login/"
+return
+
+}
+
+const data =
+userSnap.data()
+
+if(
+!Array.isArray(data.roles) ||
+!data.roles.includes("admin")
+){
+
+window.location.href =
+"../dashboard/"
+return
+
+}
+
+currentAdmin = user.uid
+
+document.getElementById("adminName")
+.innerHTML =
+data.full_name
+
+document.getElementById("adminImage")
+.src =
+data.image
+
 loadUsers()
 
 })
@@ -90,168 +130,130 @@ loadUsers()
 
 async function loadUsers(){
 
-approvalList.innerHTML = ""
-userList.innerHTML = ""
+const table =
+document.getElementById("userTable")
 
-const snapshot =
+table.innerHTML = ""
+
+const snap =
 await getDocs(collection(db,"users"))
 
 let total = 0
 let pending = 0
-let approved = 0
 let admins = 0
+let mods = 0
 
-snapshot.forEach(async(docSnap)=>{
+snap.forEach((docItem)=>{
 
-const data = docSnap.data()
+const data =
+docItem.data()
 
 total++
 
-if(data.approved === true){
-
-approved++
-
-}else{
+if(data.approved !== true){
 
 pending++
 
 }
 
-if(
-Array.isArray(data.roles) &&
-data.roles.includes("admin")
-){
+if(data.roles?.includes("admin")){
 
 admins++
 
 }
 
-/* APPROVAL LIST */
+if(data.roles?.includes("moderator")){
 
-if(data.approved !== true){
-
-approvalList.innerHTML += `
-
-<div class="userCard">
-
-<div class="userTop">
-
-<img class="userImage"
-src="${data.image}">
-
-<div class="userInfo">
-
-<div class="userName">
-${data.full_name}
-</div>
-
-<div class="userId">
-${data.player_id}
-</div>
-
-</div>
-
-</div>
-
-<div class="actionRow">
-
-<button class="btn approve"
-onclick="approveUser('${docSnap.id}')">
-
-APPROVE
-
-</button>
-
-<button class="btn reject"
-onclick="rejectUser('${docSnap.id}')">
-
-REJECT
-
-</button>
-
-</div>
-
-</div>
-
-`
+mods++
 
 }
 
-/* ALL USERS */
+const tr =
+document.createElement("tr")
 
-userList.innerHTML += `
+tr.innerHTML = `
 
-<div class="userCard">
+<td>
 
-<div class="userTop">
+<div class="userFlex">
 
-<img class="userImage"
-src="${data.image}">
+<img src="${data.image}">
 
-<div class="userInfo">
+<div>
 
-<div class="userName">
+<div class="playerName">
 ${data.full_name}
 </div>
 
-<div class="userId">
-${data.player_id}
-</div>
-
-<div class="userRole">
-
-${(data.roles || [])
-.map(role=>`
-<div class="roleTag">
-${role}
-</div>
-`).join("")}
-
+<div class="playerEmail">
+${data.email}
 </div>
 
 </div>
 
 </div>
 
-<select class="roleSelect"
-id="role-${docSnap.id}">
+</td>
 
-<option value="player">
-Player
-</option>
+<td>${data.player_id || "-"}</td>
 
-<option value="moderator">
-Moderator
-</option>
+<td>${data.country || "-"}</td>
 
-<option value="referee">
-Referee
-</option>
+<td>${data.position || "-"}</td>
 
-<option value="club_manager">
-Club Manager
-</option>
+<td>
 
-<option value="admin">
-Admin
-</option>
+<div class="roleWrap">
 
-</select>
+${renderRoles(
+data.roles || [],
+docItem.id
+)}
 
-<div class="actionRow">
+</div>
 
-<button class="btn edit"
-onclick="setRole('${docSnap.id}')">
+</td>
 
-UPDATE ROLE
+<td>
+
+${data.approved === true
+? "Approved"
+: "Pending"}
+
+</td>
+
+<td>
+
+<div class="actionBtns">
+
+<button class="approveBtn"
+onclick="approveUser('${docItem.id}')">
+
+Approve
+
+</button>
+
+<button class="rejectBtn"
+onclick="rejectUser('${docItem.id}')">
+
+Reject
+
+</button>
+
+<button class="addRole"
+onclick="addRolePrompt('${docItem.id}')">
+
+Add Role
 
 </button>
 
 </div>
 
-</div>
+</td>
 
 `
+
+table.appendChild(tr)
 
 })
 
@@ -261,27 +263,80 @@ document.getElementById("totalUsers")
 document.getElementById("pendingUsers")
 .innerHTML = pending
 
-document.getElementById("approvedUsers")
-.innerHTML = approved
-
 document.getElementById("admins")
 .innerHTML = admins
+
+document.getElementById("mods")
+.innerHTML = mods
+
+}
+
+/* RENDER ROLE */
+
+function renderRoles(roles,uid){
+
+return roles.map(role=>{
+
+let className = "playerRole"
+
+if(role === "admin"){
+
+className = "adminRoleChip"
+
+}
+
+if(role === "moderator"){
+
+className = "modRole"
+
+}
+
+if(role === "manager"){
+
+className = "managerRole"
+
+}
+
+if(role === "referee"){
+
+className = "refRole"
+
+}
+
+const removeBtn = role === "player"
+? ""
+: `<i class="fa-solid fa-xmark"
+onclick="removeRole('${uid}','${role}')"></i>`
+
+return `
+
+<div class="roleChip ${className}">
+
+${role}
+
+${removeBtn}
+
+</div>
+
+`
+
+}).join("")
 
 }
 
 /* APPROVE */
 
-window.approveUser = async(id)=>{
+window.approveUser = async(uid)=>{
 
 await updateDoc(
-doc(db,"users",id),
+
+doc(db,"users",uid),
+
 {
 approved:true
 }
-)
 
-msg.innerHTML =
-"Player approved"
+)
 
 loadUsers()
 
@@ -289,56 +344,132 @@ loadUsers()
 
 /* REJECT */
 
-window.rejectUser = async(id)=>{
+window.rejectUser = async(uid)=>{
 
-await updateDoc(
-doc(db,"users",id),
-{
-approved:false
-}
+const confirmDelete =
+confirm("Delete this user?")
+
+if(!confirmDelete) return
+
+await deleteDoc(
+doc(db,"users",uid)
 )
-
-msg.innerHTML =
-"Player rejected"
 
 loadUsers()
 
 }
 
-/* ROLE UPDATE */
+/* ADD ROLE */
 
-window.setRole = async(id)=>{
+window.addRolePrompt = async(uid)=>{
+
+const role =
+prompt(
+"Enter role:\nmoderator\nmanager\nreferee\nadmin"
+)
+
+if(!role) return
+
+const userRef =
+doc(db,"users",uid)
+
+const userSnap =
+await getDoc(userRef)
+
+const data =
+userSnap.data()
+
+let roles =
+data.roles || []
+
+if(!roles.includes(role)){
+
+roles.push(role)
+
+}
+
+await updateDoc(userRef,{
+roles
+})
+
+loadUsers()
+
+}
+
+/* REMOVE ROLE */
+
+window.removeRole = async(uid,role)=>{
+
+if(role === "player"){
+
+alert("Player role can't remove")
+return
+
+}
+
+/* SELF ADMIN REMOVE BLOCK */
+
+if(
+uid === currentAdmin &&
+role === "admin"
+){
+
+alert("You can't remove your own admin role")
+return
+
+}
+
+const userRef =
+doc(db,"users",uid)
+
+const userSnap =
+await getDoc(userRef)
+
+const data =
+userSnap.data()
+
+let roles =
+data.roles || []
+
+roles =
+roles.filter(r=>r !== role)
+
+await updateDoc(userRef,{
+roles
+})
+
+loadUsers()
+
+}
+
+/* SEARCH */
+
+document.getElementById("searchInput")
+.oninput = ()=>{
 
 const value =
-document.getElementById(`role-${id}`).value
+document.getElementById("searchInput")
+.value.toLowerCase()
 
-await updateDoc(
-doc(db,"users",id),
-{
-roles:["player",value]
-}
-)
+const rows =
+document.querySelectorAll("#userTable tr")
 
-msg.innerHTML =
-"Role updated"
+rows.forEach(row=>{
 
-loadUsers()
+row.style.display =
+row.innerText.toLowerCase()
+.includes(value)
+? ""
+: "none"
 
-}
-
-/* SWITCH TO PLAYER */
-
-document.getElementById("switchPlayer")
-.onclick = ()=>{
-
-window.location.href =
-"../dashboard/"
+})
 
 }
 
 /* LOGOUT */
 
-async function logoutNow(){
+document.getElementById("logoutBtn")
+.onclick = async ()=>{
 
 await signOut(auth)
 
@@ -346,9 +477,3 @@ window.location.href =
 "../login/"
 
 }
-
-document.getElementById("logoutBtn")
-.onclick = logoutNow
-
-document.getElementById("logoutBtn2")
-.onclick = logoutNow

@@ -1,16 +1,19 @@
+<!-- admin/index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>eKickHub Admin Panel</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<title>eKickHub Admin</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -27,95 +30,51 @@ color:white;
 overflow-x:hidden;
 }
 
-body::-webkit-scrollbar{
-width:0;
-}
-
-.bg1,
-.bg2{
-position:fixed;
-width:420px;
-height:420px;
-border-radius:50%;
-filter:blur(180px);
-z-index:-1;
-opacity:.18;
-}
+/* BG */
 
 .bg1{
+position:fixed;
+width:350px;
+height:350px;
 background:#00ffe1;
-top:-120px;
-left:-120px;
+filter:blur(170px);
+opacity:.12;
+top:-100px;
+left:-100px;
+z-index:-1;
 }
 
 .bg2{
-background:#ff00c8;
-bottom:-120px;
-right:-120px;
-}
-
-.sidebar{
 position:fixed;
-left:-270px;
-top:0;
-width:260px;
-height:100vh;
-background:#081120;
-backdrop-filter:blur(16px);
-border-right:1px solid rgba(255,255,255,.05);
-padding:18px;
-transition:.35s;
-z-index:1000;
-overflow-y:auto;
+width:350px;
+height:350px;
+background:#ff00c8;
+filter:blur(170px);
+opacity:.12;
+bottom:-100px;
+right:-100px;
+z-index:-1;
 }
 
-.sidebar.active{
-left:0;
-}
-
-.closeBtn{
-font-size:20px;
-cursor:pointer;
-margin-bottom:20px;
-color:#ff00c8;
-}
-
-.sideLogo{
-font-size:24px;
-font-weight:800;
-margin-bottom:25px;
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.sideItem{
-padding:14px;
-border-radius:14px;
-background:#0f172a;
-margin-bottom:12px;
-font-size:12px;
-display:flex;
-align-items:center;
-gap:12px;
-cursor:pointer;
-transition:.3s;
-border:1px solid rgba(255,255,255,.05);
-}
-
-.sideItem:hover{
-border-color:#00ffe1;
-}
+/* TOPBAR */
 
 .topbar{
-height:58px;
-padding:0 14px;
+
+height:60px;
+padding:0 15px;
+
 display:flex;
 align-items:center;
 justify-content:space-between;
-background:rgba(15,23,42,.85);
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
+
+background:
+rgba(255,255,255,.03);
+
 backdrop-filter:blur(12px);
-border-bottom:1px solid rgba(255,255,255,.05);
+
 position:sticky;
 top:0;
 z-index:999;
@@ -124,19 +83,20 @@ z-index:999;
 .leftTop{
 display:flex;
 align-items:center;
-gap:14px;
+gap:12px;
 }
 
 .menuBtn{
-font-size:18px;
+font-size:20px;
 cursor:pointer;
 color:#00ffe1;
 }
 
 .logo{
-font-size:20px;
-font-weight:800;
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
+font-size:18px;
+font-weight:900;
+background:
+linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
@@ -144,247 +104,371 @@ background:linear-gradient(90deg,#00ffe1,#ff00c8);
 .rightTop{
 display:flex;
 align-items:center;
-gap:14px;
+gap:15px;
 }
 
 .topIcon{
-font-size:16px;
+font-size:17px;
 cursor:pointer;
-color:#d1d5db;
-}
-
-.container{
-width:100%;
-max-width:1400px;
-margin:auto;
-padding:18px 14px 40px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr;
-gap:16px;
-margin-bottom:20px;
-}
-
-.card{
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.05);
-border-radius:22px;
-padding:20px;
-backdrop-filter:blur(14px);
-}
-
-.cardTitle{
-font-size:14px;
-margin-bottom:16px;
-color:#00ffe1;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-}
-
-.statBox{
-background:#0f172a;
-padding:18px;
-border-radius:16px;
-text-align:center;
-}
-
-.statNum{
-font-size:22px;
-font-weight:700;
-color:#00ffe1;
-}
-
-.statLabel{
-font-size:10px;
-margin-top:8px;
 color:#cbd5e1;
 }
 
-.userList{
+/* SIDEBAR */
+
+.sidebar{
+
+position:fixed;
+left:-270px;
+top:0;
+
+width:260px;
+height:100vh;
+
+background:#081120;
+
+border-right:
+1px solid rgba(255,255,255,.08);
+
+transition:.3s;
+
+z-index:9999;
+
+padding:18px;
+overflow-y:auto;
+}
+
+.sidebar.active{
+left:0;
+}
+
+.sideTop{
 display:flex;
-flex-direction:column;
-gap:14px;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
 }
 
-.userCard{
-background:#0f172a;
-border-radius:18px;
-padding:14px;
-border:1px solid rgba(255,255,255,.04);
+.closeBtn{
+font-size:22px;
+cursor:pointer;
+color:#ff4d6d;
 }
 
-.userTop{
+.adminBox{
 display:flex;
 align-items:center;
 gap:12px;
+margin-bottom:30px;
 }
 
-.userImage{
-width:62px;
-height:62px;
-border-radius:16px;
+.adminBox img{
+width:55px;
+height:55px;
+border-radius:14px;
 object-fit:cover;
 border:2px solid #00ffe1;
 }
 
-.userInfo{
-flex:1;
-}
-
-.userName{
-font-size:13px;
+.adminName{
+font-size:14px;
 font-weight:700;
 }
 
-.userId{
+.adminRole{
 font-size:10px;
-margin-top:5px;
+color:#94a3b8;
+margin-top:3px;
+}
+
+.menu{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.menu a{
+
+display:flex;
+align-items:center;
+gap:12px;
+
+padding:14px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+color:#e2e8f0;
+
+font-size:12px;
+
+background:
+rgba(255,255,255,.03);
+
+}
+
+.menu a:hover{
+background:
+linear-gradient(90deg,#00ffe120,#ff00c820);
+}
+
+.logoutBtn{
+margin-top:25px;
+background:#ff174420!important;
+color:#ff4d6d!important;
+}
+
+/* MAIN */
+
+.main{
+padding:18px;
+}
+
+/* CARDS */
+
+.cards{
+
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+
+margin-bottom:20px;
+}
+
+.card{
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+padding:18px;
+
+border-radius:20px;
+}
+
+.cardTitle{
+font-size:11px;
+color:#94a3b8;
+margin-bottom:10px;
+}
+
+.cardValue{
+font-size:24px;
+font-weight:900;
+}
+
+/* SEARCH */
+
+.searchBox{
+margin-bottom:20px;
+}
+
+.searchBox input{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+outline:none;
+
+background:#0f172a;
+
+border-radius:16px;
+
+color:white;
+}
+
+/* TABLE */
+
+.tableWrap{
+
+overflow:auto;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.06);
+
+border-radius:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:1100px;
+}
+
+th,td{
+padding:14px;
+text-align:left;
+font-size:11px;
+border-bottom:
+1px solid rgba(255,255,255,.05);
+}
+
+th{
 color:#94a3b8;
 }
 
-.userRole{
-margin-top:8px;
+.userFlex{
 display:flex;
-flex-wrap:wrap;
-gap:8px;
-}
-
-.roleTag{
-padding:6px 10px;
-border-radius:10px;
-background:#111827;
-font-size:9px;
-border:1px solid rgba(255,255,255,.05);
-}
-
-.actionRow{
-display:flex;
-flex-wrap:wrap;
+align-items:center;
 gap:10px;
-margin-top:14px;
 }
 
-.btn{
-padding:11px 14px;
-border:none;
+.userFlex img{
+width:45px;
+height:45px;
 border-radius:12px;
+object-fit:cover;
+}
+
+.playerName{
+font-size:12px;
+font-weight:700;
+}
+
+.playerEmail{
+font-size:10px;
+color:#94a3b8;
+margin-top:4px;
+}
+
+/* ROLE */
+
+.roleWrap{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+}
+
+.roleChip{
+
+padding:7px 10px;
+
+border-radius:50px;
+
 font-size:10px;
 font-weight:700;
+
+display:flex;
+align-items:center;
+gap:6px;
+
+background:#132033;
+}
+
+.roleChip i{
 cursor:pointer;
-color:white;
 }
 
-.approve{
-background:linear-gradient(90deg,#00ff88,#00c853);
-}
-
-.reject{
-background:linear-gradient(90deg,#ff1744,#d50000);
-}
-
-.edit{
-background:linear-gradient(90deg,#00b0ff,#2962ff);
-}
-
-.switch{
-background:linear-gradient(90deg,#ff00c8,#7c4dff);
-}
-
-.logout{
-background:linear-gradient(90deg,#ff1744,#ff9100);
-width:100%;
-margin-top:10px;
-}
-
-.roleSelect{
-width:100%;
-padding:12px;
-margin-top:12px;
-border:none;
-outline:none;
-border-radius:12px;
-background:#111827;
-color:white;
-font-size:11px;
-}
-
-.msg{
-margin-top:14px;
-font-size:11px;
+.playerRole{
+background:#00ffe120;
 color:#00ffe1;
-text-align:center;
-min-height:20px;
 }
 
-@media(min-width:768px){
-
-.grid{
-grid-template-columns:320px 1fr;
+.adminRoleChip{
+background:#ff00c820;
+color:#ff4dff;
 }
 
-.stats{
+.modRole{
+background:#f59e0b20;
+color:#fbbf24;
+}
+
+.managerRole{
+background:#3b82f620;
+color:#60a5fa;
+}
+
+.refRole{
+background:#10b98120;
+color:#34d399;
+}
+
+/* ACTIONS */
+
+.actionBtns{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.actionBtns button{
+
+border:none;
+cursor:pointer;
+
+padding:9px 12px;
+
+border-radius:10px;
+
+font-size:10px;
+font-weight:700;
+
+color:white;
+}
+
+.approveBtn{
+background:#00c853;
+}
+
+.rejectBtn{
+background:#ff1744;
+}
+
+.saveBtn{
+background:#00b0ff;
+}
+
+.addRole{
+background:#7c3aed;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.cards{
 grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:600px){
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.logo{
+font-size:16px;
 }
 
 }
 
 </style>
+
 </head>
+
 <body>
 
 <div class="bg1"></div>
 <div class="bg2"></div>
 
-<div class="sidebar" id="sidebar">
-
-<div class="closeBtn" id="closeBtn">
-<i class="fa-solid fa-xmark"></i>
-</div>
-
-<div class="sideLogo">
-eKickHub
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-chart-line"></i>
-Dashboard
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-user-check"></i>
-Player Approval
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-users"></i>
-All Users
-</div>
-
-<div class="sideItem" id="switchPlayer">
-<i class="fa-solid fa-repeat"></i>
-Switch To Player
-</div>
-
-<div class="sideItem" id="logoutBtn">
-<i class="fa-solid fa-right-from-bracket"></i>
-Logout
-</div>
-
-</div>
+<!-- TOPBAR -->
 
 <div class="topbar">
 
 <div class="leftTop">
 
-<div class="menuBtn" id="menuBtn">
-<i class="fa-solid fa-bars"></i>
-</div>
+<i class="fa-solid fa-bars menuBtn"
+id="menuBtn"></i>
 
 <div class="logo">
 eKickHub Admin
@@ -394,87 +478,202 @@ eKickHub Admin
 
 <div class="rightTop">
 
-<div class="topIcon">
-<i class="fa-solid fa-bell"></i>
-</div>
+<i class="fa-regular fa-bell topIcon"></i>
 
-<div class="topIcon">
-<i class="fa-solid fa-envelope"></i>
-</div>
-
-<div class="topIcon">
-<i class="fa-solid fa-user-shield"></i>
-</div>
+<i class="fa-regular fa-envelope topIcon"></i>
 
 </div>
 
 </div>
 
-<div class="container">
+<!-- SIDEBAR -->
 
-<div class="grid">
+<div class="sidebar"
+id="sidebar">
 
-<div class="card">
+<div class="sideTop">
 
-<div class="cardTitle">
-SYSTEM STATUS
+<div class="logo">
+eKickHub
 </div>
 
-<div class="stats">
-
-<div class="statBox">
-<div class="statNum" id="totalUsers">0</div>
-<div class="statLabel">TOTAL USERS</div>
-</div>
-
-<div class="statBox">
-<div class="statNum" id="pendingUsers">0</div>
-<div class="statLabel">PENDING</div>
-</div>
-
-<div class="statBox">
-<div class="statNum" id="approvedUsers">0</div>
-<div class="statLabel">APPROVED</div>
-</div>
-
-<div class="statBox">
-<div class="statNum" id="admins">0</div>
-<div class="statLabel">ADMINS</div>
-</div>
+<i class="fa-solid fa-xmark closeBtn"
+id="closeBtn"></i>
 
 </div>
 
-<button class="btn logout" id="logoutBtn2">
+<div class="adminBox">
+
+<img id="adminImage"
+src="">
+
+<div>
+
+<div class="adminName"
+id="adminName">
+Admin
+</div>
+
+<div class="adminRole">
+SUPER ADMIN
+</div>
+
+</div>
+
+</div>
+
+<div class="menu">
+
+<a href="#">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+
+<a href="#">
+<i class="fa-solid fa-users"></i>
+Users
+</a>
+
+<a href="#">
+<i class="fa-solid fa-shield"></i>
+Roles
+</a>
+
+<a href="#">
+<i class="fa-solid fa-trophy"></i>
+Competition
+</a>
+
+<a href="#">
+<i class="fa-solid fa-ranking-star"></i>
+Leaderboard
+</a>
+
+<a href="#">
+<i class="fa-solid fa-gear"></i>
+Settings
+</a>
+
+<a href="#"
+class="logoutBtn"
+id="logoutBtn">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
 Logout
-</button>
 
-<div class="msg" id="msg"></div>
+</a>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<!-- CARDS -->
+
+<div class="cards">
+
+<div class="card">
+
+<div class="cardTitle">
+TOTAL USERS
+</div>
+
+<div class="cardValue"
+id="totalUsers">
+0
+</div>
 
 </div>
 
 <div class="card">
 
 <div class="cardTitle">
-PLAYER APPROVAL LIST
+PENDING USERS
 </div>
 
-<div class="userList" id="approvalList"></div>
+<div class="cardValue"
+id="pendingUsers">
+0
+</div>
 
-<br>
+</div>
+
+<div class="card">
 
 <div class="cardTitle">
-ALL USERS & ROLE CONTROL
+ADMINS
 </div>
 
-<div class="userList" id="userList"></div>
+<div class="cardValue"
+id="admins">
+0
+</div>
 
+</div>
+
+<div class="card">
+
+<div class="cardTitle">
+MODERATORS
+</div>
+
+<div class="cardValue"
+id="mods">
+0
 </div>
 
 </div>
 
 </div>
 
-<script type="module" src="app.js"></script>
+<!-- SEARCH -->
+
+<div class="searchBox">
+
+<input type="text"
+id="searchInput"
+placeholder="Search player name / email / ID">
+
+</div>
+
+<!-- TABLE -->
+
+<div class="tableWrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>PLAYER</th>
+<th>ID</th>
+<th>COUNTRY</th>
+<th>POSITION</th>
+<th>ROLES</th>
+<th>STATUS</th>
+<th>ACTION</th>
+
+</tr>
+
+</thead>
+
+<tbody id="userTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script type="module"
+src="app.js"></script>
 
 </body>
 </html>
