@@ -25,8 +25,6 @@ color:white;
 overflow-x:hidden;
 }
 
-/* BG */
-
 .bg1,.bg2{
 position:fixed;
 width:350px;
@@ -47,8 +45,6 @@ background:#ff00c8;
 bottom:-100px;
 right:-100px;
 }
-
-/* TOPBAR */
 
 .topbar{
 height:58px;
@@ -86,14 +82,19 @@ background:linear-gradient(90deg,#00ffe1,#ff00c8);
 display:flex;
 align-items:center;
 gap:14px;
-font-size:18px;
 }
 
-.topIcons span{
+.topIcon{
+width:36px;
+height:36px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#131d34;
+border-radius:12px;
+font-size:15px;
 cursor:pointer;
 }
-
-/* SIDEBAR */
 
 .sidebar{
 position:fixed;
@@ -114,7 +115,7 @@ left:0;
 }
 
 .closeBtn{
-font-size:24px;
+font-size:22px;
 margin-bottom:20px;
 cursor:pointer;
 }
@@ -126,34 +127,19 @@ margin:18px 0 10px;
 }
 
 .sideItem{
-padding:12px;
-border-radius:12px;
-background:#11182d;
+padding:13px;
+border-radius:14px;
+background:#131d34;
 margin-bottom:10px;
 font-size:12px;
 cursor:pointer;
-transition:.2s;
 }
-
-.sideItem:hover{
-background:#18233f;
-}
-
-.roleBtn{
-background:linear-gradient(90deg,#00ffe1,#ff00c8);
-color:white;
-font-weight:700;
-}
-
-/* MAIN */
 
 .main{
 padding:16px;
-max-width:1200px;
+max-width:1100px;
 margin:auto;
 }
-
-/* PROFILE */
 
 .profileCard{
 background:rgba(255,255,255,.04);
@@ -161,8 +147,6 @@ border:1px solid rgba(255,255,255,.06);
 border-radius:28px;
 padding:20px 16px;
 backdrop-filter:blur(14px);
-position:relative;
-overflow:hidden;
 }
 
 .profileTop{
@@ -177,7 +161,6 @@ height:95px;
 border-radius:24px;
 object-fit:cover;
 border:2px solid #00ffe1;
-box-shadow:0 0 20px rgba(0,255,225,.3);
 }
 
 .playerInfo{
@@ -185,7 +168,7 @@ flex:1;
 }
 
 .playerName{
-font-size:20px;
+font-size:21px;
 font-weight:800;
 display:flex;
 align-items:center;
@@ -214,7 +197,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 position:relative;
-flex-shrink:0;
 }
 
 .ratingDesktop::after{
@@ -229,14 +211,12 @@ background:#050816;
 .ratingValue{
 position:relative;
 z-index:2;
-font-size:18px;
+font-size:17px;
 font-weight:800;
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
-
-/* MOBILE RATING */
 
 .mobileRating{
 display:none;
@@ -254,29 +234,25 @@ overflow:hidden;
 height:100%;
 width:56%;
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
-border-radius:30px;
 }
 
 .ratingText{
-font-size:11px;
-margin-top:6px;
+font-size:10px;
+margin-top:5px;
 color:#94a3b8;
 }
 
-/* INFO BOX */
-
 .infoGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
 margin-top:18px;
+display:grid;
+gap:10px;
 }
 
 .infoBox{
-background:#0f172a;
-padding:10px;
+background:#101827;
+padding:12px;
 border-radius:14px;
-border:1px solid rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.04);
 }
 
 .infoLabel{
@@ -290,8 +266,6 @@ font-size:11px;
 word-break:break-word;
 }
 
-/* ADS */
-
 .adsBox{
 margin-top:16px;
 height:90px;
@@ -299,20 +273,16 @@ border-radius:18px;
 display:flex;
 align-items:center;
 justify-content:center;
-background:linear-gradient(90deg,#111827,#172554);
-border:1px dashed rgba(255,255,255,.15);
+background:#101827;
 font-size:12px;
 color:#94a3b8;
 }
-
-/* TABS */
 
 .tabs{
 display:flex;
 gap:10px;
 overflow:auto;
 margin-top:20px;
-padding-bottom:4px;
 }
 
 .tab{
@@ -321,15 +291,12 @@ border-radius:14px;
 background:#101827;
 font-size:11px;
 white-space:nowrap;
-cursor:pointer;
 }
 
 .tab.active{
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 font-weight:700;
 }
-
-/* STATS */
 
 .statsGrid{
 display:grid;
@@ -339,60 +306,26 @@ margin-top:20px;
 }
 
 .statCard{
-background:#0f172a;
-border-radius:16px;
+background:#101827;
+border-radius:14px;
 padding:10px;
 text-align:center;
-border:1px solid rgba(255,255,255,.04);
-}
-
-.statLabel{
-font-size:9px;
-color:#94a3b8;
-line-height:1.4;
-min-height:24px;
 }
 
 .statValue{
 font-size:15px;
 font-weight:800;
-margin-top:5px;
 background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
 
-/* PC */
-
-@media(min-width:900px){
-
-.main{
-padding:28px;
+.statLabel{
+font-size:8px;
+margin-top:6px;
+color:#94a3b8;
+line-height:1.4;
 }
-
-.profileTop{
-align-items:flex-start;
-}
-
-.statsGrid{
-grid-template-columns:repeat(6,1fr);
-}
-
-.infoGrid{
-grid-template-columns:repeat(3,1fr);
-}
-
-.mobileRating{
-display:none;
-}
-
-.ratingDesktop{
-display:flex;
-}
-
-}
-
-/* MOBILE */
 
 @media(max-width:899px){
 
@@ -415,6 +348,14 @@ display:block;
 
 }
 
+@media(min-width:900px){
+
+.statsGrid{
+grid-template-columns:repeat(6,1fr);
+}
+
+}
+
 </style>
 
 </head>
@@ -423,8 +364,6 @@ display:block;
 
 <div class="bg1"></div>
 <div class="bg2"></div>
-
-<!-- SIDEBAR -->
 
 <div class="sidebar" id="sidebar">
 
@@ -436,7 +375,7 @@ display:block;
 ROLE SWITCH
 </div>
 
-<div class="sideItem roleBtn">
+<div class="sideItem">
 Player Dashboard
 </div>
 
@@ -448,7 +387,7 @@ Admin Dashboard
 PROFILE
 </div>
 
-<div class="sideItem">
+<div class="sideItem" id="editBtn">
 Edit Profile
 </div>
 
@@ -457,15 +396,11 @@ Leaderboard
 </div>
 
 <div class="sideItem">
-Achievements
-</div>
-
-<div class="sideItem">
 Competition Center
 </div>
 
 <div class="sideItem">
-Settings
+Achievements
 </div>
 
 <div class="sideItem">
@@ -473,8 +408,6 @@ Logout
 </div>
 
 </div>
-
-<!-- TOPBAR -->
 
 <div class="topbar">
 
@@ -492,14 +425,17 @@ eKickHub
 
 <div class="topIcons">
 
-<span>🔔</span>
-<span>💬</span>
+<div class="topIcon">
+🔔
+</div>
 
+<div class="topIcon">
+💬
 </div>
 
 </div>
 
-<!-- MAIN -->
+</div>
 
 <div class="main">
 
@@ -517,7 +453,7 @@ eKickHub
 Loading...
 </span>
 
-<a id="fbLink" target="_blank" class="fbIcon">
+<a id="fbLink" class="fbIcon" target="_blank">
 📘
 </a>
 
@@ -525,22 +461,16 @@ Loading...
 
 <div class="playerMini">
 
-<span id="playerCountry">
-Bangladesh
-</span>
+<span id="playerCountry"></span>
 
 •
 
-<span id="playerPosition">
-CF
-</span>
+<span id="playerPosition"></span>
 
 •
 
 Age:
-<span id="playerAge">
-20
-</span>
+<span id="playerAge"></span>
 
 </div>
 
@@ -556,8 +486,6 @@ Age:
 
 </div>
 
-<!-- MOBILE RATING -->
-
 <div class="mobileRating">
 
 <div class="ratingBar">
@@ -570,55 +498,28 @@ Elite Player Rating • 56
 
 </div>
 
-<!-- INFO -->
-
 <div class="infoGrid">
 
 <div class="infoBox">
-
-<div class="infoLabel">
-PLAYER ID
-</div>
-
-<div class="infoValue" id="playerId">
-EKH-000001
-</div>
-
+<div class="infoLabel">PLAYER ID</div>
+<div class="infoValue" id="playerId"></div>
 </div>
 
 <div class="infoBox">
-
-<div class="infoLabel">
-KONAMI ID
-</div>
-
-<div class="infoValue" id="konamiId">
-ASDF-000-000-000
-</div>
-
+<div class="infoLabel">KONAMI ID</div>
+<div class="infoValue" id="konamiId"></div>
 </div>
 
 <div class="infoBox">
-
-<div class="infoLabel">
-DEVICE
-</div>
-
-<div class="infoValue" id="deviceName">
-iPhone
+<div class="infoLabel">DEVICE</div>
+<div class="infoValue" id="deviceName"></div>
 </div>
 
 </div>
-
-</div>
-
-<!-- ADS -->
 
 <div class="adsBox">
 PLAYER PROFILE ADS AREA
 </div>
-
-<!-- TABS -->
 
 <div class="tabs">
 
@@ -638,74 +539,68 @@ Achievements
 Trophies
 </div>
 
-<div class="tab">
-Gift Coins
 </div>
-
-</div>
-
-<!-- STATS -->
 
 <div class="statsGrid">
 
 <div class="statCard">
-<div class="statLabel">RANK</div>
 <div class="statValue">#0</div>
+<div class="statLabel">RANK</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">MATCH PLAYED</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">WINS</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">DRAWS</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">LOSSES</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
-<div class="statLabel">WIN RATE</div>
 <div class="statValue">0%</div>
+<div class="statLabel">WIN RATE</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">HAT-TRICK</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">MOTM</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">7+ GOALS</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">CLEAN SHEETS</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
+<div class="statValue">0</div>
 <div class="statLabel">GOALS FOR</div>
-<div class="statValue">0</div>
 </div>
 
 <div class="statCard">
-<div class="statLabel">GOALS AGAINST</div>
 <div class="statValue">0</div>
+<div class="statLabel">GOALS AGAINST</div>
 </div>
 
 </div>

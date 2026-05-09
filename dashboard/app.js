@@ -10,7 +10,8 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
 getFirestore,
 doc,
-getDoc
+getDoc,
+updateDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -102,8 +103,6 @@ document.getElementById("playerPosition")
 document.getElementById("fbLink")
 .href = data.fb_id_url
 
-/* AGE */
-
 if(data.dob){
 
 const birthYear =
@@ -115,6 +114,52 @@ new Date().getFullYear()
 document.getElementById("playerAge")
 .innerHTML =
 currentYear - birthYear
+
+}
+
+/* EDIT PROFILE */
+
+document.getElementById("editBtn")
+.onclick = async ()=>{
+
+const newName =
+prompt("Full Name",data.full_name)
+
+if(newName === null) return
+
+const newKonami =
+prompt("Konami ID",data.konami_id)
+
+const newDevice =
+prompt("Device Name",data.device_name)
+
+const newPhone =
+prompt("Phone Number",data.phone)
+
+const newPosition =
+prompt("Position",data.position)
+
+const newDob =
+prompt("DOB YYYY-MM-DD",data.dob)
+
+const newFb =
+prompt("FB URL",data.fb_id_url)
+
+await updateDoc(docRef,{
+
+full_name:newName,
+konami_id:newKonami,
+device_name:newDevice,
+phone:newPhone,
+position:newPosition,
+dob:newDob,
+fb_id_url:newFb
+
+})
+
+alert("Profile Updated")
+
+location.reload()
 
 }
 
