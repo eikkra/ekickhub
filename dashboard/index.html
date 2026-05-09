@@ -6,12 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>eKickHub Player Profile</title>
+<title>eKickHub Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -23,61 +20,47 @@ font-family:'Orbitron',sans-serif;
 }
 
 body{
-background:#020617;
+background:#050816;
 color:white;
 overflow-x:hidden;
 }
 
 /* BG */
 
-.bg1{
+.bg1,.bg2{
 position:fixed;
 width:350px;
 height:350px;
-background:#00ffe1;
-filter:blur(160px);
-opacity:.12;
-top:-100px;
-left:-100px;
+filter:blur(170px);
+opacity:.15;
 z-index:-1;
 }
 
+.bg1{
+background:#00ffe1;
+top:-100px;
+left:-100px;
+}
+
 .bg2{
-position:fixed;
-width:350px;
-height:350px;
 background:#ff00c8;
-filter:blur(160px);
-opacity:.12;
 bottom:-100px;
 right:-100px;
-z-index:-1;
 }
 
 /* TOPBAR */
 
 .topbar{
-
-position:fixed;
-top:0;
-left:0;
-width:100%;
 height:58px;
-
-background:rgba(2,6,23,.92);
-
-backdrop-filter:blur(18px);
-
-border-bottom:
-1px solid rgba(255,255,255,.06);
-
 display:flex;
 align-items:center;
 justify-content:space-between;
-
-padding:0 15px;
-
-z-index:999;
+padding:0 14px;
+background:#0c1224;
+border-bottom:1px solid rgba(255,255,255,.05);
+position:sticky;
+top:0;
+z-index:100;
 }
 
 .leftTop{
@@ -87,19 +70,14 @@ gap:12px;
 }
 
 .menuBtn{
-font-size:20px;
+font-size:22px;
 cursor:pointer;
-color:#00ffe1;
 }
 
 .logo{
-
-font-size:18px;
-font-weight:900;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
+font-size:17px;
+font-weight:800;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
@@ -107,425 +85,332 @@ linear-gradient(90deg,#00ffe1,#ff00c8);
 .topIcons{
 display:flex;
 align-items:center;
-gap:16px;
+gap:14px;
+font-size:18px;
 }
 
-.topIcons i{
-font-size:16px;
-color:#d1d5db;
+.topIcons span{
 cursor:pointer;
 }
 
 /* SIDEBAR */
 
 .sidebar{
-
 position:fixed;
 top:0;
-left:-280px;
-
+left:-270px;
 width:260px;
-height:100vh;
-
-background:#081120;
-
-border-right:
-1px solid rgba(255,255,255,.06);
-
+height:100%;
+background:#0c1224;
+z-index:999;
+transition:.3s;
 padding:18px;
-
-transition:.35s ease;
-
-z-index:1000;
-
 overflow-y:auto;
+border-right:1px solid rgba(255,255,255,.05);
 }
 
 .sidebar.active{
 left:0;
 }
 
-.sideTop{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:28px;
-}
-
-.sideLogo{
-
-font-size:22px;
-font-weight:900;
-
-background:
-linear-gradient(90deg,#00ffe1,#ff00c8);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
 .closeBtn{
-font-size:22px;
+font-size:24px;
+margin-bottom:20px;
 cursor:pointer;
 }
 
 .sideTitle{
 font-size:11px;
-color:#00ffe1;
-margin:20px 0 10px;
-font-weight:700;
+color:#6ee7ff;
+margin:18px 0 10px;
 }
 
 .sideItem{
-
-display:flex;
-align-items:center;
-gap:12px;
-
-background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-padding:13px;
-
-border-radius:14px;
-
+padding:12px;
+border-radius:12px;
+background:#11182d;
 margin-bottom:10px;
-
-font-size:11px;
-font-weight:700;
-
+font-size:12px;
 cursor:pointer;
-
-transition:.25s;
+transition:.2s;
 }
 
 .sideItem:hover{
-border-color:#00ffe1;
-transform:translateX(4px);
+background:#18233f;
 }
 
-.sideItem i{
-color:#00ffe1;
-width:18px;
+.roleBtn{
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+color:white;
+font-weight:700;
 }
 
 /* MAIN */
 
 .main{
-padding:76px 14px 30px;
-max-width:1150px;
+padding:16px;
+max-width:1200px;
 margin:auto;
 }
 
 /* PROFILE */
 
-.profile{
-
-background:
-rgba(255,255,255,.04);
-
-border:
-1px solid rgba(255,255,255,.06);
-
+.profileCard{
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.06);
 border-radius:28px;
-
-padding:22px 16px;
-
-backdrop-filter:blur(16px);
-
-box-shadow:
-0 0 35px rgba(0,255,225,.08);
+padding:20px 16px;
+backdrop-filter:blur(14px);
+position:relative;
+overflow:hidden;
 }
 
-/* PLAYER TOP */
-
-.playerTop{
+.profileTop{
 display:flex;
-flex-direction:column;
 align-items:center;
-text-align:center;
+gap:18px;
 }
 
-.playerImg{
-
-width:108px;
-height:108px;
-
-border-radius:50%;
-
+.profileImg{
+width:95px;
+height:95px;
+border-radius:24px;
 object-fit:cover;
+border:2px solid #00ffe1;
+box-shadow:0 0 20px rgba(0,255,225,.3);
+}
 
-border:3px solid #00ffe1;
-
-box-shadow:
-0 0 25px rgba(0,255,225,.28);
-
+.playerInfo{
+flex:1;
 }
 
 .playerName{
-
-margin-top:14px;
-
 font-size:20px;
-font-weight:900;
-
+font-weight:800;
 display:flex;
 align-items:center;
-justify-content:center;
-gap:10px;
-
+gap:8px;
 flex-wrap:wrap;
-
-text-align:center;
 }
 
-.fbBtn{
-color:#00acee;
-font-size:15px;
+.fbIcon{
+text-decoration:none;
+font-size:16px;
 }
 
 .playerMini{
+font-size:10px;
+color:#94a3b8;
+margin-top:6px;
+line-height:1.8;
+}
 
-margin-top:10px;
-
+.ratingDesktop{
+width:92px;
+height:92px;
+border-radius:50%;
+background:conic-gradient(#00ffe1 0deg,#ff00c8 200deg,#1e293b 0deg);
 display:flex;
+align-items:center;
 justify-content:center;
-flex-wrap:wrap;
-gap:8px;
+position:relative;
+flex-shrink:0;
 }
 
-.mini{
-
-background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-padding:8px 10px;
-
-border-radius:12px;
-
-font-size:9px;
-font-weight:700;
-
-color:#d1d5db;
-}
-
-/* RATING */
-
-.rating{
-
-margin-top:18px;
-
-width:100%;
-max-width:310px;
-
-padding:16px;
-
-border-radius:22px;
-
-background:
-linear-gradient(135deg,#00ffe1,#00b7ff,#ff00c8);
-
-background-size:300% 300%;
-
-animation:rgb 6s ease infinite;
-
-box-shadow:
-0 0 35px rgba(255,0,200,.22);
-
-}
-
-@keyframes rgb{
-
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-
-}
-
-.ratingTitle{
-font-size:11px;
-font-weight:700;
-margin-bottom:8px;
+.ratingDesktop::after{
+content:'';
+position:absolute;
+width:72px;
+height:72px;
+border-radius:50%;
+background:#050816;
 }
 
 .ratingValue{
-font-size:38px;
-font-weight:900;
-line-height:1;
+position:relative;
+z-index:2;
+font-size:18px;
+font-weight:800;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-/* INFO */
+/* MOBILE RATING */
+
+.mobileRating{
+display:none;
+margin-top:16px;
+}
+
+.ratingBar{
+height:12px;
+background:#1e293b;
+border-radius:30px;
+overflow:hidden;
+}
+
+.ratingFill{
+height:100%;
+width:56%;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+border-radius:30px;
+}
+
+.ratingText{
+font-size:11px;
+margin-top:6px;
+color:#94a3b8;
+}
+
+/* INFO BOX */
 
 .infoGrid{
-
-margin-top:18px;
-
 display:grid;
-grid-template-columns:1fr 1fr;
+grid-template-columns:repeat(3,1fr);
 gap:10px;
+margin-top:18px;
 }
 
-.info{
-
+.infoBox{
 background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-padding:12px;
-
+padding:10px;
 border-radius:14px;
+border:1px solid rgba(255,255,255,.05);
 }
 
 .infoLabel{
-font-size:8px;
-color:#94a3b8;
+font-size:9px;
+color:#6ee7ff;
 margin-bottom:5px;
 }
 
 .infoValue{
-font-size:10px;
-font-weight:700;
+font-size:11px;
 word-break:break-word;
 }
 
 /* ADS */
 
-.ads{
-
-margin-top:18px;
-
-height:85px;
-
+.adsBox{
+margin-top:16px;
+height:90px;
 border-radius:18px;
-
-background:
-linear-gradient(135deg,#111827,#1e293b);
-
-border:
-1px dashed rgba(255,255,255,.12);
-
 display:flex;
 align-items:center;
 justify-content:center;
-
+background:linear-gradient(90deg,#111827,#172554);
+border:1px dashed rgba(255,255,255,.15);
 font-size:12px;
-font-weight:700;
-
 color:#94a3b8;
 }
 
 /* TABS */
 
 .tabs{
-
-margin-top:18px;
-
-display:grid;
-grid-template-columns:repeat(4,1fr);
-
+display:flex;
 gap:10px;
+overflow:auto;
+margin-top:20px;
+padding-bottom:4px;
 }
 
 .tab{
-
-background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-padding:13px 8px;
-
+padding:10px 16px;
 border-radius:14px;
-
-text-align:center;
-
-font-size:9px;
-font-weight:700;
-
+background:#101827;
+font-size:11px;
+white-space:nowrap;
 cursor:pointer;
+}
+
+.tab.active{
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+font-weight:700;
 }
 
 /* STATS */
 
-.stats{
-
-margin-top:18px;
-
+.statsGrid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-
 gap:10px;
+margin-top:20px;
 }
 
-.stat{
-
+.statCard{
 background:#0f172a;
-
-border:
-1px solid rgba(255,255,255,.05);
-
-padding:12px 8px;
-
-border-radius:14px;
-
+border-radius:16px;
+padding:10px;
 text-align:center;
+border:1px solid rgba(255,255,255,.04);
+}
+
+.statLabel{
+font-size:9px;
+color:#94a3b8;
+line-height:1.4;
+min-height:24px;
 }
 
 .statValue{
-font-size:17px;
-font-weight:900;
-color:#00ffe1;
-margin-bottom:4px;
+font-size:15px;
+font-weight:800;
+margin-top:5px;
+background:linear-gradient(90deg,#00ffe1,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-.statTitle{
-font-size:8px;
-color:#d1d5db;
-line-height:1.5;
-}
+/* PC */
 
-@media(min-width:768px){
+@media(min-width:900px){
 
 .main{
-padding:88px 22px 40px;
-}
-
-.profile{
 padding:28px;
 }
 
-.playerWrap{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:30px;
+.profileTop{
+align-items:flex-start;
 }
 
-.playerTop{
-align-items:flex-start;
-text-align:left;
+.statsGrid{
+grid-template-columns:repeat(6,1fr);
+}
+
+.infoGrid{
+grid-template-columns:repeat(3,1fr);
+}
+
+.mobileRating{
+display:none;
+}
+
+.ratingDesktop{
+display:flex;
+}
+
+}
+
+/* MOBILE */
+
+@media(max-width:899px){
+
+.profileTop{
+flex-direction:column;
+text-align:center;
 }
 
 .playerName{
-justify-content:flex-start;
+justify-content:center;
 }
 
-.playerMini{
-justify-content:flex-start;
+.ratingDesktop{
+display:none;
 }
 
-.rating{
-margin-top:0;
-max-width:250px;
-}
-
-.stats{
-grid-template-columns:repeat(6,1fr);
+.mobileRating{
+display:block;
 }
 
 }
@@ -538,6 +423,56 @@ grid-template-columns:repeat(6,1fr);
 
 <div class="bg1"></div>
 <div class="bg2"></div>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="closeBtn" id="closeSidebar">
+✕
+</div>
+
+<div class="sideTitle">
+ROLE SWITCH
+</div>
+
+<div class="sideItem roleBtn">
+Player Dashboard
+</div>
+
+<div class="sideItem">
+Admin Dashboard
+</div>
+
+<div class="sideTitle">
+PROFILE
+</div>
+
+<div class="sideItem">
+Edit Profile
+</div>
+
+<div class="sideItem">
+Leaderboard
+</div>
+
+<div class="sideItem">
+Achievements
+</div>
+
+<div class="sideItem">
+Competition Center
+</div>
+
+<div class="sideItem">
+Settings
+</div>
+
+<div class="sideItem">
+Logout
+</div>
+
+</div>
 
 <!-- TOPBAR -->
 
@@ -557,65 +492,10 @@ eKickHub
 
 <div class="topIcons">
 
-<i class="fa-regular fa-bell"></i>
-
-<i class="fa-regular fa-envelope"></i>
-
-</div>
+<span>🔔</span>
+<span>💬</span>
 
 </div>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar" id="sidebar">
-
-<div class="sideTop">
-
-<div class="sideLogo">
-eKickHub
-</div>
-
-<div class="closeBtn" id="closeBtn">
-✕
-</div>
-
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-user"></i>
-Profile
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-pen"></i>
-Edit Profile
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-ranking-star"></i>
-Leaderboard
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-trophy"></i>
-Tournament
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-gift"></i>
-Rewards
-</div>
-
-<div class="sideItem">
-<i class="fa-solid fa-gear"></i>
-Settings
-</div>
-
-<div class="sideTitle">
-SWITCH ROLE
-</div>
-
-<div id="roleContainer"></div>
 
 </div>
 
@@ -623,51 +503,69 @@ SWITCH ROLE
 
 <div class="main">
 
-<div class="profile">
+<div class="profileCard">
 
-<div class="playerWrap">
+<div class="profileTop">
 
-<div class="playerTop">
+<img src="" id="playerImage" class="profileImg">
 
-<img id="playerImage"
-class="playerImg">
+<div class="playerInfo">
 
 <div class="playerName">
 
-<span id="playerName"></span>
+<span id="playerName">
+Loading...
+</span>
 
-<a id="fbLink"
-class="fbBtn"
-target="_blank">
-
-<i class="fa-brands fa-facebook-f"></i>
-
+<a id="fbLink" target="_blank" class="fbIcon">
+📘
 </a>
 
 </div>
 
 <div class="playerMini">
 
-<div class="mini" id="playerCountry"></div>
+<span id="playerCountry">
+Bangladesh
+</span>
 
-<div class="mini" id="playerPosition"></div>
+•
 
-<div class="mini" id="playerAge"></div>
+<span id="playerPosition">
+CF
+</span>
+
+•
+
+Age:
+<span id="playerAge">
+20
+</span>
 
 </div>
 
 </div>
 
-<div class="rating">
+<div class="ratingDesktop">
 
-<div class="ratingTitle">
-ELITE PLAYER RATING
+<div class="ratingValue">
+56
 </div>
 
-<div class="ratingValue" id="playerRating">
-78
 </div>
 
+</div>
+
+<!-- MOBILE RATING -->
+
+<div class="mobileRating">
+
+<div class="ratingBar">
+<div class="ratingFill"></div>
+</div>
+
+<div class="ratingText">
+Elite Player Rating • 56
 </div>
 
 </div>
@@ -676,118 +574,138 @@ ELITE PLAYER RATING
 
 <div class="infoGrid">
 
-<div class="info">
-<div class="infoLabel">PLAYER ID</div>
-<div class="infoValue" id="playerId"></div>
+<div class="infoBox">
+
+<div class="infoLabel">
+PLAYER ID
 </div>
 
-<div class="info">
-<div class="infoLabel">KONAMI ID</div>
-<div class="infoValue" id="konamiId"></div>
+<div class="infoValue" id="playerId">
+EKH-000001
 </div>
 
-<div class="info">
-<div class="infoLabel">DEVICE</div>
-<div class="infoValue" id="deviceName"></div>
 </div>
 
-<div class="info">
-<div class="infoLabel">PLAN</div>
-<div class="infoValue" id="playerPlan"></div>
+<div class="infoBox">
+
+<div class="infoLabel">
+KONAMI ID
+</div>
+
+<div class="infoValue" id="konamiId">
+ASDF-000-000-000
+</div>
+
+</div>
+
+<div class="infoBox">
+
+<div class="infoLabel">
+DEVICE
+</div>
+
+<div class="infoValue" id="deviceName">
+iPhone
+</div>
+
 </div>
 
 </div>
 
 <!-- ADS -->
 
-<div class="ads">
-ADS SPACE
+<div class="adsBox">
+PLAYER PROFILE ADS AREA
 </div>
 
 <!-- TABS -->
 
 <div class="tabs">
 
-<div class="tab">
-OVERALL
+<div class="tab active">
+Overall
 </div>
 
 <div class="tab">
-ACHIEVEMENTS
+Performance
 </div>
 
 <div class="tab">
-TROPHIES
+Achievements
 </div>
 
 <div class="tab">
-GIFTS
+Trophies
+</div>
+
+<div class="tab">
+Gift Coins
 </div>
 
 </div>
 
 <!-- STATS -->
 
-<div class="stats">
+<div class="statsGrid">
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">RANK</div>
 <div class="statValue">#0</div>
-<div class="statTitle">RANK</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">MATCH PLAYED</div>
 <div class="statValue">0</div>
-<div class="statTitle">MATCH PLAYED</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">WINS</div>
 <div class="statValue">0</div>
-<div class="statTitle">WINS</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">DRAWS</div>
 <div class="statValue">0</div>
-<div class="statTitle">DRAWS</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">LOSSES</div>
 <div class="statValue">0</div>
-<div class="statTitle">LOSSES</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">WIN RATE</div>
 <div class="statValue">0%</div>
-<div class="statTitle">WIN RATE</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">HAT-TRICK</div>
 <div class="statValue">0</div>
-<div class="statTitle">HAT-TRICK</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">MOTM</div>
 <div class="statValue">0</div>
-<div class="statTitle">MOTM</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">7+ GOALS</div>
 <div class="statValue">0</div>
-<div class="statTitle">7+ GOALS</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">CLEAN SHEETS</div>
 <div class="statValue">0</div>
-<div class="statTitle">CLEAN SHEETS</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">GOALS FOR</div>
 <div class="statValue">0</div>
-<div class="statTitle">GOALS FOR</div>
 </div>
 
-<div class="stat">
+<div class="statCard">
+<div class="statLabel">GOALS AGAINST</div>
 <div class="statValue">0</div>
-<div class="statTitle">GOALS AGAINST</div>
 </div>
 
 </div>
