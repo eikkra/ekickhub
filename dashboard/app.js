@@ -5,7 +5,9 @@ import {
 getAuth,
 onAuthStateChanged,
 signOut,
-verifyBeforeUpdateEmail
+updateEmail,
+EmailAuthProvider,
+reauthenticateWithCredential
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -347,30 +349,139 @@ reader.readAsDataURL(file)
 document.getElementById("saveEdit")
 .onclick = async()=>{
 
-try{
-
 const user = auth.currentUser
 
 if(!user) return
 
+try{
+
+let imageUrl = currentData.image
+
 const newEmail =
-document.getElementById("edit_email")
-.value
+document.getElementById("edit_email").value
 .trim()
 .toLowerCase()
 
-const konami =
-document.getElementById("edit_konami")
-.value
+const currentPassword =
+document.getElementById("current_password").value
 .trim()
-.toUpperCase()
 
-const fb =
-document.getElementById("edit_fb")
-.value
+/* EMAIL CHANGE */
+
+if(
+newEmail &&
+newEmail !== user.email
+){
+
+if(!currentPassword){
+
+alert(
+"Enter current password to change email"
+)
+
+return
+
+}
+
+const credential =
+EmailAuthProvider.credential(
+user.email,
+currentPassword
+)
+
+await reauthenticateWithCredential(
+user,
+credential
+)
+
+await updateEmail(
+user,
+newEmail
+)
+
+}
+
+/* IMAGE UPDATE */
+
+if(cropper){
+
+const blob =
+await new Promise(resolve=>{
+
+cropper.getCroppedCanvas({
+
+width:500,
+height:500
+
+}).toBlob(
+resolve,
+"image/jpeg",
+0.82
+)
+
+})
+
+const imageRef =
+ref(storage,`players/${user.uid}.jpg`)
+
+await uploadBytes(imageRef,blob)
+
+imageUrl =
+await getDownloadURL(imageRef)
+
+}
+
+/* UPDATE FIRESTORE */
+
+await updateDoc(
+doc(db,"users",user.uid),
+{
+
+full_name:
+document.getElementById("edit_name").value,
+
+email:newEmail || user.email,
+
+phone:
+document.getElementById("edit_phone").value,
+
+dob:
+document.getElementById("edit_dob").value,
+
+device_name:
+document.getElementById("edit_device").value,
+
+konami_id:
+document.getElementById("edit_konami").value
 .trim()
-.toLowerCase()
+.toUpperCase(),
 
+fb_id_url:
+document.getElementById("edit_fb").value
+.trim()
+.toLowerCase(),
+
+position:
+document.getElementById("edit_position").value,
+
+image:imageUrl
+
+}
+)
+
+alert("Profile Updated Successfully")
+
+location.reload()
+
+}catch(error){
+
+console.log(error)
+
+alert(error.message)
+
+}
+
+}
 
 
 /* EMAIL CHECK */
