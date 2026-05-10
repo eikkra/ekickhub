@@ -17,10 +17,15 @@ import {
 getFirestore,
 doc,
 setDoc,
+getDoc,
 getDocs,
-collection
+collection,
+runTransaction,
+query,
+where
 
 }
+
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 import {
@@ -397,39 +402,53 @@ return
 
 /* CHECK DUPLICATE */
 
-const snapshot =
-await getDocs(
-collection(db,"users")
-)
-
-let totalUsers = 0
-
 let duplicate = false
 
+const emailQuery =
+query(
+collection(db,"users"),
+where("email","==",email)
+)
 
-snapshot.forEach((docItem)=>{
+const konamiQuery =
+query(
+collection(db,"users"),
+where("konami_id","==",konami_id)
+)
 
-const data =
-docItem.data()
+const fbQuery =
+query(
+collection(db,"users"),
+where("fb_id_url","==",fb_id_url)
+)
 
-totalUsers++
+const [
 
+emailSnap,
+konamiSnap,
+fbSnap
+
+] = await Promise.all([
+
+getDocs(emailQuery),
+getDocs(konamiQuery),
+getDocs(fbQuery)
+
+])
 
 if(
 
-data.email === email ||
+!emailSnap.empty ||
 
-data.konami_id === konami_id ||
+!konamiSnap.empty ||
 
-data.fb_id_url === fb_id_url
+!fbSnap.empty
 
 ){
 
 duplicate = true
 
 }
-
-})
 
 
 if(duplicate){
@@ -525,45 +544,69 @@ msg.innerHTML =
 
 await uploadBytes(
 imageRef,
-croppedBlob
+croppedBlob,
+{
+contentType:"image/jpeg"
+}
 )
 
 const imageUrl =
 await getDownloadURL(imageRef)
 
+/* CHECK EXISTING USER */
 
+const userRef =
+doc(db,"users",currentUser.uid)
+
+const existingUser =
+await getDoc(userRef)
+
+if(existingUser.exists()){
+
+msg.innerHTML =
+"Account already submitted"
+
+uploading = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML =
+"REGISTER NOW"
+
+return
+
+}
 
 /* UNIQUE PLAYER ID */
 
-let player_id = ""
+const counterRef =
+doc(db,"system","player_counter")
 
-while(true){
+const player_id =
+await runTransaction(db,async(transaction)=>{
 
-const randomNum =
-Math.floor(
-100000 + Math.random() * 900000
-)
+const counterDoc =
+await transaction.get(counterRef)
 
-player_id = `EKH-${randomNum}`
+let lastNumber = 0
 
-const checkSnap =
-await getDocs(collection(db,"users"))
+if(counterDoc.exists()){
 
-let exists = false
-
-checkSnap.forEach((d)=>{
-
-if(d.data().player_id === player_id){
-
-exists = true
+lastNumber =
+counterDoc.data().last_id || 0
 
 }
 
+const newNumber =
+lastNumber + 1
+
+transaction.set(counterRef,{
+last_id:newNumber
 })
 
-if(!exists) break
+return `EKH-${String(newNumber).padStart(6,"0")}`
 
-}
+})
 
 
 /* SAVE DATA */
@@ -571,7 +614,27 @@ if(!exists) break
 msg.innerHTML =
 "Saving profile..."
 
+const userRef =
+doc(db,"users",currentUser.uid)
 
+const existingUser =
+await getDoc(userRef)
+
+if(existingUser.exists()){
+
+msg.innerHTML =
+"Account already submitted"
+
+uploading = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML =
+"REGISTER NOW"
+
+return
+
+}
 await setDoc(
 
 doc(db,"users",currentUser.uid),
