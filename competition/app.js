@@ -1,48 +1,168 @@
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+getDocs,
+query,
+orderBy
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDwPilelp6BgHhHD8Hs_cHx96ZJNZdeYag",
+
+authDomain: "ekickhub-bd.firebaseapp.com",
+
+projectId: "ekickhub-bd",
+
+storageBucket: "ekickhub-bd.firebasestorage.app",
+
+messagingSenderId: "306381500871",
+
+appId: "1:306381500871:web:50e1cc59d823872328e9e2"
+
+};
+
+const app =
+initializeApp(firebaseConfig)
+
+const db =
+getFirestore(app)
+
+/* ELEMENTS */
+
 const competitionGrid =
 document.getElementById("competitionGrid")
 
-const sampleCompetitions = [
+const searchInput =
+document.getElementById("searchInput")
 
-{
-title:"eKick Ramadan Cup",
-type:"32 PLAYER GROUP STAGE",
-status:"registration",
-image:"https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop",
-players:"32",
-prize:"10,000 Coins",
-date:"2026-06-01T20:00:00"
-},
+let allCompetitions = []
 
-{
-title:"World Elite League",
-type:"64 PLAYER LEAGUE",
-status:"upcoming",
-image:"https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=1200&auto=format&fit=crop",
-players:"64",
-prize:"25,000 Coins",
-date:"2026-06-15T22:00:00"
-},
+let currentTab = "registration"
 
-{
-title:"GOAT Championship",
-type:"128 PLAYER KNOCKOUT",
-status:"running",
-image:"https://images.unsplash.com/photo-1560253023-3ec5d502959f?q=80&w=1200&auto=format&fit=crop",
-players:"128",
-prize:"50,000 Coins",
-date:"2026-07-01T21:00:00"
+/* LOAD COMPETITIONS */
+
+async function loadCompetitions(){
+
+competitionGrid.innerHTML = `
+
+<div style="
+padding:40px;
+grid-column:1/-1;
+text-align:center;
+font-size:14px;
+">
+
+Loading competitions...
+
+</div>
+
+`
+
+try{
+
+const q =
+query(
+collection(db,"competitions"),
+orderBy("created_at","desc")
+)
+
+const snapshot =
+await getDocs(q)
+
+allCompetitions = []
+
+snapshot.forEach(doc=>{
+
+allCompetitions.push({
+
+id:doc.id,
+...doc.data()
+
+})
+
+})
+
+renderCompetitions()
+
+}catch(error){
+
+console.log(error)
+
+competitionGrid.innerHTML = `
+
+<div style="
+padding:40px;
+grid-column:1/-1;
+text-align:center;
+font-size:14px;
+color:red;
+">
+
+Failed to load competitions
+
+</div>
+
+`
+
 }
 
-]
+}
 
-function renderCompetitions(type="registration"){
+/* RENDER */
+
+function renderCompetitions(){
 
 competitionGrid.innerHTML = ""
 
+const search =
+searchInput.value.toLowerCase()
+
 const filtered =
-sampleCompetitions.filter(
-item=>item.status === type
-)
+allCompetitions.filter(comp=>{
+
+const matchTab =
+comp.status === currentTab
+
+const matchSearch =
+
+comp.title
+.toLowerCase()
+.includes(search)
+
+return matchTab && matchSearch
+
+})
+
+if(filtered.length === 0){
+
+competitionGrid.innerHTML = `
+
+<div style="
+padding:40px;
+grid-column:1/-1;
+text-align:center;
+font-size:14px;
+">
+
+No competition found
+
+</div>
+
+`
+
+return
+
+}
 
 filtered.forEach(comp=>{
 
@@ -50,7 +170,8 @@ competitionGrid.innerHTML += `
 
 <div class="competitionCard">
 
-<img class="compImage"
+<img
+class="compImage"
 src="${comp.image}">
 
 <div class="compBody">
@@ -60,13 +181,13 @@ ${comp.title}
 </div>
 
 <div class="compType">
-${comp.type}
+${comp.format}
 </div>
 
 <div class="compInfo">
 
 <div>
-👥 ${comp.players}
+👥 ${comp.slots}
 </div>
 
 <div>
@@ -76,7 +197,7 @@ ${comp.type}
 </div>
 
 <div class="countdown"
-id="${comp.title.replaceAll(" ","")}">
+id="count-${comp.id}">
 
 Loading...
 
@@ -100,13 +221,15 @@ startCountdowns(filtered)
 
 }
 
+/* COUNTDOWN */
+
 function startCountdowns(data){
 
 data.forEach(comp=>{
 
 const el =
 document.getElementById(
-comp.title.replaceAll(" ","")
+`count-${comp.id}`
 )
 
 if(!el) return
@@ -114,7 +237,8 @@ if(!el) return
 function update(){
 
 const target =
-new Date(comp.date).getTime()
+new Date(comp.registration_date)
+.getTime()
 
 const now =
 new Date().getTime()
@@ -125,7 +249,7 @@ target - now
 if(diff <= 0){
 
 el.innerHTML =
-"Competition Started"
+"Registration Open"
 
 return
 
@@ -157,7 +281,7 @@ setInterval(update,1000)
 
 }
 
-renderCompetitions()
+/* TABS */
 
 document.querySelectorAll(".tabBtn")
 .forEach(btn=>{
@@ -165,14 +289,32 @@ document.querySelectorAll(".tabBtn")
 btn.onclick = ()=>{
 
 document.querySelectorAll(".tabBtn")
-.forEach(b=>b.classList.remove("active"))
+.forEach(b=>{
+
+b.classList.remove("active")
+
+})
 
 btn.classList.add("active")
 
-renderCompetitions(
+currentTab =
 btn.dataset.tab
-)
+
+renderCompetitions()
 
 }
 
 })
+
+/* SEARCH */
+
+searchInput
+.addEventListener("input",()=>{
+
+renderCompetitions()
+
+})
+
+/* START */
+
+loadCompetitions()
