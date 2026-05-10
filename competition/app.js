@@ -1,3 +1,12 @@
+import {
+
+getAuth,
+onAuthStateChanged
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -8,7 +17,9 @@ collection,
 getDocs,
 query,
 orderBy,
-addDoc
+addDoc,
+doc,
+getDoc
 
 }
 
@@ -35,6 +46,9 @@ appId: "1:306381500871:web:50e1cc59d823872328e9e2"
 const app =
 initializeApp(firebaseConfig)
 
+const auth =
+getAuth(app)
+
 const db =
 getFirestore(app)
 
@@ -43,12 +57,58 @@ getFirestore(app)
 const competitionGrid =
 document.getElementById("competitionGrid")
 
+const createBtn =
+document.getElementById("openCreateModal")
+
+createBtn.style.display = "none"
+
 const searchInput =
 document.getElementById("searchInput")
 
 let allCompetitions = []
 
 let currentTab = "registration"
+
+/* AUTH */
+
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user) return
+
+try{
+
+const docSnap =
+await getDoc(
+doc(db,"users",user.uid)
+)
+
+if(!docSnap.exists()) return
+
+const data =
+docSnap.data()
+
+const roles =
+data.roles || []
+
+const isAdmin =
+
+roles.includes("admin") ||
+
+roles.includes("moderator")
+
+if(isAdmin){
+
+createBtn.style.display = "flex"
+
+}
+
+}catch(error){
+
+console.log(error)
+
+}
+
+})
 
 /* LOAD COMPETITIONS */
 
