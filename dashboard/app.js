@@ -5,7 +5,7 @@ import {
 getAuth,
 onAuthStateChanged,
 signOut,
-updateEmail
+verifyBeforeUpdateEmail
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -394,7 +394,13 @@ return
 
 }
 
-await updateEmail(user,newEmail)
+await verifyBeforeUpdateEmail(user,newEmail)
+
+alert(
+"Verification email sent to your new email address. Please verify first."
+)
+
+return
 
 }
 
