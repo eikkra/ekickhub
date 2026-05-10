@@ -346,62 +346,34 @@ reader.readAsDataURL(file)
 
 /* SAVE EDIT */
 
+/* SAVE EDIT */
+
 document.getElementById("saveEdit")
 .onclick = async()=>{
+
+try{
 
 const user = auth.currentUser
 
 if(!user) return
 
-try{
-
-let imageUrl = currentData.image
-
 const newEmail =
-document.getElementById("edit_email").value
+document.getElementById("edit_email")
+.value
 .trim()
 .toLowerCase()
 
-const currentPassword =
-document.getElementById("current_password").value
+const konami =
+document.getElementById("edit_konami")
+.value
 .trim()
+.toUpperCase()
 
-/* EMAIL CHANGE */
-
-if(
-newEmail &&
-newEmail !== user.email
-){
-
-if(!currentPassword){
-
-alert(
-"Enter current password to change email"
-)
-
-return
-
-}
-
-const credential =
-EmailAuthProvider.credential(
-user.email,
-currentPassword
-)
-
-await reauthenticateWithCredential(
-user,
-credential
-)
-
-await updateEmail(
-user,
-newEmail
-)
-
-}
-
-/* EMAIL CHECK */
+const fb =
+document.getElementById("edit_fb")
+.value
+.trim()
+.toLowerCase()/* EMAIL CHECK */
 
 if(newEmail !== currentData.email){
 
