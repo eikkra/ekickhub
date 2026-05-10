@@ -7,7 +7,8 @@ getFirestore,
 collection,
 getDocs,
 query,
-orderBy
+orderBy,
+addDoc
 
 }
 
@@ -318,3 +319,107 @@ renderCompetitions()
 /* START */
 
 loadCompetitions()
+
+/* MODAL */
+
+const createModal =
+document.getElementById("createModal")
+
+document.getElementById("openCreateModal")
+.onclick = ()=>{
+
+createModal.classList.add("active")
+
+}
+
+document.getElementById("closeCreateModal")
+.onclick = ()=>{
+
+createModal.classList.remove("active")
+
+}
+
+/* CREATE COMPETITION */
+
+document.getElementById("publishCompetition")
+.onclick = async()=>{
+
+const title =
+document.getElementById("comp_title")
+.value.trim()
+
+const image =
+document.getElementById("comp_image")
+.value.trim()
+
+const format =
+document.getElementById("comp_format")
+.value
+
+const slots =
+document.getElementById("comp_slots")
+.value
+
+const prize =
+document.getElementById("comp_prize")
+.value.trim()
+
+const status =
+document.getElementById("comp_status")
+.value
+
+const registration_date =
+document.getElementById("comp_date")
+.value
+
+if(
+
+!title ||
+!image ||
+!format ||
+!slots ||
+!prize ||
+!registration_date
+
+){
+
+alert("Please fill all fields")
+
+return
+
+}
+
+try{
+
+await addDoc(
+collection(db,"competitions"),
+{
+
+title,
+image,
+format,
+slots,
+prize,
+status,
+registration_date,
+
+created_at:
+new Date().toISOString()
+
+})
+
+alert("Competition Published")
+
+createModal.classList.remove("active")
+
+loadCompetitions()
+
+}catch(error){
+
+console.log(error)
+
+alert(error.message)
+
+}
+
+}

@@ -136,5 +136,124 @@ id="competitionGrid">
 
 <script type="module" src="app.js"></script>
 
+<!-- CREATE BUTTON -->
+
+<button class="floatingCreateBtn"
+id="openCreateModal">
+
+<i class="fa-solid fa-plus"></i>
+
+</button>
+
+<!-- CREATE MODAL -->
+
+<div class="createModal"
+id="createModal">
+
+<div class="createBox">
+
+<div class="createHeader">
+
+<h2>Create Competition</h2>
+
+<div id="closeCreateModal">
+<i class="fa-solid fa-xmark"></i>
+</div>
+
+</div>
+
+<input
+type="text"
+id="comp_title"
+placeholder="Competition Title">
+
+<input
+type="text"
+id="comp_image"
+placeholder="Competition Image URL">
+
+<select id="comp_format">
+
+<option value="">
+Select Format
+</option>
+
+<option>
+32 PLAYER GROUP STAGE
+</option>
+
+<option>
+64 PLAYER LEAGUE
+</option>
+
+<option>
+128 PLAYER KNOCKOUT
+</option>
+
+<option>
+CO-OP TOURNAMENT
+</option>
+
+</select>
+
+<select id="comp_slots">
+
+<option value="">
+Select Slots
+</option>
+
+<option>32</option>
+<option>64</option>
+<option>128</option>
+<option>256</option>
+<option>512</option>
+
+</select>
+
+<input
+type="text"
+id="comp_prize"
+placeholder="Prize Pool">
+
+<select id="comp_status">
+
+<option value="registration">
+REGISTRATION
+</option>
+
+<option value="upcoming">
+UPCOMING
+</option>
+
+<option value="running">
+RUNNING
+</option>
+
+<option value="completed">
+COMPLETED
+</option>
+
+</select>
+
+<label class="dateLabel">
+
+Registration Date
+
+</label>
+
+<input
+type="datetime-local"
+id="comp_date">
+
+<button id="publishCompetition">
+
+PUBLISH COMPETITION
+
+</button>
+
+</div>
+
+</div>
+
 </body>
 </html>
