@@ -292,7 +292,7 @@ document.getElementById("device_name")
 
 const fb_id_url =
 document.getElementById("fb_id_url")
-.value.trim()
+.value.trim().toLowerCase()
 
 const imageFile =
 document.getElementById("image")
@@ -450,6 +450,27 @@ duplicate = true
 
 }
 
+const userRef =
+doc(db,"users",currentUser.uid)
+
+const existingUser =
+await getDoc(userRef)
+
+if(existingUser.exists()){
+
+msg.innerHTML =
+"Account already submitted"
+
+uploading = false
+
+registerBtn.disabled = false
+
+registerBtn.innerHTML =
+"REGISTER NOW"
+
+return
+
+}
 
 if(duplicate){
 
@@ -466,8 +487,6 @@ registerBtn.innerHTML =
 return
 
 }
-
-
 
 /* LINK PASSWORD */
 
@@ -553,30 +572,6 @@ contentType:"image/jpeg"
 const imageUrl =
 await getDownloadURL(imageRef)
 
-/* CHECK EXISTING USER */
-
-const userRef =
-doc(db,"users",currentUser.uid)
-
-const existingUser =
-await getDoc(userRef)
-
-if(existingUser.exists()){
-
-msg.innerHTML =
-"Account already submitted"
-
-uploading = false
-
-registerBtn.disabled = false
-
-registerBtn.innerHTML =
-"REGISTER NOW"
-
-return
-
-}
-
 /* UNIQUE PLAYER ID */
 
 const counterRef =
@@ -614,27 +609,6 @@ return `EKH-${String(newNumber).padStart(6,"0")}`
 msg.innerHTML =
 "Saving profile..."
 
-const userRef =
-doc(db,"users",currentUser.uid)
-
-const existingUser =
-await getDoc(userRef)
-
-if(existingUser.exists()){
-
-msg.innerHTML =
-"Account already submitted"
-
-uploading = false
-
-registerBtn.disabled = false
-
-registerBtn.innerHTML =
-"REGISTER NOW"
-
-return
-
-}
 await setDoc(
 
 doc(db,"users",currentUser.uid),
