@@ -4,7 +4,8 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
 getFirestore,
 collection,
-getDocs
+getDocs,
+addDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -91,3 +92,81 @@ document.getElementById("runningEvents")
 }
 
 loadStats()
+
+const competitionModal =
+document.getElementById("competitionModal")
+
+document.getElementById("openCompetitionModal")
+.onclick = ()=>{
+
+competitionModal.classList.add("active")
+
+}
+
+document.getElementById("closeModal")
+.onclick = ()=>{
+
+competitionModal.classList.remove("active")
+
+}
+
+document.getElementById("publishCompetition")
+.onclick = async()=>{
+
+const title =
+document.getElementById("compTitle").value
+
+const image =
+document.getElementById("compImage").value
+
+const type =
+document.getElementById("compType").value
+
+const slots =
+document.getElementById("compSlots").value
+
+const regStart =
+document.getElementById("regStart").value
+
+const matchStart =
+document.getElementById("matchStart").value
+
+const status =
+document.getElementById("compStatus").value
+
+if(
+!title ||
+!image ||
+!slots ||
+!regStart ||
+!matchStart
+){
+alert("Fill all fields")
+return
+}
+
+await addDoc(
+collection(db,"competitions"),
+{
+
+title,
+image,
+type,
+slots:Number(slots),
+regStart,
+matchStart,
+status,
+
+created_at:
+new Date().toISOString()
+
+}
+)
+
+alert("Competition Published")
+
+competitionModal.classList.remove("active")
+
+location.reload()
+
+}

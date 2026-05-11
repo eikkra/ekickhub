@@ -143,9 +143,13 @@ data-page="settings">
 
 <div class="quickGrid">
 
-<button class="quickBtn">
+<button class="quickBtn"
+id="openCompetitionModal">
+
 <i class="fa-solid fa-plus"></i>
+
 Create Competition
+
 </button>
 
 <button class="quickBtn">
@@ -190,6 +194,72 @@ Club manager approved
 </div>
 
 </div>
+
+</div>
+
+</div>
+
+<!-- CREATE COMPETITION MODAL -->
+
+<div class="modal" id="competitionModal">
+
+<div class="modalBox">
+
+<div class="modalTop">
+
+<h2>Create Competition</h2>
+
+<div class="closeModal" id="closeModal">
+✕
+</div>
+
+</div>
+
+<input type="text"
+id="compTitle"
+placeholder="Competition Name">
+
+<input type="text"
+id="compImage"
+placeholder="Competition Image URL">
+
+<select id="compType">
+
+<option value="1v1">1v1</option>
+
+<option value="league">League</option>
+
+<option value="group">Group Stage</option>
+
+<option value="co-op">Co-op</option>
+
+</select>
+
+<input type="number"
+id="compSlots"
+placeholder="Player Slots">
+
+<input type="datetime-local"
+id="regStart">
+
+<input type="datetime-local"
+id="matchStart">
+
+<select id="compStatus">
+
+<option value="upcoming">Upcoming</option>
+
+<option value="registration">Registration Open</option>
+
+<option value="running">Running</option>
+
+<option value="completed">Completed</option>
+
+</select>
+
+<button id="publishCompetition">
+Publish Competition
+</button>
 
 </div>
 
