@@ -1,0 +1,112 @@
+<!-- ═══ COMPETITION CREATE MODAL — paste inside admin/index.html body ═══ -->
+<div class="modal-bg" id="compModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:2000;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center">
+<div style="background:#0d1117;border:1px solid rgba(0,229,255,.18);border-radius:18px;width:100%;max-width:680px;margin:auto;animation:moi .3s ease;overflow:hidden">
+
+  <!-- HEADER -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(0,229,255,.04)">
+    <div style="font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:9px"><i class="fa-solid fa-trophy" style="color:#00e5ff"></i>Create Competition</div>
+    <button onclick="closeCompModal()" style="background:none;border:none;color:#8aa4bb;font-size:18px;cursor:pointer"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div style="padding:20px 22px;max-height:80vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,229,255,.2) transparent">
+
+  <!-- BASIC INFO -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:#00e5ff;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid rgba(0,229,255,.15)"><i class="fa-solid fa-circle-info"></i> Basic Info</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+    <div style="grid-column:1/-1"><label class="cm-lbl">Competition Name *</label><input class="cm-fc" id="cm-name" placeholder="e.g. eKickHub Champions Cup S4"></div>
+    <div style="grid-column:1/-1"><label class="cm-lbl">Competition Image URL</label><input class="cm-fc" id="cm-image" placeholder="https://…/banner.jpg"></div>
+    <div><label class="cm-lbl">Competition Type</label>
+      <select class="cm-fc" id="cm-type" onchange="setTeamSizeRules()">
+        <option value="pvp">⚔ Player vs Player</option>
+        <option value="cvc">🛡 Club vs Club</option>
+      </select></div>
+    <div><label class="cm-lbl">Competition Format</label>
+      <select class="cm-fc" id="cm-format">
+        <option>Round Robin + Knockout</option>
+        <option>Knockout Only</option>
+        <option>Group Wise Round Robin (League)</option>
+      </select></div>
+    <div><label class="cm-lbl">Team Size</label>
+      <select class="cm-fc" id="cm-team-size" onchange="setTeamSizeRules()">
+        <option value="1vs1">1vs1 (Player)</option>
+        <option value="2vs2">2vs2 (Player Co-Op)</option>
+        <option value="11vs11">11vs11 (Club)</option>
+        <option value="6vs6">6vs6 (Club)</option>
+      </select></div>
+    <div><label class="cm-lbl">Substitute Rules</label><div class="cm-fc" id="cm-sub-note" style="color:#8aa4bb;font-size:11px;display:flex;align-items:center">Select team size</div></div>
+    <div><label class="cm-lbl">Teams for Club</label>
+      <select class="cm-fc" id="cm-teams">
+        <option value="alpha">Team Alpha only</option>
+        <option value="bravo">Team Bravo only</option>
+        <option value="neo">Team Neo only</option>
+        <option value="alpha_bravo">Alpha + Bravo</option>
+        <option value="all">All Teams</option>
+      </select></div>
+    <div><label class="cm-lbl">Max Players / Clubs</label>
+      <select class="cm-fc" id="cm-max-players">
+        <option value="32">32</option><option value="64">64</option>
+        <option value="128">128</option><option value="256">256</option><option value="512">512</option>
+      </select></div>
+    <div><label class="cm-lbl">Max Groups Divided by</label>
+      <select class="cm-fc" id="cm-max-groups">
+        <option value="2">2 Groups</option><option value="4">4 Groups</option>
+        <option value="8">8 Groups</option><option value="16">16 Groups</option>
+      </select></div>
+  </div>
+
+  <!-- REG & SCHEDULE -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:#00e5ff;text-transform:uppercase;margin-bottom:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid rgba(0,229,255,.15)"><i class="fa-regular fa-calendar"></i> Registration & Schedule</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+    <div><label class="cm-lbl">Registration Start</label><input class="cm-fc" type="datetime-local" id="cm-reg-start"></div>
+    <div><label class="cm-lbl">Registration End</label><input class="cm-fc" type="datetime-local" id="cm-reg-end"></div>
+    <div><label class="cm-lbl">Competition Start</label><input class="cm-fc" type="datetime-local" id="cm-comp-start"></div>
+    <div><label class="cm-lbl">Estimated Duration (Days)</label><input class="cm-fc" type="number" id="cm-duration" placeholder="e.g. 30" min="1"></div>
+    <div style="grid-column:1/-1"><label class="cm-lbl">Time Zone</label>
+      <select class="cm-fc" id="cm-timezone">
+        <option value="GMT+6 (Dhaka, Bangladesh)" selected>GMT+6 · Dhaka, Bangladesh</option>
+        <option value="GMT+0 (London)">GMT+0 · London</option>
+        <option value="GMT+1 (Paris)">GMT+1 · Paris</option>
+        <option value="GMT+3 (Riyadh)">GMT+3 · Riyadh</option>
+        <option value="GMT+5:30 (India)">GMT+5:30 · India</option>
+        <option value="GMT+8 (Singapore)">GMT+8 · Singapore</option>
+      </select></div>
+  </div>
+
+  <!-- ENTRY FEE & PRIZE -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:#ffd700;text-transform:uppercase;margin-bottom:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid rgba(255,215,0,.15)"><i class="fa-solid fa-trophy"></i> Entry Fee & Prize</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+    <div><label class="cm-lbl">Entry Fee</label>
+      <select class="cm-fc" id="cm-entry-fee" onchange="document.getElementById('cm-fee-wrap').style.display=this.value==='true'?'block':'none'">
+        <option value="false">Free (No Entry Fee)</option>
+        <option value="true">Paid (BDT)</option>
+      </select></div>
+    <div id="cm-fee-wrap" style="display:none"><label class="cm-lbl">Fee Amount (৳)</label><input class="cm-fc" type="number" id="cm-fee-amount" placeholder="e.g. 100"></div>
+    <div><label class="cm-lbl">Total Prize Pool (৳ BDT)</label><input class="cm-fc" type="number" id="cm-prize-bdt" placeholder="e.g. 10000"></div>
+    <div><label class="cm-lbl">Total Prize (eKH Coins)</label><input class="cm-fc" type="number" id="cm-prize-coins" placeholder="e.g. 5000"></div>
+    <div><label class="cm-lbl">1st Prize %</label><input class="cm-fc" type="number" id="cm-p1" placeholder="50" value="50"></div>
+    <div><label class="cm-lbl">2nd Prize %</label><input class="cm-fc" type="number" id="cm-p2" placeholder="30" value="30"></div>
+    <div><label class="cm-lbl">3rd Prize %</label><input class="cm-fc" type="number" id="cm-p3" placeholder="20" value="20"></div>
+  </div>
+
+  <!-- SPONSOR -->
+  <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;color:#a855f7;text-transform:uppercase;margin-bottom:12px;margin-top:18px;padding-bottom:6px;border-bottom:1px solid rgba(168,85,247,.15)"><i class="fa-solid fa-handshake"></i> Sponsor</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:18px">
+    <div><label class="cm-lbl">Sponsor Name</label><input class="cm-fc" id="cm-sponsor" placeholder="e.g. GoalKing"></div>
+    <div><label class="cm-lbl">Sponsor Logo URL</label><input class="cm-fc" id="cm-sponsor-logo" placeholder="https://…/logo.png"></div>
+  </div>
+
+  <button id="cm-save-btn" onclick="createCompetition()" style="width:100%;padding:13px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:9px;background:linear-gradient(90deg,#00e5ff,#39ff14);color:#07090f;cursor:pointer;transition:.3s;box-shadow:0 4px 18px rgba(0,229,255,.3)"><i class="fa-solid fa-floppy-disk"></i> Save Competition</button>
+  <div id="cm-msg" style="margin-top:10px;text-align:center;font-size:11px;color:#ff3b30;min-height:16px"></div>
+
+  </div><!-- /scroll -->
+</div>
+</div>
+
+<style>
+.modal-bg.open{display:flex!important}
+@keyframes moi{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.cm-lbl{display:block;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;color:#8aa4bb;text-transform:uppercase;margin-bottom:5px}
+.cm-fc{width:100%;padding:9px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:7px;color:#e2eeff;font-family:'Exo 2',sans-serif;font-size:12px;outline:none;transition:.2s;-webkit-appearance:none}
+.cm-fc:focus{border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.04)}
+.cm-fc option{background:#0d1117}
+</style>
